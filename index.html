@@ -247,6 +247,14 @@
     </footer>
 
     <script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./service-worker.js");
+        });
+    }
+    </script>
+    
+    <script>
     function toggleText() {
         const text = document.getElementById("text-stredovek");
         const button = event.target;
