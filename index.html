@@ -35,6 +35,75 @@
                     <source src="stredovek.mp3" type="audio/mpeg">
                     Tvůj prohlížeč nepodporuje přehrávání zvuku.
                 </audio>
+            
+                <button onclick="toggleText()">Zobrazit text</button>
+            
+                <div id="text-stredovek" style="display: none; margin-top: 20px;">
+            
+                    <h4>Středověk – text písně</h4>
+            
+                    <p>
+                    Středověk, páté až patnácté století,<br>
+                    víra a církev určují tehdejší život lidí.<br>
+                    Legenda vypráví o světci, víře a zázracích,<br>
+                    epika o hrdinovi, rytíři, cti a odvaze v bitvách.<br>
+                    Kronika píše dějiny v časové posloupnosti,<br>
+                    tak si pamatujme základní žánry středověké literatury.
+                    </p>
+            
+                    <p>
+                    Kosmas, dvanácté století, první česká kronika,<br>
+                    latinsky psaná próza, Praha a její historie.<br>
+                    Kosmas byl pražský děkan, to si dobře pamatuj,<br>
+                    Česká kronika – Kosmas, tohle si zapamatuj.
+                    </p>
+            
+                    <p>
+                    Dalimilova kronika, čtrnácté století,<br>
+                    česky psaná ve verších, autor zůstává neznámý.<br>
+                    Mastičkář, Hradecký rukopis,<br>
+                    Podkoní a žák, Jistebnický kancionál.<br>
+                    Česká literatura středověku, pamatuj si každý titul,<br>
+                    opakuj, opakuj, ať u maturity neztratíš nit.
+                    </p>
+            
+                    <p>
+                    Waldhauser, Milíč z Kroměříže, Matěj z Janova,<br>
+                    předchůdci Husovi, kritika církevního života.<br>
+                    Tomáš Štítný ze Štítného psal česky pro lidi,<br>
+                    Knížky šestery o obecných věcech křesťanských učí,
+                    jak správně žít.
+                    </p>
+            
+                    <p>
+                    Jan Hus, kolem roku třináct set sedmdesát,<br>
+                    Husinec, Praha, Betlémská kaple – znát.<br>
+                    Kritizuje úpadek církve, odpustky a její moc,<br>
+                    pravda, Bible a reforma – to je jeho hlavní pochod.
+                    </p>
+            
+                    <p>
+                    O církvi, Výklad víry, Desatera a Páteře,<br>
+                    Hus hájí pravdu, i když ví, co přijde.<br>
+                    Koncil v Kostnici, rok čtrnáct set patnáct,<br>
+                    Hus je upálen, ale jeho myšlenky žijí dál.
+                    </p>
+            
+                    <p>
+                    Petr Chelčický odmítá násilí, válku i moc,<br>
+                    chce žít podle Bible a Krista ve dne i v noc.<br>
+                    Síť víry pravé – jeho nejznámější dílo,<br>
+                    jeho myšlení ovlivnilo Jednotu bratrskou.
+                    </p>
+            
+                    <p>
+                    Středověk – víra, církev, kronika, legenda,<br>
+                    Kosmas, Hus, Chelčický – to je hlavní legenda.<br>
+                    Páté až patnácté století, to si zapamatuj,<br>
+                    opakuj si fakta, opakuj, opakuj!
+                    </p>
+            
+                </div>
             </div>
 
             <div>
@@ -71,5 +140,19 @@
         <p>Maturita v uších</p>
     </footer>
 
+    <script>
+    function toggleText() {
+        const text = document.getElementById("text-stredovek");
+        const button = event.target;
+    
+        if (text.style.display === "none") {
+            text.style.display = "block";
+            button.textContent = "Skrýt text";
+        } else {
+            text.style.display = "none";
+            button.textContent = "Zobrazit text";
+        }
+    }
+    </script>
 </body>
 </html>
