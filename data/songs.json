@@ -1,0 +1,9 @@
+[
+    {
+        "id": "stredovek",
+        "title": "Středověk",
+        "description": "Hus, Kosmas, legendy, kroniky a středověká literatura.",
+        "audio": "audio/stredovek.mp3",
+        "lyrics": "data/stredovek.json"
+    }
+]
