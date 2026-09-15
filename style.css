@@ -2,104 +2,252 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
 
-
 body {
     margin: 0;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background: #f3f4f6;
-
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f7fa;
     color: #111827;
 }
 
 
+/* ================================
+   HLAVIČKA
+================================ */
+
 .app-header {
     background: #111827;
-
     color: white;
-
-    text-align: center;
-
-    padding:
-        32px
-        20px
-        30px;
+    padding: 18px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
+.header-content {
+    max-width: 850px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.app-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.65;
+    margin-bottom: 3px;
+}
 
 .app-header h1 {
-    margin: 0 0 8px;
-
-    font-size: 30px;
-}
-
-
-.app-header p {
     margin: 0;
-
-    color: #d1d5db;
+    font-size: 23px;
+    line-height: 1.2;
 }
 
 
-main {
-    max-width: 720px;
+/* ================================
+   ZPĚT
+================================ */
 
+.back-button {
+    border: none;
+    background: #374151;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background: #4b5563;
+}
+
+
+/* ================================
+   HLAVNÍ OBSAH
+================================ */
+
+.app-container {
+    max-width: 850px;
     margin: auto;
+    padding: 28px 18px 60px;
+}
 
-    padding:
-        24px
-        16px
-        50px;
+.screen {
+    animation: fadeIn 0.2s ease;
+}
+
+.hidden {
+    display: none !important;
 }
 
 
-.category {
-    margin-bottom: 35px;
+/* ================================
+   ÚVOD
+================================ */
+
+.welcome {
+    margin-bottom: 24px;
+}
+
+.welcome p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 
-.category > h2 {
-    font-size: 22px;
+/* ================================
+   MENU
+================================ */
 
-    margin:
-        0
-        0
-        16px;
+.menu-grid {
+    display: grid;
+    gap: 14px;
 }
 
+.menu-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 52px 1fr 24px;
+    align-items: center;
+    gap: 15px;
 
-/* KARTA */
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
 
-.song-card {
     background: white;
-
-    border-radius: 22px;
 
     padding: 18px;
 
-    box-shadow:
-        0 8px 30px
-        rgba(0, 0, 0, 0.08);
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.07);
+}
+
+.menu-card:active {
+    transform: scale(0.98);
 }
 
 
-/* OBAL */
+/* ================================
+   IKONY
+================================ */
+
+.menu-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    color: #3730a3;
+}
+
+.menu-card h2 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    color: #111827;
+}
+
+.menu-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.arrow {
+    font-size: 28px;
+    color: #9ca3af;
+}
+
+
+/* ================================
+   NADPISY SEKCÍ
+================================ */
+
+.section-heading {
+    margin-bottom: 20px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.section-description {
+    margin-bottom: 20px;
+}
+
+
+/* ================================
+   PRÁZDNÉ SEKCE
+================================ */
+
+.placeholder-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.placeholder-card h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.placeholder-card p {
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+
+/* ================================
+   SKLADBA
+================================ */
+
+.song-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 20px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
 
 .cover {
-    height: 190px;
+    height: 210px;
 
-    border-radius: 17px;
+    border-radius: 16px;
 
     background:
         linear-gradient(
@@ -111,410 +259,124 @@ main {
     color: white;
 
     display: flex;
-
     flex-direction: column;
+    justify-content: flex-end;
 
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
+    padding: 24px;
 
     margin-bottom: 20px;
-
-    letter-spacing: 1px;
 }
-
 
 .cover span {
-    font-size: 13px;
-
+    font-size: 12px;
+    letter-spacing: 1.5px;
     opacity: 0.65;
-
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
-
 
 .cover strong {
-    font-size: 30px;
+    font-size: 32px;
+    line-height: 1;
 }
 
-
-.song-card h3 {
-    font-size: 25px;
-
-    margin:
-        0
-        0
-        7px;
+.song-card h2 {
+    margin: 0 0 8px;
 }
-
 
 .description {
     color: #6b7280;
-
     line-height: 1.5;
-
-    margin-top: 0;
+    margin-bottom: 20px;
 }
-
-
-/* AUDIO */
 
 audio {
     width: 100%;
-
-    margin:
-        12px
-        0
-        4px;
 }
 
 
-/* PROGRESS */
+/* ================================
+   NAČÍTÁNÍ / CHYBA
+================================ */
 
-.progress-wrapper {
-    margin-top: 4px;
-}
-
-
-.progress {
-    height: 6px;
-
-    background: #e5e7eb;
-
-    border-radius: 99px;
-
-    overflow: hidden;
-
-    cursor: pointer;
-}
-
-
-.progress-bar {
-    width: 0%;
-
-    height: 100%;
-
-    background: #111827;
-
-    border-radius: 99px;
-}
-
-
-.time {
-    display: flex;
-
-    justify-content: space-between;
-
-    color: #9ca3af;
-
-    font-size: 12px;
-
-    margin-top: 5px;
-}
-
-
-/* TLAČÍTKO */
-
-.text-button {
-    width: 100%;
-
-    border: none;
-
-    border-radius: 12px;
-
-    padding: 14px;
-
-    margin-top: 18px;
-
-    background: #111827;
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-
-.text-button:active {
-    transform: scale(0.98);
-}
-
-
-/* TEXT */
-
-.lyrics-container {
-    margin-top: 18px;
-
-    height: 480px;
-
-    overflow-y: auto;
-
-    border-radius: 17px;
-
-    background: #f8fafc;
-
-    padding:
-        180px
-        12px;
-}
-
-
-.hidden {
-    display: none;
-}
-
-
-.lyric-line {
-    margin:
-        12px
-        0;
-
-    padding:
-        18px;
-
-    border-radius: 15px;
-
-    color: #9ca3af;
-
-    opacity: 0.55;
-
-    line-height: 1.55;
-
-    transition:
-        opacity 0.3s ease,
-        transform 0.3s ease,
-        background 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-
-.lyric-line p {
-    margin:
-        9px
-        0
-        0;
-}
-
-
-.lyric-line strong {
-    display: block;
-
-    margin-bottom: 5px;
-}
-
-
-/* AKTUÁLNÍ ŘÁDEK */
-
-.lyric-line.active {
+.loading {
     background: white;
-
-    color: #111827;
-
-    opacity: 1;
-
-    transform: scale(1.02);
-
-    box-shadow:
-        0 6px 20px
-        rgba(0, 0, 0, 0.10);
-}
-
-
-.lyric-line.active strong {
-    font-size: 19px;
-}
-
-
-/* ŠTÍTKY */
-
-.section-label {
-    display: inline-block;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 8px;
-
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
     color: #6b7280;
-}
-
-
-/* DŮLEŽITÉ */
-
-.lyric-line.important.active {
-    border-left:
-        5px solid #111827;
-}
-
-
-/* PŘÍKLADY */
-
-.examples {
-    margin-top: 12px;
-
-    padding: 10px 12px;
-
-    border-radius: 10px;
-
-    background: #f3f4f6;
-
-    font-size: 14px;
-}
-
-
-/* PAMĚŤ */
-
-.memory {
-    margin-top: 12px;
-
-    padding: 12px;
-
-    border-radius: 10px;
-
-    background: #e5e7eb;
-
-    font-weight: 800;
-
     text-align: center;
 }
 
-
-.memory p {
-    margin:
-        3px
-        0
-        10px;
+.error-card {
+    background: #fff;
+    border: 1px solid #fecaca;
+    border-radius: 16px;
+    padding: 20px;
+    color: #991b1b;
 }
 
 
-/* REFREN */
+/* ================================
+   ANIMACE
+================================ */
 
-.lyric-line.chorus {
-    text-align: center;
-
-    font-size: 16px;
-}
-
-
-.lyric-line.chorus strong {
-    margin-bottom: 8px;
-}
-
-
-/* FINÁLE */
-
-.lyric-line.final {
-    text-align: center;
-
-    padding:
-        25px
-        18px;
-}
-
-
-.lyric-line.final > strong {
-    margin:
-        12px
-        0;
-}
-
-
-/* KNIHY */
-
-.book-card {
-    background: white;
-
-    padding: 18px;
-
-    border-radius: 15px;
-
-    margin-bottom: 12px;
-
-    box-shadow:
-        0 4px 15px
-        rgba(0, 0, 0, 0.06);
-}
-
-
-.book-card h3 {
-    margin:
-        0
-        0
-        5px;
-}
-
-
-.book-card p {
-    margin: 0;
-
-    color: #6b7280;
-}
-
-
-/* FOOTER */
-
-footer {
-    text-align: center;
-
-    padding: 25px;
-
-    color: #9ca3af;
-}
-
-
-/* MOBIL */
-
-@media (max-width: 500px) {
-
-    main {
-        padding:
-            18px
-            12px
-            40px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
     }
 
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .song-card {
-        padding: 14px;
 
-        border-radius: 18px;
+/* ================================
+   MOBIL
+================================ */
+
+@media (max-width: 600px) {
+
+    .app-header {
+        padding: 15px;
     }
 
+    .app-header h1 {
+        font-size: 20px;
+    }
+
+    .app-container {
+        padding: 22px 14px 50px;
+    }
+
+    .menu-card {
+        grid-template-columns: 46px 1fr 20px;
+        padding: 15px;
+        gap: 12px;
+        border-radius: 16px;
+    }
+
+    .menu-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+    }
+
+    .menu-card h2 {
+        font-size: 16px;
+    }
+
+    .menu-card p {
+        font-size: 13px;
+    }
 
     .cover {
-        height: 160px;
+        height: 180px;
     }
-
 
     .cover strong {
-        font-size: 25px;
+        font-size: 28px;
     }
-
-
-    .lyrics-container {
-        height: 450px;
-
-        padding:
-            160px
-            8px;
-    }
-
-
-    .lyric-line {
-        padding: 15px;
-
-        margin:
-            10px
-            0;
-    }
-
 }
