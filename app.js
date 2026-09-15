@@ -951,7 +951,53 @@ if (backButton) {
     );
 
 }
+const updateButton =
+    document.getElementById("updateButton");
 
+if (updateButton) {
+
+    updateButton.addEventListener(
+        "click",
+        async function () {
+
+            updateButton.textContent =
+                "Aktualizuji...";
+
+            updateButton.disabled = true;
+
+            try {
+
+                // Pokud existuje Service Worker,
+                // požádáme ho o aktualizaci.
+
+                if ("serviceWorker" in navigator) {
+
+                    const registration =
+                        await navigator.serviceWorker.getRegistration();
+
+                    if (registration) {
+                        await registration.update();
+                    }
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "Aktualizace service workeru:",
+                    error
+                );
+
+            }
+
+
+            // Tvrdé obnovení stránky
+
+            window.location.reload(true);
+
+        }
+    );
+
+}
 
 // ========================================
 // START APLIKACE
