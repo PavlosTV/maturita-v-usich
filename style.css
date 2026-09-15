@@ -380,3 +380,46 @@ audio {
         font-size: 28px;
     }
 }
+
+/* ================================
+   TEXT PÍSNĚ
+================================ */
+
+.lyrics-container {
+    margin-top: 30px;
+}
+
+.lyrics-container h3 {
+    margin: 0 0 15px;
+    font-size: 20px;
+}
+
+#lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lyric-line {
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    color: #6b7280;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.lyric-line.active {
+    background: #eef2ff;
+    color: #111827;
+
+    font-weight: 700;
+
+    transform: translateX(4px);
+}
