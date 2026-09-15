@@ -733,12 +733,12 @@ function updateLyricsPosition(
 
     const desiredTop =
         containerTop +
-        containerHeight * 0.35;
+        containerHeight * 0.20;
 
 
     const desiredBottom =
         containerTop +
-        containerHeight * 0.75;
+        containerHeight * 0.55;
 
 
     /*
