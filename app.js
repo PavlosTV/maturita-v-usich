@@ -211,11 +211,8 @@ async function loadStredovek() {
         <div class="song-card">
 
             <div class="cover">
-
                 <span>ČESKÝ JAZYK</span>
-
                 <strong>STŘEDOVĚK</strong>
-
             </div>
 
             <h2>Středověk</h2>
@@ -225,20 +222,116 @@ async function loadStredovek() {
                 a středověká literatura.
             </p>
 
-            <audio controls preload="metadata">
+            <audio id="stredovekAudio"
+                   controls
+                   preload="metadata">
 
                 <source
                     src="./audio/stredovek.mp3"
-                    type="audio/mpeg"
-                >
+                    type="audio/mpeg">
 
                 Tvůj prohlížeč nepodporuje
                 přehrávání audia.
 
             </audio>
 
+            <div class="lyrics-container">
+
+                <h3>Text</h3>
+
+                <div id="lyrics">
+                    Načítám text...
+                </div>
+
+            </div>
+
         </div>
     `;
+
+    await loadLyrics();
+
+}
+
+async function loadLyrics() {
+
+    const lyricsContainer = document.getElementById("lyrics");
+    const audio = document.getElementById("stredovekAudio");
+
+    try {
+
+        const response = await fetch("./data/stredovek.json");
+
+        if (!response.ok) {
+            throw new Error("Nepodařilo se načíst text.");
+        }
+
+        const data = await response.json();
+
+        lyricsContainer.innerHTML = "";
+
+        data.lines.forEach((line, index) => {
+
+            const element = document.createElement("div");
+
+            element.className = "lyric-line";
+
+            element.dataset.start = line.start;
+            element.dataset.end = line.end;
+
+            element.textContent = line.text;
+
+            lyricsContainer.appendChild(element);
+
+        });
+
+        const lines =
+            document.querySelectorAll(".lyric-line");
+
+        audio.addEventListener("timeupdate", () => {
+
+            const currentTime = audio.currentTime;
+
+            lines.forEach(line => {
+
+                const start =
+                    Number(line.dataset.start);
+
+                const end =
+                    Number(line.dataset.end);
+
+                if (
+                    currentTime >= start &&
+                    currentTime < end
+                ) {
+
+                    line.classList.add("active");
+
+                    line.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                } else {
+
+                    line.classList.remove("active");
+
+                }
+
+            });
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        lyricsContainer.innerHTML = `
+            <div class="error-card">
+                Nepodařilo se načíst text.
+            </div>
+        `;
+
+    }
 
 }
 
