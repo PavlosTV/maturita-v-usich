@@ -1,115 +1,232 @@
 {
-    "title": "Středověk",
-    "lines": [
-        {
-            "start": 0,
-            "end": 24,
-            "text": "Středověk – páté až patnácté století, od pádu Říma k novému věku letí. Víra, církev, rytíři, hrady, literatura učí víře a zásadám."
-        },
-        {
-            "start": 24,
-            "end": 40,
-            "text": "LEGENDA – světec, víra, zázraky! EPOS – hrdina, rytíř, čest a odvaha! KRONIKA – dějiny, rok za rokem! Kosmas a Dalimil – to musíš znát!"
-        },
-        {
-            "start": 40,
-            "end": 73,
-            "text": "Legenda vypráví o životě světce, o víře, skutcích, utrpení a smrti. Má náboženský a výchovný význam: Legenda o svatém Prokopu, Legenda o svaté Kateřině."
-        },
-        {
-            "start": 73,
-            "end": 94,
-            "text": "Rytířský a hrdinský epos: Píseň o Rolandovi – Francie, Píseň o Nibelunzích – Německo, Slovo o pluku Igorově – Rusko."
-        },
-        {
-            "start": 94,
-            "end": 108,
-            "text": "Kronika zapisuje dějiny, události v časové posloupnosti."
-        },
-        {
-            "start": 108,
-            "end": 132,
-            "text": "KOSMAS – dvanácté století, Kronika česká, latinsky, prózou. Kosmas, pražský děkan, od bájných počátků po svou dobu."
-        },
-        {
-            "start": 132,
-            "end": 146,
-            "text": "DALIMILOVA KRONIKA – čtrnácté století, česky a ve verších, autor neznámý."
-        },
-        {
-            "start": 146,
-            "end": 158,
-            "text": "KOSMAS – LATINA, PRÓZA! DALIMIL – ČEŠTINA, VERŠ!"
-        },
-        {
-            "start": 158,
-            "end": 177,
-            "text": "Legenda – světec! Epos – hrdina! Kronika – dějiny! Kosmas – latina, próza! Dalimil – čeština, verš!"
-        },
-        {
-            "start": 177,
-            "end": 200,
-            "text": "Mastičkář – nejstarší česká světská hra. Hradecký rukopis. Podkoní a žák – satirický spor. Jistebnický kancionál – husitské písně."
-        },
-        {
-            "start": 200,
-            "end": 211,
-            "text": "Mastičkář! Hradecký rukopis! Podkoní a žák! Jistebnický kancionál!"
-        },
-        {
-            "start": 211,
-            "end": 230,
-            "text": "Husovi předchůdci: Konrád Waldhauser, Jan Milíč z Kroměříže, Matěj z Janova, Tomáš Štítný ze Štítného."
-        },
-        {
-            "start": 230,
-            "end": 247,
-            "text": "Kritizují mravní úpadek církve a volají po návratu ke křesťanství."
-        },
-        {
-            "start": 247,
-            "end": 263,
-            "text": "Štítný píše česky, zdůrazňuje morálku, vzdělání a správný život. Knížky šestery o obecných věcech křesťanských."
-        },
-        {
-            "start": 263,
-            "end": 280,
-            "text": "Mistr Jan Hus – kolem roku 1370, z Husince, působí v Praze. Kazatel z Betlémské kaple."
-        },
-        {
-            "start": 280,
-            "end": 299,
-            "text": "Kritizuje úpadek církve, prodej odpustků a zneužívání moci. Chce pravdu, Bibli a reformu církve."
-        },
-        {
-            "start": 299,
-            "end": 309,
-            "text": "O církvi – De ecclesia. Výklad víry, Desatera a Páteře."
-        },
-        {
-            "start": 309,
-            "end": 320,
-            "text": "Kostnice, 1415, Jan Hus je upálen."
-        },
-        {
-            "start": 320,
-            "end": 329,
-            "text": "HUS – PRAVDA, BIBLE, REFORMA!"
-        },
-        {
-            "start": 329,
-            "end": 348,
-            "text": "Petr Chelčický: víra bez násilí, odmítá válku a moc. Život podle Bible a Krista, láska k bližnímu, skromnost."
-        },
-        {
-            "start": 348,
-            "end": 364,
-            "text": "Síť víry pravé. Kritika církve i světské moci. Jeho myšlenky ovlivní Jednotu bratrskou."
-        },
-        {
-            "start": 364,
-            "end": 393,
-            "text": "STŘEDOVĚK – PÁTÉ AŽ PATNÁCTÉ STOLETÍ! Legenda – světec! Epos – hrdina! Kronika – dějiny! Kosmas – LATINA, PRÓZA! Dalimil – ČEŠTINA, VERŠ! Štítný – morálka a vzdělání! Hus – pravda, Bible, reforma! Chelčický – nenásilí! Mastičkář, Hradecký rukopis, Podkoní a žák, Jistebnický kancionál! STŘEDOVĚK! TEĎ UŽ TO ZNÁŠ!"
-        }
-    ]
+  "title": "Středověk",
+  "version": 2,
+  "sync": "line",
+  "lines": [
+    {
+      "start": 3,
+      "end": 9,
+      "text": "Středověk – páté až patnácté století."
+    },
+    {
+      "start": 9,
+      "end": 13,
+      "text": "Od pádu Říma k novému věku letí."
+    },
+    {
+      "start": 13,
+      "end": 18,
+      "text": "Víra, církev, rytíři, hrady."
+    },
+    {
+      "start": 18,
+      "end": 24,
+      "text": "Literatura učí víře a zásadám."
+    },
+    {
+      "start": 24,
+      "end": 40,
+      "text": "Legenda – světec, víra, zázraky! Epos – hrdina, rytíř, čest a odvaha! Kronika – dějiny, rok za rokem! Kosmas a Dalimil – to musíš znát!"
+    },
+    {
+      "start": 40,
+      "end": 46,
+      "text": "Legenda vypráví o životě světce, o víře, skutcích, utrpení a smrti."
+    },
+    {
+      "start": 46,
+      "end": 50,
+      "text": "Má náboženský a výchovný význam."
+    },
+    {
+      "start": 50,
+      "end": 51,
+      "text": "Legenda o svatém Prokopu."
+    },
+    {
+      "start": 51,
+      "end": 53,
+      "text": "Legenda o svaté Kateřině."
+    },
+    {
+      "start": 53,
+      "end": 55,
+      "text": "Rytířský a hrdinský epos."
+    },
+    {
+      "start": 55,
+      "end": 59,
+      "text": "Píseň o Rolandovi – Francie."
+    },
+    {
+      "start": 59,
+      "end": 61,
+      "text": "Píseň o Nibelunzích – Německo."
+    },
+    {
+      "start": 61,
+      "end": 65,
+      "text": "Slovo o pluku Igorově – Rusko."
+    },
+    {
+      "start": 65,
+      "end": 72,
+      "text": "Kronika zapisuje dějiny, události v časové posloupnosti."
+    },
+    {
+      "start": 72,
+      "end": 73,
+      "text": "KOSMAS!"
+    },
+    {
+      "start": 73,
+      "end": 75,
+      "text": "Dvanácté století!"
+    },
+    {
+      "start": 75,
+      "end": 76,
+      "text": "Kronika česká!"
+    },
+    {
+      "start": 76,
+      "end": 78,
+      "text": "Latinsky, prózou!"
+    },
+    {
+      "start": 78,
+      "end": 85,
+      "text": "Kosmas, pražský děkan, od bájných počátků po svou dobu."
+    },
+    {
+      "start": 85,
+      "end": 88,
+      "text": "Kronika čtrnácté století!"
+    },
+    {
+      "start": 88,
+      "end": 94,
+      "text": "Česky a ve verších!"
+    },
+    {
+      "start": 94,
+      "end": 96,
+      "text": "Kosmas – latina, próza! Dalimil – čeština, verš!"
+    },
+    {
+      "start": 96,
+      "end": 107,
+      "text": "Legenda – světec! Epos – hrdina! Kronika – dějiny! Kosmas – latina, próza! Dalimil – čeština, verš!"
+    },
+    {
+      "start": 107,
+      "end": 111,
+      "text": "Mastičkář – nejstarší česká světská hra!"
+    },
+    {
+      "start": 111,
+      "end": 116,
+      "text": "Hradecký rukopis, Podkoní a žák – satirický spor."
+    },
+    {
+      "start": 116,
+      "end": 121,
+      "text": "Jistebnický kancionál – husitské písně! Mastičkář!"
+    },
+    {
+      "start": 121,
+      "end": 124,
+      "text": "Hradecký rukopis! Podkoní a žák!"
+    },
+    {
+      "start": 124,
+      "end": 130,
+      "text": "Jistebnický kancionál! Husovi předchůdci: Konrád Waldhauser, Jan Milíč z Kroměříže."
+    },
+    {
+      "start": 130,
+      "end": 135,
+      "text": "Matěj z Janova, Tomáš Štítný ze Štítného."
+    },
+    {
+      "start": 135,
+      "end": 153,
+      "text": "Kritizují mravní úpadek církve a volají po návratu ke křesťanství. Štítný píše česky, zdůrazňuje morálku."
+    },
+    {
+      "start": 153,
+      "end": 156,
+      "text": "Mistr Jan Hus – kolem roku 1370, z Husince, působí v Praze."
+    },
+    {
+      "start": 156,
+      "end": 158,
+      "text": "Kazatel z Betlémské kaple."
+    },
+    {
+      "start": 158,
+      "end": 179,
+      "text": "Kritizuje úpadek církve, prodej odpustků a zneužívání moci. Chce pravdu, Bibli a reformu církve."
+    },
+    {
+      "start": 179,
+      "end": 184,
+      "text": "O církvi – De ecclesia. Výklad víry, Desatera a Páteře."
+    },
+    {
+      "start": 184,
+      "end": 190,
+      "text": "Kostnice, 1415, Jan Hus je upálen."
+    },
+    {
+      "start": 190,
+      "end": 199,
+      "text": "HUS – PRAVDA, BIBLE, REFORMA!"
+    },
+    {
+      "start": 199,
+      "end": 206,
+      "text": "Petr Chelčický: víra bez násilí, odmítá válku a moc."
+    },
+    {
+      "start": 206,
+      "end": 211,
+      "text": "Život podle Bible a Krista, láska k bližnímu."
+    },
+    {
+      "start": 211,
+      "end": 217,
+      "text": "Skromnost. Síť víry pravé, kritika církve i světské moci."
+    },
+    {
+      "start": 217,
+      "end": 221,
+      "text": "Jeho myšlenky ovlivní Jednotu bratrskou."
+    },
+    {
+      "start": 221,
+      "end": 225,
+      "text": "Středověk – páté až patnácté století."
+    },
+    {
+      "start": 225,
+      "end": 228,
+      "text": "Legenda – světec! Epos – hrdina! Kronika – dějiny! Kosmas – latina, próza! Dalimil – čeština, verš! Štítný – morálka a vzdělání!"
+    },
+    {
+      "start": 228,
+      "end": 231,
+      "text": "Hus – pravda, Bible, reforma! Chelčický – nenásilí!"
+    },
+    {
+      "start": 231,
+      "end": 235,
+      "text": "Mastičkář, Hradecký rukopis, Podkoní a žák, Jistebnický kancionál!"
+    },
+    {
+      "start": 235,
+      "end": 239,
+      "text": "Středověk, teď už to znáš."
+    }
+  ]
 }
