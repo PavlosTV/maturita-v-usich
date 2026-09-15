@@ -1,0 +1,19 @@
+[
+  {
+    "id": "starovek",
+    "title": "Starověk"
+  },
+  {
+    "id": "stredovek",
+    "title": "Středověk",
+    "content": "stredovek"
+  },
+  {
+    "id": "renesance",
+    "title": "Renesance"
+  },
+  {
+    "id": "baroko",
+    "title": "Baroko"
+  }
+]
