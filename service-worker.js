@@ -1,46 +1,47 @@
-const CACHE_NAME = "maturita-v-usich-v3";
+const CACHE_NAME = "maturita-v-usich-v2";
 
 const FILES_TO_CACHE = [
     "./",
     "./index.html",
     "./style.css",
+    "./manifest.json",
     "./stredovek.mp3"
 ];
 
+
 self.addEventListener("install", event => {
+
     event.waitUntil(
+
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(FILES_TO_CACHE))
-            .then(() => self.skipWaiting())
+            .then(cache => {
+
+                return cache.addAll(
+                    FILES_TO_CACHE
+                );
+
+            })
+
     );
+
 });
 
-self.addEventListener("activate", event => {
-    event.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all(
-                keys
-                    .filter(key => key !== CACHE_NAME)
-                    .map(key => caches.delete(key))
-            );
-        }).then(() => self.clients.claim())
-    );
-});
 
 self.addEventListener("fetch", event => {
+
     event.respondWith(
-        fetch(event.request)
+
+        caches.match(event.request)
             .then(response => {
-                const responseClone = response.clone();
 
-                caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, responseClone);
-                });
+                if (response) {
+                    return response;
+                }
 
-                return response;
+                return fetch(event.request);
+
             })
-            .catch(() => {
-                return caches.match(event.request);
-            })
+
     );
+
 });
