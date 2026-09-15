@@ -1,469 +1,980 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#111827">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color"
+          content="#111827">
+
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black">
+
+    <link rel="manifest"
+          href="manifest.json">
+
+    <link rel="stylesheet"
+          href="style.css">
 
     <title>Maturita v uších</title>
+
 </head>
+
 
 <body>
 
+
 <header class="app-header">
+
     <h1>Maturita v uších</h1>
-    <p>Uč se maturitu poslechem.</p>
+
+    <p>
+        Uč se maturitu poslechem.
+    </p>
+
 </header>
+
 
 
 <main>
 
-    <section class="category">
-        <h2>Český jazyk – literatura</h2>
 
-        <div class="song-card">
+<section class="category">
 
-            <div class="song-cover">
+
+    <h2>
+        Český jazyk – literatura
+    </h2>
+
+
+
+    <article class="song-card">
+
+
+        <div class="cover">
+
+            <span>
+                ČESKÝ JAZYK
+            </span>
+
+            <strong>
                 STŘEDOVĚK
+            </strong>
+
+        </div>
+
+
+
+        <h3>
+            Středověk
+        </h3>
+
+
+        <p class="description">
+
+            Hus, Kosmas, legendy,
+            kroniky a středověká literatura.
+
+        </p>
+
+
+
+        <audio
+            id="audio"
+            controls
+            preload="metadata">
+
+            <source
+                src="stredovek.mp3"
+                type="audio/mpeg">
+
+            Tvůj prohlížeč nepodporuje
+            přehrávání zvuku.
+
+        </audio>
+
+
+
+        <div class="progress-wrapper">
+
+            <div
+                id="progress"
+                class="progress">
+
+                <div
+                    id="progress-bar"
+                    class="progress-bar">
+                </div>
+
             </div>
 
-            <h3>Středověk</h3>
 
-            <p class="description">
-                Hus, Kosmas, legendy, kroniky a středověká literatura.
-            </p>
+            <div class="time">
 
-            <audio id="audio" controls preload="metadata">
-                <source src="stredovek.mp3" type="audio/mpeg">
-                Tvůj prohlížeč nepodporuje přehrávání zvuku.
-            </audio>
+                <span id="current-time">
+                    0:00
+                </span>
 
+                <span id="duration">
+                    0:00
+                </span>
 
-            <div class="progress-info">
-                <span id="current-time">0:00</span>
-                <span id="duration">0:00</span>
             </div>
 
-
-            <button id="text-button" onclick="toggleText()">
-                Zobrazit synchronizovaný text
-            </button>
+        </div>
 
 
-            <div id="lyrics-container" class="lyrics-container hidden">
 
-                <div id="lyrics">
+        <button
+            id="text-button"
+            class="text-button">
 
-                    <div class="lyric-line"
-                         data-start="0"
-                         data-end="25">
-                        <strong>[INTRO]</strong><br>
-                        Středověk – páté až patnácté století,<br>
+            Zobrazit text
+
+        </button>
+
+
+
+        <div
+            id="lyrics-container"
+            class="lyrics-container hidden">
+
+
+            <div
+                id="lyrics"
+                class="lyrics">
+
+
+                <div
+                    class="lyric-line"
+                    data-start="0"
+                    data-end="25">
+
+                    <span class="section-label">
+                        INTRO
+                    </span>
+
+                    <strong>
+                        Středověk – páté až patnácté století
+                    </strong>
+
+                    <p>
                         od pádu Říma k novému věku letí.<br>
                         Víra, církev, rytíři, hrady,<br>
                         literatura učí víře a zásadám.
-                    </div>
+                    </p>
+
+                </div>
 
 
-                    <div class="lyric-line"
-                         data-start="25"
-                         data-end="48">
-                        <strong>LEGENDA – světec, víra, zázraky!</strong><br>
+
+                <div
+                    class="lyric-line"
+                    data-start="25"
+                    data-end="48">
+
+                    <span class="section-label">
+                        HLAVNÍ ŽÁNRY
+                    </span>
+
+                    <strong>
+                        LEGENDA – světec, víra, zázraky!
+                    </strong>
+
+                    <p>
                         EPOS – hrdina, rytíř, čest a odvaha!<br>
                         KRONIKA – dějiny, rok za rokem!<br>
                         Kosmas a Dalimil – to musíš znát!
-                    </div>
+                    </p>
+
+                </div>
 
 
-                    <div class="lyric-line"
-                         data-start="48"
-                         data-end="73">
-                        Legenda vypráví o životě světce,<br>
+
+                <div
+                    class="lyric-line"
+                    data-start="48"
+                    data-end="73">
+
+                    <strong>
+                        Legenda vypráví o životě světce
+                    </strong>
+
+                    <p>
                         o víře, skutcích, utrpení a smrti.<br>
-                        Má náboženský a výchovný význam:<br>
-                        Legenda o svatém Prokopu,<br>
-                        Legenda o svaté Kateřině.
-                    </div>
+                        Má náboženský a výchovný význam.
+                    </p>
 
-
-                    <div class="lyric-line"
-                         data-start="73"
-                         data-end="94">
-                        Rytířský a hrdinský epos:<br>
-                        Píseň o Rolandovi – Francie,<br>
-                        Píseň o Nibelunzích – Německo,<br>
-                        Slovo o pluku Igorově – Rusko.
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="94"
-                         data-end="108">
-                        Kronika zapisuje dějiny,<br>
-                        události v časové posloupnosti.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="108"
-                         data-end="132">
-                        <strong>KOSMAS – dvanácté století,</strong><br>
-                        Kronika česká, latinsky, prózou.<br>
-                        Kosmas, pražský děkan,<br>
-                        od bájných počátků po svou dobu.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="132"
-                         data-end="146">
-                        <strong>DALIMILOVA KRONIKA – čtrnácté století,</strong><br>
-                        česky a ve verších, autor neznámý.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="146"
-                         data-end="158">
-                        <strong>KOSMAS – LATINA, PRÓZA!</strong><br>
-                        <strong>DALIMIL – ČEŠTINA, VERŠ!</strong>
-                    </div>
-
-
-                    <div class="lyric-line chorus"
-                         data-start="158"
-                         data-end="177">
-                        <strong>Legenda – světec!</strong><br>
-                        <strong>Epos – hrdina!</strong><br>
-                        <strong>Kronika – dějiny!</strong><br>
-                        Kosmas – latina, próza!<br>
-                        Dalimil – čeština, verš!
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="177"
-                         data-end="200">
-                        <strong>[ČESKÁ TVORBA]</strong><br>
-                        Mastičkář – nejstarší česká světská hra.<br>
-                        Hradecký rukopis.<br>
-                        Podkoní a žák – satirický spor.<br>
-                        Jistebnický kancionál – husitské písně.
-                    </div>
-
-
-                    <div class="lyric-line chorus"
-                         data-start="200"
-                         data-end="211">
-                        <strong>
-                            Mastičkář! Hradecký rukopis!<br>
-                            Podkoní a žák! Jistebnický kancionál!
-                        </strong>
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="211"
-                         data-end="230">
-                        <strong>[HUSOVI PŘEDCHŮDCI]</strong><br>
-                        Konrád Waldhauser,<br>
-                        Jan Milíč z Kroměříže,<br>
-                        Matěj z Janova,<br>
-                        Tomáš Štítný ze Štítného.
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="230"
-                         data-end="247">
-                        Kritizují mravní úpadek církve<br>
-                        a volají po návratu ke křesťanství.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="247"
-                         data-end="263">
-                        Štítný píše česky,<br>
-                        zdůrazňuje morálku, vzdělání a správný život.<br>
-                        Knížky šestery o obecných věcech křesťanských.
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="263"
-                         data-end="280">
-                        <strong>[JAN HUS]</strong><br>
-                        Mistr Jan Hus – kolem roku 1370,<br>
-                        z Husince, působí v Praze.<br>
-                        Kazatel z Betlémské kaple.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="280"
-                         data-end="299">
-                        Kritizuje úpadek církve,<br>
-                        prodej odpustků a zneužívání moci.<br>
-                        Chce pravdu, Bibli a reformu církve.
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="299"
-                         data-end="309">
-                        <strong>O církvi – De ecclesia.</strong><br>
-                        Výklad viery, Desatera a Páteře.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="309"
-                         data-end="320">
-                        <strong>Kostnice, 1415, Jan Hus je upálen.</strong>
-                    </div>
-
-
-                    <div class="lyric-line chorus"
-                         data-start="320"
-                         data-end="329">
-                        <strong>HUS – PRAVDA, BIBLE, REFORMA!</strong>
-                    </div>
-
-
-                    <div class="lyric-line"
-                         data-start="329"
-                         data-end="348">
-                        <strong>[CHELČICKÝ]</strong><br>
-                        Petr Chelčický: víra bez násilí,<br>
-                        odmítá válku a moc.<br>
-                        Život podle Bible a Krista,<br>
-                        láska k bližnímu, skromnost.
-                    </div>
-
-
-                    <div class="lyric-line important"
-                         data-start="348"
-                         data-end="364">
-                        <strong>Síť víry pravé.</strong><br>
-                        Kritika církve i světské moci.<br>
-                        Jeho myšlenky ovlivní Jednotu bratrskou.
-                    </div>
-
-
-                    <div class="lyric-line final"
-                         data-start="364"
-                         data-end="393">
-                        <strong>
-                            STŘEDOVĚK – PÁTÉ AŽ PATNÁCTÉ STOLETÍ!<br><br>
-
-                            Legenda – světec!<br>
-                            Epos – hrdina!<br>
-                            Kronika – dějiny!<br><br>
-
-                            Kosmas – LATINA, PRÓZA!<br>
-                            Dalimil – ČEŠTINA, VERŠ!<br><br>
-
-                            Štítný – morálka a vzdělání!<br>
-                            Hus – pravda, Bible, reforma!<br>
-                            Chelčický – nenásilí!<br><br>
-
-                            Mastičkář, Hradecký rukopis,<br>
-                            Podkoní a žák, Jistebnický kancionál!<br><br>
-
-                            STŘEDOVĚK! TEĎ UŽ TO ZNÁŠ!
-                        </strong>
+                    <div class="examples">
+                        Legenda o svatém Prokopu<br>
+                        Legenda o svaté Kateřině
                     </div>
 
                 </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="73"
+                    data-end="94">
+
+                    <strong>
+                        Rytířský a hrdinský epos
+                    </strong>
+
+                    <p>
+                        Píseň o Rolandovi – Francie<br>
+                        Píseň o Nibelunzích – Německo<br>
+                        Slovo o pluku Igorově – Rusko
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="94"
+                    data-end="108">
+
+                    <span class="section-label">
+                        KRONIKA
+                    </span>
+
+                    <strong>
+                        Kronika zapisuje dějiny
+                    </strong>
+
+                    <p>
+                        události v časové posloupnosti.
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="108"
+                    data-end="132">
+
+                    <span class="section-label">
+                        KOSMAS
+                    </span>
+
+                    <strong>
+                        12. století
+                    </strong>
+
+                    <p>
+                        Kronika česká<br>
+                        LATINA<br>
+                        PRÓZA<br>
+                        Kosmas – pražský děkan
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="132"
+                    data-end="146">
+
+                    <span class="section-label">
+                        DALIMIL
+                    </span>
+
+                    <strong>
+                        14. století
+                    </strong>
+
+                    <p>
+                        česky<br>
+                        VERŠ<br>
+                        autor neznámý
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line memory"
+                    data-start="146"
+                    data-end="158">
+
+                    <strong>
+                        KOSMAS
+                    </strong>
+
+                    <p>
+                        LATINA • PRÓZA
+                    </p>
+
+                    <strong>
+                        DALIMIL
+                    </strong>
+
+                    <p>
+                        ČEŠTINA • VERŠ
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line chorus"
+                    data-start="158"
+                    data-end="177">
+
+                    <strong>
+                        Legenda – světec!
+                    </strong>
+
+                    <strong>
+                        Epos – hrdina!
+                    </strong>
+
+                    <strong>
+                        Kronika – dějiny!
+                    </strong>
+
+                    <strong>
+                        Kosmas – latina, próza!
+                    </strong>
+
+                    <strong>
+                        Dalimil – čeština, verš!
+                    </strong>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="177"
+                    data-end="200">
+
+                    <span class="section-label">
+                        ČESKÁ TVORBA
+                    </span>
+
+                    <strong>
+                        Mastičkář
+                    </strong>
+
+                    <p>
+                        nejstarší česká světská hra
+                    </p>
+
+                    <strong>
+                        Hradecký rukopis
+                    </strong>
+
+                    <p>
+                        Podkoní a žák – satirický spor
+                    </p>
+
+                    <strong>
+                        Jistebnický kancionál
+                    </strong>
+
+                    <p>
+                        husitské písně
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line memory"
+                    data-start="200"
+                    data-end="211">
+
+                    <strong>
+                        Mastičkář!
+                    </strong>
+
+                    <strong>
+                        Hradecký rukopis!
+                    </strong>
+
+                    <strong>
+                        Podkoní a žák!
+                    </strong>
+
+                    <strong>
+                        Jistebnický kancionál!
+                    </strong>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="211"
+                    data-end="230">
+
+                    <span class="section-label">
+                        HUSOVI PŘEDCHŮDCI
+                    </span>
+
+                    <p>
+                        Konrád Waldhauser<br>
+                        Jan Milíč z Kroměříže<br>
+                        Matěj z Janova<br>
+                        Tomáš Štítný ze Štítného
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="230"
+                    data-end="247">
+
+                    <strong>
+                        Kritizují mravní úpadek církve
+                    </strong>
+
+                    <p>
+                        a volají po návratu ke křesťanství.
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="247"
+                    data-end="263">
+
+                    <strong>
+                        Tomáš Štítný ze Štítného
+                    </strong>
+
+                    <p>
+                        píše česky<br>
+                        morálka<br>
+                        vzdělání<br>
+                        správný život
+                    </p>
+
+                    <div class="examples">
+                        Knížky šestery o obecných
+                        věcech křesťanských
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="263"
+                    data-end="280">
+
+                    <span class="section-label">
+                        MISTR JAN HUS
+                    </span>
+
+                    <strong>
+                        kolem roku 1370
+                    </strong>
+
+                    <p>
+                        Husinec → Praha<br>
+                        kazatel Betlémské kaple
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="280"
+                    data-end="299">
+
+                    <strong>
+                        Hus kritizuje
+                    </strong>
+
+                    <p>
+                        úpadek církve<br>
+                        prodej odpustků<br>
+                        zneužívání moci
+                    </p>
+
+                    <div class="memory">
+                        PRAVDA • BIBLE • REFORMA
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="299"
+                    data-end="309">
+
+                    <strong>
+                        O církvi – De ecclesia
+                    </strong>
+
+                    <p>
+                        Výklad víry, Desatera a Páteře.
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="309"
+                    data-end="320">
+
+                    <strong>
+                        KOSTNICE – 1415
+                    </strong>
+
+                    <p>
+                        Jan Hus je upálen.
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line chorus"
+                    data-start="320"
+                    data-end="329">
+
+                    <strong>
+                        HUS – PRAVDA, BIBLE, REFORMA!
+                    </strong>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line"
+                    data-start="329"
+                    data-end="348">
+
+                    <span class="section-label">
+                        PETR CHELČICKÝ
+                    </span>
+
+                    <strong>
+                        Víra bez násilí
+                    </strong>
+
+                    <p>
+                        odmítá válku a moc<br>
+                        život podle Bible a Krista<br>
+                        láska k bližnímu<br>
+                        skromnost
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line important"
+                    data-start="348"
+                    data-end="364">
+
+                    <strong>
+                        Síť víry pravé
+                    </strong>
+
+                    <p>
+                        kritika církve i světské moci<br>
+                        ovlivnil Jednotu bratrskou
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="lyric-line final"
+                    data-start="364"
+                    data-end="393">
+
+                    <span class="section-label">
+                        OPAKOVÁNÍ
+                    </span>
+
+                    <strong>
+                        STŘEDOVĚK
+                    </strong>
+
+                    <p>
+                        5.–15. století
+                    </p>
+
+                    <strong>
+                        LEGENDA = SVĚTEC
+                    </strong>
+
+                    <strong>
+                        EPOS = HRDINA
+                    </strong>
+
+                    <strong>
+                        KRONIKA = DĚJINY
+                    </strong>
+
+                    <strong>
+                        KOSMAS = LATINA • PRÓZA
+                    </strong>
+
+                    <strong>
+                        DALIMIL = ČEŠTINA • VERŠ
+                    </strong>
+
+                    <strong>
+                        ŠTÍTNÝ = MORÁLKA • VZDĚLÁNÍ
+                    </strong>
+
+                    <strong>
+                        HUS = PRAVDA • BIBLE • REFORMA
+                    </strong>
+
+                    <strong>
+                        CHELČICKÝ = NENÁSILÍ
+                    </strong>
+
+                </div>
+
+
             </div>
 
         </div>
-    </section>
 
 
-    <section class="category">
+    </article>
 
-        <h2>Maturitní četba</h2>
 
-        <div class="book-card">
-            <h3>Proměna</h3>
-            <p>Franz Kafka</p>
-        </div>
+</section>
 
-        <div class="book-card">
-            <h3>Smuténka</h3>
-            <p>Jan Skácel</p>
-        </div>
 
-        <div class="book-card">
-            <h3>Ostře sledované vlaky</h3>
-            <p>Bohumil Hrabal</p>
-        </div>
 
-    </section>
+<section class="category">
+
+    <h2>
+        Maturitní četba
+    </h2>
+
+
+    <div class="book-card">
+        <h3>Proměna</h3>
+        <p>Franz Kafka</p>
+    </div>
+
+
+    <div class="book-card">
+        <h3>Smuténka</h3>
+        <p>Jan Skácel</p>
+    </div>
+
+
+    <div class="book-card">
+        <h3>Ostře sledované vlaky</h3>
+        <p>Bohumil Hrabal</p>
+    </div>
+
+</section>
+
 
 </main>
 
 
+
 <footer>
-    <p>Maturita v uších</p>
+
+    <p>
+        Maturita v uších
+    </p>
+
 </footer>
 
 
+
 <script>
 
-const audio = document.getElementById("audio");
 
-const currentTimeDisplay =
-    document.getElementById("current-time");
+const audio =
+    document.getElementById("audio");
 
-const durationDisplay =
-    document.getElementById("duration");
 
 const lyricsContainer =
-    document.getElementById("lyrics-container");
+    document.getElementById(
+        "lyrics-container"
+    );
+
 
 const lines =
-    Array.from(document.querySelectorAll(".lyric-line"));
+    Array.from(
+        document.querySelectorAll(
+            ".lyric-line"
+        )
+    );
 
-let activeLine = -1;
+
+const currentTime =
+    document.getElementById(
+        "current-time"
+    );
 
 
-// Převod sekund na MM:SS
+const duration =
+    document.getElementById(
+        "duration"
+    );
+
+
+const progressBar =
+    document.getElementById(
+        "progress-bar"
+    );
+
+
+const textButton =
+    document.getElementById(
+        "text-button"
+    );
+
+
+let activeIndex = -1;
+
+
+
 function formatTime(seconds) {
 
-    if (isNaN(seconds)) {
+    if (!Number.isFinite(seconds)) {
         return "0:00";
     }
 
-    const minutes = Math.floor(seconds / 60);
+    const minutes =
+        Math.floor(seconds / 60);
 
-    const secs = Math.floor(seconds % 60)
+    const secondsPart =
+        Math.floor(seconds % 60)
         .toString()
         .padStart(2, "0");
 
-    return `${minutes}:${secs}`;
-}
-
-
-// Zobrazení délky písně
-audio.addEventListener("loadedmetadata", () => {
-
-    durationDisplay.textContent =
-        formatTime(audio.duration);
-
-});
-
-
-// Hlavní synchronizace textu
-audio.addEventListener("timeupdate", () => {
-
-    const time = audio.currentTime;
-
-    currentTimeDisplay.textContent =
-        formatTime(time);
-
-
-    let newActiveLine = -1;
-
-
-    for (let i = 0; i < lines.length; i++) {
-
-        const start =
-            parseFloat(lines[i].dataset.start);
-
-        const end =
-            parseFloat(lines[i].dataset.end);
-
-
-        if (time >= start && time < end) {
-
-            newActiveLine = i;
-
-            break;
-        }
-    }
-
-
-    if (newActiveLine !== activeLine) {
-
-        activeLine = newActiveLine;
-
-
-        lines.forEach(line => {
-            line.classList.remove("active");
-        });
-
-
-        if (activeLine >= 0) {
-
-            const active =
-                lines[activeLine];
-
-            active.classList.add("active");
-
-
-            active.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        }
-    }
-
-});
-
-
-// Tlačítko pro text
-function toggleText() {
-
-    const container =
-        document.getElementById("lyrics-container");
-
-    const button =
-        document.getElementById("text-button");
-
-
-    if (container.classList.contains("hidden")) {
-
-        container.classList.remove("hidden");
-
-        button.textContent =
-            "Skrýt synchronizovaný text";
-
-    } else {
-
-        container.classList.add("hidden");
-
-        button.textContent =
-            "Zobrazit synchronizovaný text";
-    }
+    return minutes + ":" + secondsPart;
 
 }
 
-</script>
 
 
-<script>
+audio.addEventListener(
+    "loadedmetadata",
+    () => {
 
-// Offline režim
+        duration.textContent =
+            formatTime(audio.duration);
+
+    }
+);
+
+
+
+audio.addEventListener(
+    "timeupdate",
+    () => {
+
+        const time =
+            audio.currentTime;
+
+
+        currentTime.textContent =
+            formatTime(time);
+
+
+        if (audio.duration) {
+
+            const percentage =
+                (time / audio.duration) * 100;
+
+            progressBar.style.width =
+                percentage + "%";
+
+        }
+
+
+        let newIndex = -1;
+
+
+        for (
+            let i = 0;
+            i < lines.length;
+            i++
+        ) {
+
+            const start =
+                Number(lines[i].dataset.start);
+
+            const end =
+                Number(lines[i].dataset.end);
+
+
+            if (
+                time >= start &&
+                time < end
+            ) {
+
+                newIndex = i;
+
+                break;
+
+            }
+
+        }
+
+
+        if (
+            newIndex !== activeIndex
+        ) {
+
+            activeIndex =
+                newIndex;
+
+
+            lines.forEach(
+                line =>
+                    line.classList.remove(
+                        "active"
+                    )
+            );
+
+
+            if (activeIndex >= 0) {
+
+                const active =
+                    lines[activeIndex];
+
+
+                active.classList.add(
+                    "active"
+                );
+
+
+                active.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+        }
+
+    }
+);
+
+
+
+textButton.addEventListener(
+    "click",
+    () => {
+
+        const hidden =
+            lyricsContainer.classList
+            .contains("hidden");
+
+
+        if (hidden) {
+
+            lyricsContainer.classList
+                .remove("hidden");
+
+            textButton.textContent =
+                "Skrýt text";
+
+        } else {
+
+            lyricsContainer.classList
+                .add("hidden");
+
+            textButton.textContent =
+                "Zobrazit text";
+
+        }
+
+    }
+);
+
+
+
+progressBar.parentElement
+    .addEventListener(
+        "click",
+        event => {
+
+            if (!audio.duration) {
+                return;
+            }
+
+
+            const rect =
+                progressBar.parentElement
+                .getBoundingClientRect();
+
+
+            const percentage =
+                (event.clientX - rect.left)
+                / rect.width;
+
+
+            audio.currentTime =
+                percentage * audio.duration;
+
+        }
+    );
+
+
+
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-        navigator.serviceWorker.register(
-            "./service-worker.js"
-        );
+            navigator.serviceWorker.register(
+                "./service-worker.js"
+            );
 
-    });
+        }
+    );
 
 }
+
 
 </script>
 
