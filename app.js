@@ -21,24 +21,15 @@ const screens = {
 // PRVKY STRÁNKY
 // ========================================
 
-const pageTitle =
-    document.getElementById("pageTitle");
-
-const backButton =
-    document.getElementById("backButton");
-
-const periodsContainer =
-    document.getElementById("periodsContainer");
-
-const songsContainer =
-    document.getElementById("songs");
-
-const periodDescription =
-    document.getElementById("periodDescription");
+const pageTitle = document.getElementById("pageTitle");
+const backButton = document.getElementById("backButton");
+const periodsContainer = document.getElementById("periodsContainer");
+const songsContainer = document.getElementById("songs");
+const periodDescription = document.getElementById("periodDescription");
 
 
 // ========================================
-// STAV APLIKACE
+// STAV
 // ========================================
 
 let currentScreen = "home";
@@ -52,51 +43,33 @@ let currentPeriod = null;
 function showScreen(screenName, title) {
 
     Object.values(screens).forEach(screen => {
-
         if (screen) {
             screen.classList.add("hidden");
         }
-
     });
 
-
     if (screens[screenName]) {
-
-        screens[screenName].classList.remove(
-            "hidden"
-        );
-
+        screens[screenName].classList.remove("hidden");
     }
-
 
     if (pageTitle) {
         pageTitle.textContent = title;
     }
 
-
     currentScreen = screenName;
 
-
     if (backButton) {
-
         if (screenName === "home") {
-
             backButton.classList.add("hidden");
-
         } else {
-
             backButton.classList.remove("hidden");
-
         }
-
     }
-
 
     window.scrollTo({
         top: 0,
-        behavior: "instant"
+        behavior: "auto"
     });
-
 }
 
 
@@ -104,63 +77,52 @@ function showScreen(screenName, title) {
 // HLAVNÍ MENU
 // ========================================
 
-document
-    .querySelectorAll("[data-section]")
-    .forEach(button => {
+document.querySelectorAll("[data-section]").forEach(button => {
 
-        button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
 
-            const section =
-                button.dataset.section;
+        const section = this.dataset.section;
 
+        if (section === "historie") {
 
-            // LITERÁRNÍ HISTORICKÝ KONTEXT
+            showScreen(
+                "historie",
+                "Literární historický kontext"
+            );
 
-            if (section === "historie") {
+            loadPeriods();
+        }
 
-                showScreen(
-                    "historie",
-                    "Literární historický kontext"
-                );
+        else if (section === "cetba") {
 
-                loadPeriods();
+            showScreen(
+                "cetba",
+                "Maturitní četba"
+            );
+        }
 
-            }
+        else if (section === "ustni") {
 
-
-            // MATURITNÍ ČETBA
-
-            else if (section === "cetba") {
-
-                showScreen(
-                    "cetba",
-                    "Maturitní četba"
-                );
-
-            }
-
-
-            // ÚSTNÍ MATURITA
-
-            else if (section === "ustni") {
-
-                showScreen(
-                    "ustni",
-                    "Příprava k ústní maturitě"
-                );
-
-            }
-
-        });
+            showScreen(
+                "ustni",
+                "Příprava k ústní maturitě"
+            );
+        }
 
     });
 
+});
+
 
 // ========================================
-// NAČTENÍ LITERÁRNÍCH OBDOBÍ
+// NAČTENÍ OBDOBÍ
 // ========================================
 
 async function loadPeriods() {
+
+    if (!periodsContainer) {
+        return;
+    }
 
     periodsContainer.innerHTML = `
         <div class="loading">
@@ -168,86 +130,62 @@ async function loadPeriods() {
         </div>
     `;
 
-
     try {
 
         const response =
             await fetch("./data/periods.json");
 
-
         if (!response.ok) {
-
-            throw new Error(
-                "Nepodařilo se načíst periods.json"
-            );
-
+            throw new Error("Nelze načíst periods.json");
         }
-
 
         const periods =
             await response.json();
 
-
         periodsContainer.innerHTML = "";
-
 
         periods.forEach(period => {
 
             const button =
                 document.createElement("button");
 
+            button.className = "menu-card";
 
-            button.className =
-                "menu-card";
-
+            button.type = "button";
 
             button.innerHTML = `
-
                 <div class="menu-icon">
                     L
                 </div>
 
                 <div>
-
-                    <h2>
-                        ${period.title}
-                    </h2>
+                    <h2>${period.title}</h2>
 
                     <p>
                         Otevřít literární období
                     </p>
-
                 </div>
 
                 <span class="arrow">
                     ›
                 </span>
-
             `;
 
+            button.addEventListener("click", () => {
+                openPeriod(period);
+            });
 
-            button.addEventListener(
-                "click",
-                () => openPeriod(period)
-            );
-
-
-            periodsContainer.appendChild(
-                button
-            );
+            periodsContainer.appendChild(button);
 
         });
 
     }
 
-
     catch (error) {
 
         console.error(error);
 
-
         periodsContainer.innerHTML = `
-
             <div class="error-card">
 
                 <h2>
@@ -256,17 +194,12 @@ async function loadPeriods() {
 
                 <p>
                     Zkontroluj soubor
-                    <strong>
-                        data/periods.json
-                    </strong>.
+                    <strong>data/periods.json</strong>.
                 </p>
 
             </div>
-
         `;
-
     }
-
 }
 
 
@@ -278,23 +211,22 @@ async function openPeriod(period) {
 
     currentPeriod = period;
 
-
     showScreen(
         "period",
         period.title
     );
 
+    if (periodDescription) {
+        periodDescription.innerHTML = "";
+    }
 
-    periodDescription.innerHTML = "";
-
-
-    songsContainer.innerHTML = `
-
-        <div class="loading">
-            Načítám obsah...
-        </div>
-
-    `;
+    if (songsContainer) {
+        songsContainer.innerHTML = `
+            <div class="loading">
+                Načítám obsah...
+            </div>
+        `;
+    }
 
 
     // STŘEDOVĚK
@@ -304,14 +236,12 @@ async function openPeriod(period) {
         await loadStredovek();
 
         return;
-
     }
 
 
     // OSTATNÍ OBDOBÍ
 
     songsContainer.innerHTML = `
-
         <div class="placeholder-card">
 
             <h2>
@@ -324,9 +254,7 @@ async function openPeriod(period) {
             </p>
 
         </div>
-
     `;
-
 }
 
 
@@ -340,7 +268,6 @@ async function loadStredovek() {
 
         <div class="song-card">
 
-
             <div class="cover">
 
                 <span>
@@ -353,20 +280,15 @@ async function loadStredovek() {
 
             </div>
 
-
             <h2>
                 Středověk
             </h2>
 
-
             <p class="description">
-
                 Hus, Kosmas, legendy,
                 kroniky a středověká
                 literatura.
-
             </p>
-
 
             <audio
                 id="stredovekAudio"
@@ -382,13 +304,11 @@ async function loadStredovek() {
 
             </audio>
 
-
             <div class="lyrics-container">
 
                 <h3>
                     Text písně
                 </h3>
-
 
                 <div id="lyrics">
 
@@ -400,19 +320,15 @@ async function loadStredovek() {
 
             </div>
 
-
         </div>
-
     `;
 
-
     await loadLyrics();
-
 }
 
 
 // ========================================
-// NAČTENÍ SYNCHRONIZOVANÉHO TEXTU
+// TEXT + SYNCHRONIZACE
 // ========================================
 
 async function loadLyrics() {
@@ -433,7 +349,9 @@ async function loadLyrics() {
             await fetch("./data/stredovek.json");
 
         if (!response.ok) {
-            throw new Error("Nelze načíst stredovek.json");
+            throw new Error(
+                "Nelze načíst stredovek.json"
+            );
         }
 
         const data =
@@ -441,22 +359,32 @@ async function loadLyrics() {
 
         lyricsContainer.innerHTML = "";
 
-        // Vytvoření řádků
+
+        // ========================================
+        // VYTVOŘENÍ ŘÁDKŮ
+        // ========================================
+
         data.lines.forEach(line => {
 
             const element =
                 document.createElement("div");
 
-            element.className = "lyric-line";
+            element.className =
+                "lyric-line";
 
-            element.dataset.start = line.start;
-            element.dataset.end = line.end;
+            element.dataset.start =
+                line.start;
 
-            element.textContent = line.text;
+            element.dataset.end =
+                line.end;
+
+            element.textContent =
+                line.text;
 
             lyricsContainer.appendChild(element);
 
         });
+
 
         const lines =
             Array.from(
@@ -465,10 +393,13 @@ async function loadLyrics() {
                 )
             );
 
+
         let previousIndex = -1;
 
 
+        // ========================================
         // SYNCHRONIZACE
+        // ========================================
 
         audio.addEventListener(
             "timeupdate",
@@ -480,7 +411,6 @@ async function loadLyrics() {
                 let activeIndex = -1;
 
 
-                // Najdeme aktuální řádek
                 for (
                     let i = 0;
                     i < lines.length;
@@ -500,9 +430,7 @@ async function loadLyrics() {
 
                         activeIndex = i;
                         break;
-
                     }
-
                 }
 
 
@@ -511,7 +439,8 @@ async function loadLyrics() {
                 }
 
 
-                // Řádek se nezměnil
+                // Stejný řádek – nic nedělej
+
                 if (
                     activeIndex === previousIndex
                 ) {
@@ -519,46 +448,75 @@ async function loadLyrics() {
                 }
 
 
-                // Odstraníme staré zvýraznění
+                // ========================================
+                // ZVÝRAZNĚNÍ
+                // ========================================
+
                 lines.forEach(line => {
                     line.classList.remove("active");
                 });
 
-
-                // Zvýrazníme aktuální řádek
                 lines[activeIndex].classList.add("active");
 
 
+                // ========================================
                 // POSOUVÁNÍ TEXTU
-                // První 3 řádky zůstávají nahoře
+                // ========================================
 
-                if (activeIndex >= 3) {
+                /*
+                    DŮLEŽITÉ:
 
-                    const activeLine =
-                        lines[activeIndex];
+                    Text se při spuštění neposouvá.
 
-                    const container =
-                        lyricsContainer;
+                    První 3 řádky zůstanou nahoře.
 
+                    Potom se text posune pouze tehdy,
+                    když aktuální řádek začne být
+                    příliš nízko.
+                */
 
-                    const lineTop =
-                        activeLine.offsetTop -
-                        container.offsetTop;
-
-
-                    // Aktuální řádek bude
-                    // přibližně v horní třetině
-
-                    const targetScroll =
-                        lineTop -
-                        container.clientHeight * 0.30;
+                const activeLine =
+                    lines[activeIndex];
 
 
-                    container.scrollTo({
+                const lineTop =
+                    activeLine.offsetTop;
+
+                const lineBottom =
+                    lineTop +
+                    activeLine.offsetHeight;
+
+
+                const currentScroll =
+                    lyricsContainer.scrollTop;
+
+                const visibleTop =
+                    currentScroll + 40;
+
+                const visibleBottom =
+                    currentScroll +
+                    lyricsContainer.clientHeight -
+                    60;
+
+
+                // Řádek je příliš dole
+
+                if (
+                    activeIndex >= 3 &&
+                    lineBottom > visibleBottom
+                ) {
+
+                    const newScroll =
+                        lineBottom -
+                        lyricsContainer.clientHeight +
+                        80;
+
+
+                    lyricsContainer.scrollTo({
 
                         top: Math.max(
                             0,
-                            targetScroll
+                            newScroll
                         ),
 
                         behavior: "smooth"
@@ -575,7 +533,9 @@ async function loadLyrics() {
         );
 
 
+        // ========================================
         // KLIK NA ŘÁDEK
+        // ========================================
 
         lines.forEach(line => {
 
@@ -620,256 +580,7 @@ async function loadLyrics() {
             </div>
 
         `;
-
     }
-
-}
-
-
-    try {
-
-        const response =
-            await fetch(
-                "./data/stredovek.json"
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Nelze načíst stredovek.json"
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        lyricsContainer.innerHTML = "";
-
-
-        // ====================================
-        // VYTVOŘENÍ ŘÁDKŮ
-        // ====================================
-
-        data.lines.forEach(line => {
-
-            const element =
-                document.createElement("div");
-
-
-            element.className =
-                "lyric-line";
-
-
-            element.dataset.start =
-                line.start;
-
-
-            element.dataset.end =
-                line.end;
-
-
-            element.textContent =
-                line.text;
-
-
-            lyricsContainer.appendChild(
-                element
-            );
-
-        });
-
-
-        const lines =
-            lyricsContainer.querySelectorAll(
-                ".lyric-line"
-            );
-
-
-        let previousActiveLine = null;
-
-
-        // ====================================
-        // SYNCHRONIZACE S HUDBOU
-        // ====================================
-
-        audio.addEventListener(
-            "timeupdate",
-            () => {
-
-                const currentTime =
-                    audio.currentTime;
-
-
-                let activeLine = null;
-
-
-                // Najdeme právě aktivní řádek
-
-                lines.forEach(line => {
-
-                    const start =
-                        Number(
-                            line.dataset.start
-                        );
-
-
-                    const end =
-                        Number(
-                            line.dataset.end
-                        );
-
-
-                    if (
-                        currentTime >= start &&
-                        currentTime < end
-                    ) {
-
-                        activeLine = line;
-
-                    }
-
-                });
-
-
-                // Nic aktivního
-
-                if (!activeLine) {
-                    return;
-                }
-
-
-                // =================================
-                // ZMĚNA AKTIVNÍHO ŘÁDKU
-                // =================================
-
-                if (
-                    activeLine !==
-                    previousActiveLine
-                ) {
-
-
-                    lines.forEach(line => {
-
-                        line.classList.remove(
-                            "active"
-                        );
-
-                    });
-
-
-                    activeLine.classList.add(
-                        "active"
-                    );
-
-
-                    // První řádek neposouváme
-
-                    if (
-                        previousActiveLine !==
-                        null
-                    ) {
-
-                        const container =
-                            lyricsContainer;
-
-
-                        const target =
-                            activeLine.offsetTop
-                            -
-                            (
-                                container.clientHeight
-                                / 2
-                            )
-                            +
-                            (
-                                activeLine.offsetHeight
-                                / 2
-                            );
-
-
-                        container.scrollTo({
-
-                            top: Math.max(
-                                0,
-                                target
-                            ),
-
-                            behavior: "smooth"
-
-                        });
-
-                    }
-
-
-                    previousActiveLine =
-                        activeLine;
-
-                }
-
-            }
-        );
-
-
-        // ====================================
-        // KLIK NA ŘÁDEK
-        // ====================================
-
-        lines.forEach(line => {
-
-            line.addEventListener(
-                "click",
-                () => {
-
-                    const start =
-                        Number(
-                            line.dataset.start
-                        );
-
-
-                    audio.currentTime =
-                        start;
-
-
-                    audio.play();
-
-                }
-            );
-
-        });
-
-    }
-
-
-    catch (error) {
-
-        console.error(error);
-
-
-        lyricsContainer.innerHTML = `
-
-            <div class="error-card">
-
-                <h2>
-                    Chyba při načítání textu
-                </h2>
-
-                <p>
-                    Zkontroluj soubor
-                    <strong>
-                        data/stredovek.json
-                    </strong>.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
 }
 
 
@@ -877,54 +588,46 @@ async function loadLyrics() {
 // TLAČÍTKO ZPĚT
 // ========================================
 
-backButton.addEventListener(
-    "click",
-    () => {
+if (backButton) {
+
+    backButton.addEventListener(
+        "click",
+        () => {
+
+            if (currentScreen === "period") {
+
+                showScreen(
+                    "historie",
+                    "Literární historický kontext"
+                );
+
+                loadPeriods();
+
+                return;
+            }
 
 
-        // Z OBDOBÍ → HISTORICKÝ KONTEXT
+            if (
+                currentScreen === "historie" ||
+                currentScreen === "cetba" ||
+                currentScreen === "ustni"
+            ) {
 
-        if (currentScreen === "period") {
+                showScreen(
+                    "home",
+                    "Maturita v uších"
+                );
 
-            showScreen(
-                "historie",
-                "Literární historický kontext"
-            );
-
-
-            loadPeriods();
-
-
-            return;
-
-        }
-
-
-        // Z HLAVNÍCH SEKCÍ → DOMŮ
-
-        if (
-
-            currentScreen === "historie" ||
-
-            currentScreen === "cetba" ||
-
-            currentScreen === "ustni"
-
-        ) {
-
-            showScreen(
-                "home",
-                "Maturita v uších"
-            );
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 // ========================================
-// SPUŠTĚNÍ APLIKACE
+// START
 // ========================================
 
 showScreen(
