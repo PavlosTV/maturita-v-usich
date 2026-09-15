@@ -2,205 +2,519 @@
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
     background: #f3f4f6;
+
     color: #111827;
 }
 
+
 .app-header {
     background: #111827;
+
     color: white;
+
     text-align: center;
-    padding: 35px 20px;
+
+    padding:
+        32px
+        20px
+        30px;
 }
+
 
 .app-header h1 {
     margin: 0 0 8px;
-    font-size: 32px;
+
+    font-size: 30px;
 }
+
 
 .app-header p {
     margin: 0;
+
     color: #d1d5db;
 }
 
+
 main {
-    max-width: 700px;
+    max-width: 720px;
+
     margin: auto;
-    padding: 24px 16px;
+
+    padding:
+        24px
+        16px
+        50px;
 }
+
 
 .category {
     margin-bottom: 35px;
 }
 
+
 .category > h2 {
-    font-size: 23px;
-    margin-bottom: 18px;
+    font-size: 22px;
+
+    margin:
+        0
+        0
+        16px;
 }
 
-.song-card,
-.book-card {
+
+/* KARTA */
+
+.song-card {
     background: white;
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    border-radius: 22px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 8px 30px
+        rgba(0, 0, 0, 0.08);
 }
 
-.song-cover {
-    height: 150px;
-    border-radius: 14px;
-    background: #111827;
+
+/* OBAL */
+
+.cover {
+    height: 190px;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #374151
+        );
+
     color: white;
 
     display: flex;
-    align-items: center;
+
+    flex-direction: column;
+
     justify-content: center;
 
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 2px;
+    align-items: center;
+
+    text-align: center;
 
     margin-bottom: 20px;
+
+    letter-spacing: 1px;
 }
 
-.song-card h3,
-.book-card h3 {
-    margin: 0 0 8px;
-    font-size: 23px;
+
+.cover span {
+    font-size: 13px;
+
+    opacity: 0.65;
+
+    margin-bottom: 10px;
 }
+
+
+.cover strong {
+    font-size: 30px;
+}
+
+
+.song-card h3 {
+    font-size: 25px;
+
+    margin:
+        0
+        0
+        7px;
+}
+
 
 .description {
-    color: #4b5563;
+    color: #6b7280;
+
     line-height: 1.5;
+
+    margin-top: 0;
 }
+
+
+/* AUDIO */
 
 audio {
     width: 100%;
-    margin-top: 12px;
+
+    margin:
+        12px
+        0
+        4px;
 }
 
-.progress-info {
+
+/* PROGRESS */
+
+.progress-wrapper {
+    margin-top: 4px;
+}
+
+
+.progress {
+    height: 6px;
+
+    background: #e5e7eb;
+
+    border-radius: 99px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+}
+
+
+.progress-bar {
+    width: 0%;
+
+    height: 100%;
+
+    background: #111827;
+
+    border-radius: 99px;
+}
+
+
+.time {
     display: flex;
+
     justify-content: space-between;
-    font-size: 13px;
-    color: #6b7280;
+
+    color: #9ca3af;
+
+    font-size: 12px;
+
     margin-top: 5px;
 }
 
-button {
+
+/* TLAČÍTKO */
+
+.text-button {
     width: 100%;
+
     border: none;
+
     border-radius: 12px;
+
     padding: 14px;
-    margin-top: 16px;
+
+    margin-top: 18px;
 
     background: #111827;
+
     color: white;
 
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 15px;
+
+    font-weight: 600;
 
     cursor: pointer;
-
-    transition: transform 0.15s,
-                opacity 0.15s;
 }
 
-button:active {
+
+.text-button:active {
     transform: scale(0.98);
 }
 
-button:hover {
-    opacity: 0.9;
-}
 
-
-/* Synchronizovaný text */
+/* TEXT */
 
 .lyrics-container {
-    margin-top: 20px;
+    margin-top: 18px;
 
-    height: 420px;
+    height: 480px;
 
     overflow-y: auto;
 
-    border-radius: 14px;
+    border-radius: 17px;
 
-    background: #f3f4f6;
+    background: #f8fafc;
 
-    padding: 20px;
-
-    scroll-behavior: smooth;
+    padding:
+        180px
+        12px;
 }
+
 
 .hidden {
     display: none;
 }
 
+
 .lyric-line {
-    padding: 15px;
+    margin:
+        12px
+        0;
 
-    margin: 8px 0;
+    padding:
+        18px;
 
-    border-radius: 12px;
+    border-radius: 15px;
 
-    line-height: 1.6;
+    color: #9ca3af;
 
-    color: #6b7280;
+    opacity: 0.55;
+
+    line-height: 1.55;
 
     transition:
-        all 0.35s ease;
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        background 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
 }
+
+
+.lyric-line p {
+    margin:
+        9px
+        0
+        0;
+}
+
+
+.lyric-line strong {
+    display: block;
+
+    margin-bottom: 5px;
+}
+
+
+/* AKTUÁLNÍ ŘÁDEK */
 
 .lyric-line.active {
     background: white;
 
     color: #111827;
 
+    opacity: 1;
+
     transform: scale(1.02);
 
     box-shadow:
-        0 3px 12px
+        0 6px 20px
         rgba(0, 0, 0, 0.10);
 }
 
-.lyric-line.important.active {
-    border-left: 5px solid #111827;
-}
 
-.lyric-line.chorus {
-    font-size: 17px;
-}
-
-.lyric-line.final {
-    font-size: 17px;
-    text-align: center;
-    margin-top: 25px;
+.lyric-line.active strong {
+    font-size: 19px;
 }
 
 
-/* Knihy */
+/* ŠTÍTKY */
 
-.book-card {
-    padding: 18px;
-}
+.section-label {
+    display: inline-block;
 
-.book-card p {
-    margin-bottom: 0;
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+
     color: #6b7280;
 }
 
+
+/* DŮLEŽITÉ */
+
+.lyric-line.important.active {
+    border-left:
+        5px solid #111827;
+}
+
+
+/* PŘÍKLADY */
+
+.examples {
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    background: #f3f4f6;
+
+    font-size: 14px;
+}
+
+
+/* PAMĚŤ */
+
+.memory {
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background: #e5e7eb;
+
+    font-weight: 800;
+
+    text-align: center;
+}
+
+
+.memory p {
+    margin:
+        3px
+        0
+        10px;
+}
+
+
+/* REFREN */
+
+.lyric-line.chorus {
+    text-align: center;
+
+    font-size: 16px;
+}
+
+
+.lyric-line.chorus strong {
+    margin-bottom: 8px;
+}
+
+
+/* FINÁLE */
+
+.lyric-line.final {
+    text-align: center;
+
+    padding:
+        25px
+        18px;
+}
+
+
+.lyric-line.final > strong {
+    margin:
+        12px
+        0;
+}
+
+
+/* KNIHY */
+
+.book-card {
+    background: white;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+.book-card h3 {
+    margin:
+        0
+        0
+        5px;
+}
+
+
+.book-card p {
+    margin: 0;
+
+    color: #6b7280;
+}
+
+
+/* FOOTER */
 
 footer {
     text-align: center;
-    padding: 30px 20px;
-    color: #6b7280;
+
+    padding: 25px;
+
+    color: #9ca3af;
+}
+
+
+/* MOBIL */
+
+@media (max-width: 500px) {
+
+    main {
+        padding:
+            18px
+            12px
+            40px;
+    }
+
+
+    .song-card {
+        padding: 14px;
+
+        border-radius: 18px;
+    }
+
+
+    .cover {
+        height: 160px;
+    }
+
+
+    .cover strong {
+        font-size: 25px;
+    }
+
+
+    .lyrics-container {
+        height: 450px;
+
+        padding:
+            160px
+            8px;
+    }
+
+
+    .lyric-line {
+        padding: 15px;
+
+        margin:
+            10px
+            0;
+    }
+
 }
