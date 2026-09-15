@@ -1,310 +1,288 @@
+const screens = {
+    home: document.getElementById("homeScreen"),
+    historie: document.getElementById("historieScreen"),
+    cetba: document.getElementById("cetbaScreen"),
+    ustni: document.getElementById("ustniScreen"),
+    period: document.getElementById("periodScreen")
+};
+
+const pageTitle = document.getElementById("pageTitle");
+const backButton = document.getElementById("backButton");
+const periodsContainer = document.getElementById("periodsContainer");
 const songsContainer = document.getElementById("songs");
+const periodDescription = document.getElementById("periodDescription");
 
-async function loadSongs() {
-    try {
-        const response = await fetch("./data/songs.json");
+let currentScreen = "home";
+let currentPeriod = null;
 
-        if (!response.ok) {
-            throw new Error("songs.json se nepodařilo načíst.");
+
+// ================================
+// PŘEPÍNÁNÍ OBRAZOVEK
+// ================================
+
+function showScreen(screenName, title) {
+
+    Object.values(screens).forEach(screen => {
+        if (screen) {
+            screen.classList.add("hidden");
         }
+    });
 
-        const songs = await response.json();
+    screens[screenName].classList.remove("hidden");
 
-        renderSongs(songs);
+    pageTitle.textContent = title;
 
-    } catch (error) {
-        console.error(error);
+    currentScreen = screenName;
 
-        songsContainer.innerHTML =
-            "<p>Nepodařilo se načíst skladby.</p>";
+    if (screenName === "home") {
+        backButton.classList.add("hidden");
+    } else {
+        backButton.classList.remove("hidden");
     }
-}
 
-
-function renderSongs(songs) {
-
-    songsContainer.innerHTML = "";
-
-    songs.forEach(song => {
-
-        const card = document.createElement("div");
-
-        card.className = "song-card";
-
-        card.innerHTML = `
-            <div class="cover">
-                <span>ČESKÝ JAZYK</span>
-                <strong>${song.title.toUpperCase()}</strong>
-            </div>
-
-            <h3>${song.title}</h3>
-
-            <p class="description">
-                ${song.description}
-            </p>
-
-            <audio
-                class="audio"
-                controls
-                preload="metadata">
-
-                <source
-                    src="./${song.audio}"
-                    type="audio/mpeg">
-
-            </audio>
-
-            <div class="progress-wrapper">
-
-                <div class="progress">
-                    <div class="progress-bar"></div>
-                </div>
-
-                <div class="time">
-                    <span class="current-time">0:00</span>
-                    <span class="duration">0:00</span>
-                </div>
-
-            </div>
-
-            <button class="text-button">
-                Zobrazit text
-            </button>
-
-            <div class="lyrics-container hidden">
-
-                <div class="lyrics">
-                    Načítám text...
-                </div>
-
-            </div>
-        `;
-
-        songsContainer.appendChild(card);
-
-        setupSong(card, song);
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
 }
 
 
-async function setupSong(card, song) {
+// ================================
+// HLAVNÍ MENU
+// ================================
 
-    const audio =
-        card.querySelector(".audio");
+document.querySelectorAll("[data-section]").forEach(button => {
 
-    const textButton =
-        card.querySelector(".text-button");
+    button.addEventListener("click", () => {
 
-    const lyricsContainer =
-        card.querySelector(".lyrics-container");
+        const section = button.dataset.section;
 
-    const lyrics =
-        card.querySelector(".lyrics");
+        if (section === "historie") {
+            showScreen("historie", "Literární historický kontext");
+            loadPeriods();
+        }
 
-    const progress =
-        card.querySelector(".progress");
+        if (section === "cetba") {
+            showScreen("cetba", "Maturitní četba");
+        }
 
-    const progressBar =
-        card.querySelector(".progress-bar");
+        if (section === "ustni") {
+            showScreen("ustni", "Příprava k ústní maturitě");
+        }
 
-    const currentTime =
-        card.querySelector(".current-time");
+    });
 
-    const duration =
-        card.querySelector(".duration");
+});
 
-    let lines = [];
-    let active = -1;
 
+// ================================
+// NAČTENÍ LITERÁRNÍCH OBDOBÍ
+// ================================
+
+async function loadPeriods() {
+
+    periodsContainer.innerHTML = `
+        <div class="loading">
+            Načítám literární období...
+        </div>
+    `;
 
     try {
 
-        const response =
-            await fetch("./" + song.lyrics);
+        const response = await fetch("./data/periods.json");
 
         if (!response.ok) {
-            throw new Error("Text se nepodařilo načíst.");
+            throw new Error("Nepodařilo se načíst periods.json");
         }
 
-        const data =
-            await response.json();
+        const periods = await response.json();
 
-        lines = data.lines;
+        periodsContainer.innerHTML = "";
 
-        lyrics.innerHTML = "";
+        periods.forEach(period => {
 
-        lines.forEach((line, index) => {
+            const button = document.createElement("button");
 
-            const element =
-                document.createElement("div");
+            button.className = "menu-card";
 
-            element.className =
-                "lyric-line";
+            button.innerHTML = `
+                <div class="menu-icon">L</div>
 
-            element.dataset.index =
-                index;
+                <div>
+                    <h2>${period.title}</h2>
+                    <p>
+                        Otevřít literární období
+                    </p>
+                </div>
 
-            element.dataset.start =
-                line.start;
+                <span class="arrow">›</span>
+            `;
 
-            element.dataset.end =
-                line.end;
+            button.addEventListener("click", () => {
+                openPeriod(period);
+            });
 
-            element.textContent =
-                line.text;
+            periodsContainer.appendChild(button);
 
-            lyrics.appendChild(element);
         });
 
     } catch (error) {
 
         console.error(error);
 
-        lyrics.innerHTML =
-            "Text se nepodařilo načíst.";
+        periodsContainer.innerHTML = `
+            <div class="error-card">
+                <h2>Nepodařilo se načíst období</h2>
+
+                <p>
+                    Zkontroluj soubor
+                    <strong>data/periods.json</strong>.
+                </p>
+            </div>
+        `;
+
     }
 
-
-    textButton.addEventListener("click", () => {
-
-        const hidden =
-            lyricsContainer.classList.contains("hidden");
-
-        if (hidden) {
-
-            lyricsContainer.classList.remove("hidden");
-
-            textButton.textContent =
-                "Skrýt text";
-
-        } else {
-
-            lyricsContainer.classList.add("hidden");
-
-            textButton.textContent =
-                "Zobrazit text";
-        }
-    });
+}
 
 
-    audio.addEventListener("loadedmetadata", () => {
+// ================================
+// OTEVŘENÍ OBDOBÍ
+// ================================
 
-        duration.textContent =
-            formatTime(audio.duration);
-    });
+async function openPeriod(period) {
 
+    currentPeriod = period;
 
-    audio.addEventListener("timeupdate", () => {
+    showScreen("period", period.title);
 
-        const time =
-            audio.currentTime;
+    periodDescription.innerHTML = "";
 
-        currentTime.textContent =
-            formatTime(time);
+    songsContainer.innerHTML = `
+        <div class="loading">
+            Načítám obsah...
+        </div>
+    `;
 
+    // Pokud zatím období nemá obsah,
+    // zobrazíme informační kartu.
 
-        if (audio.duration) {
+    if (!period.content) {
 
-            const percentage =
-                (time / audio.duration) * 100;
+        songsContainer.innerHTML = `
+            <div class="placeholder-card">
+                <h2>${period.title}</h2>
 
-            progressBar.style.width =
-                percentage + "%";
-        }
+                <p>
+                    Obsah tohoto období zatím připravujeme.
+                </p>
+            </div>
+        `;
 
+        return;
+    }
 
-        let newActive = -1;
+    // Speciální obsah Středověku
 
+    if (period.content === "stredovek") {
+        await loadStredovek();
+        return;
+    }
 
-        for (let i = 0; i < lines.length; i++) {
+    songsContainer.innerHTML = `
+        <div class="placeholder-card">
+            <h2>${period.title}</h2>
 
-            if (
-                time >= Number(lines[i].start) &&
-                time < Number(lines[i].end)
-            ) {
-
-                newActive = i;
-
-                break;
-            }
-        }
-
-
-        if (newActive !== active) {
-
-            active = newActive;
-
-            const allLines =
-                lyrics.querySelectorAll(".lyric-line");
-
-            allLines.forEach(line => {
-                line.classList.remove("active");
-            });
-
-
-            if (active >= 0) {
-
-                const activeElement =
-                    allLines[active];
-
-                if (activeElement) {
-
-                    activeElement.classList.add("active");
-
-                    activeElement.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-                }
-            }
-        }
-    });
+            <p>
+                Obsah tohoto období zatím připravujeme.
+            </p>
+        </div>
+    `;
+}
 
 
-    progress.addEventListener("click", event => {
+// ================================
+// STŘEDOVĚK
+// ================================
 
-        if (!audio.duration) {
-            return;
-        }
+async function loadStredovek() {
 
-        const rect =
-            progress.getBoundingClientRect();
+    songsContainer.innerHTML = `
+        <div class="song-card">
 
-        const percentage =
-            (event.clientX - rect.left) /
-            rect.width;
+            <div class="cover">
 
-        audio.currentTime =
-            percentage * audio.duration;
-    });
+                <span>ČESKÝ JAZYK</span>
+
+                <strong>STŘEDOVĚK</strong>
+
+            </div>
+
+            <h2>Středověk</h2>
+
+            <p class="description">
+                Hus, Kosmas, legendy, kroniky
+                a středověká literatura.
+            </p>
+
+            <audio controls preload="metadata">
+
+                <source
+                    src="./audio/stredovek.mp3"
+                    type="audio/mpeg"
+                >
+
+                Tvůj prohlížeč nepodporuje
+                přehrávání audia.
+
+            </audio>
+
+        </div>
+    `;
+
+}
 
 
-    audio.addEventListener("error", () => {
+// ================================
+// TLAČÍTKO ZPĚT
+// ================================
 
-        console.error(
-            "CHYBA AUDIA:",
-            audio.error
+backButton.addEventListener("click", () => {
+
+    if (currentScreen === "period") {
+
+        showScreen(
+            "historie",
+            "Literární historický kontext"
         );
-    });
-}
 
+        loadPeriods();
 
-function formatTime(seconds) {
-
-    if (!Number.isFinite(seconds)) {
-        return "0:00";
+        return;
     }
 
-    const minutes =
-        Math.floor(seconds / 60);
+    if (
+        currentScreen === "historie" ||
+        currentScreen === "cetba" ||
+        currentScreen === "ustni"
+    ) {
 
-    const secs =
-        Math.floor(seconds % 60)
-            .toString()
-            .padStart(2, "0");
+        showScreen(
+            "home",
+            "Maturita v uších"
+        );
 
-    return `${minutes}:${secs}`;
-}
+        return;
+    }
+
+});
 
 
-loadSongs();
+// ================================
+// START APLIKACE
+// ================================
+
+showScreen(
+    "home",
+    "Maturita v uších"
+);
