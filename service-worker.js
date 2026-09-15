@@ -4,8 +4,13 @@ const FILES_TO_CACHE = [
     "./",
     "./index.html",
     "./style.css",
+    "./app.js",
     "./manifest.json",
-    "./stredovek.mp3"
+
+    "./data/songs.json",
+    "./data/stredovek.json",
+
+    "./audio/stredovek.mp3"
 ];
 
 
