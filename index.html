@@ -1,127 +1,172 @@
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color"
-          content="#111827">
-
-    <meta name="apple-mobile-web-app-capable"
-          content="yes">
-
-    <meta name="apple-mobile-web-app-status-bar-style"
-          content="black">
-
-    <link rel="manifest"
-          href="manifest.json">
-
-    <link rel="stylesheet"
-          href="style.css">
+    <meta name="theme-color" content="#111827">
 
     <title>Maturita v uších</title>
-</head>
 
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
-<header class="app-header">
+    <header class="app-header">
+        <div class="header-content">
+            <button id="backButton" class="back-button hidden">
+                ← Zpět
+            </button>
 
-    <h1>Maturita v uších</h1>
-
-    <p>Uč se maturitu poslechem.</p>
-
-</header>
-
-
-<main>
-
-    <section class="category">
-
-        <h2>Český jazyk – literatura</h2>
-
-        <div id="songs">
-
-    <div class="song-card">
-
-        <div class="cover">
-            <span>ČESKÝ JAZYK</span>
-            <strong>STŘEDOVĚK</strong>
+            <div>
+                <div class="app-label">MATURITA V UŠÍCH</div>
+                <h1 id="pageTitle">Maturita v uších</h1>
+            </div>
         </div>
-
-        <h3>Středověk</h3>
-
-        <p class="description">
-            Hus, Kosmas, legendy, kroniky a středověká literatura.
-        </p>
-
-        <audio controls preload="metadata">
-            <source
-                src="audio/stredovek.mp3"
-                type="audio/mpeg">
-            Tvůj prohlížeč nepodporuje přehrávání audia.
-        </audio>
-
-    </div>
-
-</div>
-
-    </section>
+    </header>
 
 
-    <section class="category">
+    <main class="app-container">
 
-        <h2>Maturitní četba</h2>
+        <!-- HLAVNÍ MENU -->
+        <section id="homeScreen" class="screen">
 
-        <div class="book-card">
-            <h3>Proměna</h3>
-            <p>Franz Kafka</p>
-        </div>
+            <div class="welcome">
+                <p>
+                    Uč se k maturitě pomocí krátkých výukových skladeb.
+                </p>
+            </div>
 
-        <div class="book-card">
-            <h3>Smuténka</h3>
-            <p>Jan Skácel</p>
-        </div>
+            <div class="menu-grid">
 
-        <div class="book-card">
-            <h3>Ostře sledované vlaky</h3>
-            <p>Bohumil Hrabal</p>
-        </div>
+                <button class="menu-card"
+                        data-section="cetba">
 
-    </section>
+                    <div class="menu-icon">Č</div>
 
-</main>
+                    <div>
+                        <h2>Maturitní četba</h2>
+                        <p>
+                            Přehled děl a jejich obsah.
+                        </p>
+                    </div>
 
+                    <span class="arrow">›</span>
 
-<footer>
-
-    <p>Maturita v uších</p>
-
-</footer>
-
-
-<script src="app.js"></script>
+                </button>
 
 
-<script>
+                <button class="menu-card"
+                        data-section="historie">
 
-if ("serviceWorker" in navigator) {
+                    <div class="menu-icon">L</div>
 
-    window.addEventListener("load", () => {
+                    <div>
+                        <h2>Literární historický kontext</h2>
+                        <p>
+                            Období, směry, autoři a důležitá díla.
+                        </p>
+                    </div>
 
-        navigator.serviceWorker.register(
-            "./service-worker.js"
-        );
+                    <span class="arrow">›</span>
 
-    });
+                </button>
 
-}
 
-</script>
+                <button class="menu-card"
+                        data-section="ustni">
+
+                    <div class="menu-icon">M</div>
+
+                    <div>
+                        <h2>Příprava k ústní maturitě</h2>
+                        <p>
+                            Opakování a příprava na ústní zkoušku.
+                        </p>
+                    </div>
+
+                    <span class="arrow">›</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- LITERÁRNÍ HISTORICKÝ KONTEXT -->
+        <section id="historieScreen" class="screen hidden">
+
+            <div class="section-heading">
+                <p>Vyber literární období</p>
+            </div>
+
+            <div id="periodsContainer" class="menu-grid">
+                <!-- Období se načtou z periods.json -->
+            </div>
+
+        </section>
+
+
+        <!-- KONKRÉTNÍ OBDOBÍ -->
+        <section id="periodScreen" class="screen hidden">
+
+            <div id="periodDescription" class="section-description"></div>
+
+            <div id="songs">
+                <!-- Obsah období -->
+            </div>
+
+        </section>
+
+
+        <!-- MATURITNÍ ČETBA -->
+        <section id="cetbaScreen" class="screen hidden">
+
+            <div class="section-heading">
+                <p>
+                    Zde bude přehled tvé maturitní četby.
+                </p>
+            </div>
+
+            <div class="placeholder-card">
+                <h2>Maturitní četba</h2>
+
+                <p>
+                    Tuto část postupně doplníme o jednotlivé knihy.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- ÚSTNÍ MATURITA -->
+        <section id="ustniScreen" class="screen hidden">
+
+            <div class="section-heading">
+                <p>
+                    Zde bude příprava na ústní maturitu.
+                </p>
+            </div>
+
+            <div class="placeholder-card">
+                <h2>Příprava k ústní maturitě</h2>
+
+                <p>
+                    Tuto část doplníme později.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
 
 </body>
-
 </html>
