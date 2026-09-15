@@ -2,10 +2,10 @@ const CACHE_NAME = "maturita-v-usich-v4";
 
 const FILES_TO_CACHE = [
     "./",
-    "./index.html",
-    "./style.css",
-    "./app.js",
-    "./manifest.json",
+    "./index.html?v2",
+    "./style.css?v2",
+    "./app.js?v2",
+    "./manifest.json?v2",
 
     "./data/songs.json",
     "./data/stredovek.json",
