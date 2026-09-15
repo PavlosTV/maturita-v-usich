@@ -343,6 +343,368 @@ async function loadLyrics() {
         return;
     }
 
+
+    try {
+
+        const response =
+            await fetch("./data/stredovek.json");
+
+        if (!response.ok) {
+            throw new Error(
+                "Nelze načíst stredovek.json"
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        lyricsContainer.innerHTML = "";
+
+
+        // ========================================
+        // VYTVOŘENÍ ŘÁDKŮ
+        // ========================================
+
+        data.lines.forEach(line => {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "lyric-line";
+
+            element.dataset.start =
+                line.start;
+
+            element.dataset.end =
+                line.end;
+
+            element.textContent =
+                line.text;
+
+            lyricsContainer.appendChild(element);
+
+        });
+
+
+        const lines =
+            Array.from(
+                lyricsContainer.querySelectorAll(
+                    ".lyric-line"
+                )
+            );
+
+
+        // ========================================
+        // NASTAVENÍ POSOUVÁNÍ
+        // ========================================
+
+        // Vypneme nativní smooth scroll.
+        // Posouvání budeme řídit sami.
+
+        lyricsContainer.style.scrollBehavior = "auto";
+
+
+        let previousIndex = -1;
+
+        let animationFrame = null;
+
+        let targetScroll = 0;
+
+        let isAnimating = false;
+
+
+        // ========================================
+        // PLYNULÝ POHYB TEXTU
+        // ========================================
+
+        function animateScroll() {
+
+            const currentScroll =
+                lyricsContainer.scrollTop;
+
+
+            const difference =
+                targetScroll - currentScroll;
+
+
+            // Jsme dostatečně blízko cíli.
+            // Nastavíme přesně cílovou pozici
+            // a animaci ukončíme.
+
+            if (Math.abs(difference) < 0.5) {
+
+                lyricsContainer.scrollTop =
+                    targetScroll;
+
+                animationFrame = null;
+                isAnimating = false;
+
+                return;
+            }
+
+
+            /*
+                Pohybujeme se pouze malým krokem.
+
+                Díky tomu se text nikdy
+                náhle nepřeskočí.
+            */
+
+            lyricsContainer.scrollTop =
+                currentScroll +
+                difference * 0.12;
+
+
+            animationFrame =
+                requestAnimationFrame(
+                    animateScroll
+                );
+        }
+
+
+        function moveTextTo(position) {
+
+            const maxScroll =
+                lyricsContainer.scrollHeight -
+                lyricsContainer.clientHeight;
+
+
+            targetScroll =
+                Math.max(
+                    0,
+                    Math.min(
+                        position,
+                        maxScroll
+                    )
+                );
+
+
+            if (!isAnimating) {
+
+                isAnimating = true;
+
+                animationFrame =
+                    requestAnimationFrame(
+                        animateScroll
+                    );
+            }
+        }
+
+
+        // ========================================
+        // SYNCHRONIZACE S HUDBOU
+        // ========================================
+
+        audio.addEventListener(
+            "timeupdate",
+            () => {
+
+                const currentTime =
+                    audio.currentTime;
+
+
+                let activeIndex = -1;
+
+
+                for (
+                    let i = 0;
+                    i < lines.length;
+                    i++
+                ) {
+
+                    const start =
+                        Number(
+                            lines[i].dataset.start
+                        );
+
+                    const end =
+                        Number(
+                            lines[i].dataset.end
+                        );
+
+
+                    if (
+                        currentTime >= start &&
+                        currentTime < end
+                    ) {
+
+                        activeIndex = i;
+
+                        break;
+                    }
+                }
+
+
+                if (activeIndex === -1) {
+                    return;
+                }
+
+
+                // Stejný řádek.
+                // Neděláme vůbec nic.
+
+                if (
+                    activeIndex === previousIndex
+                ) {
+                    return;
+                }
+
+
+                // ========================================
+                // AKTIVNÍ ŘÁDEK
+                // ========================================
+
+                lines.forEach(line => {
+                    line.classList.remove("active");
+                });
+
+
+                lines[activeIndex]
+                    .classList.add("active");
+
+
+                // ========================================
+                // POSUN TEXTU
+                // ========================================
+
+                /*
+                    První 3 řádky:
+
+                    Text zůstává úplně na začátku.
+
+                    Žádný pohyb.
+                */
+
+                if (activeIndex < 3) {
+
+                    previousIndex =
+                        activeIndex;
+
+                    return;
+                }
+
+
+                /*
+                    Od 4. řádku:
+
+                    Aktivní řádek se snažíme držet
+                    stále přibližně na stejném místě.
+
+                    Důležité:
+
+                    Nepoužíváme scrollIntoView()
+                    ani behavior: smooth.
+
+                    Posun probíhá ručně.
+                */
+
+
+                const activeLine =
+                    lines[activeIndex];
+
+
+                const lineTop =
+                    activeLine.offsetTop;
+
+
+                /*
+                    Toto je místo, kde chceme mít
+                    aktivní řádek.
+
+                    Přibližně 1/3 okna.
+                */
+
+                const anchorPosition =
+                    lyricsContainer.clientHeight *
+                    0.32;
+
+
+                const newTarget =
+                    lineTop -
+                    anchorPosition;
+
+
+                moveTextTo(newTarget);
+
+
+                previousIndex =
+                    activeIndex;
+
+            }
+        );
+
+
+        // ========================================
+        // KLIK NA ŘÁDEK
+        // ========================================
+
+        lines.forEach(line => {
+
+            line.addEventListener(
+                "click",
+                () => {
+
+                    const start =
+                        Number(line.dataset.start);
+
+
+                    audio.currentTime =
+                        start;
+
+
+                    audio.play();
+
+                }
+            );
+
+        });
+
+
+        // ========================================
+        // ZASTAVENÍ ANIMACE PŘI OPUŠTĚNÍ STRÁNKY
+        // ========================================
+
+        audio.addEventListener(
+            "pause",
+            () => {
+
+                // Nic neděláme.
+                // Text zůstane přesně tam,
+                // kde byl.
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+
+        lyricsContainer.innerHTML = `
+
+            <div class="error-card">
+
+                <h2>
+                    Chyba při načítání textu
+                </h2>
+
+                <p>
+                    Zkontroluj soubor
+                    <strong>
+                        data/stredovek.json
+                    </strong>.
+                </p>
+
+            </div>
+
+        `;
+    }
+}
+
     try {
 
         const response =
