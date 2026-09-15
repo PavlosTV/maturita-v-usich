@@ -306,9 +306,18 @@ async function loadLyrics() {
 
                     line.classList.add("active");
 
-                    line.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
+                    lconst container =
+                            document.getElementById("lyrics");
+                        
+                        const linePosition =
+                            line.offsetTop -
+                            container.clientHeight / 2 +
+                            line.offsetHeight / 2;
+                        
+                        container.scrollTo({
+                            top: linePosition,
+                            behavior: "smooth"
+                        });
                     });
 
                 } else {
