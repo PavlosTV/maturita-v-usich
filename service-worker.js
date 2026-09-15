@@ -1,4 +1,4 @@
-const CACHE_NAME = "maturita-v-usich-v2";
+const CACHE_NAME = "maturita-v-usich-v3";
 
 const FILES_TO_CACHE = [
     "./",
