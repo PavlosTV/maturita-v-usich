@@ -703,7 +703,7 @@ function updateLyricsPosition(
     // První tři řádky:
     // vůbec neposouváme.
 
-    if (index < 3) {
+    if (index < 2) {
         return;
     }
 
