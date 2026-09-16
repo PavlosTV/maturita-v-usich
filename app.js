@@ -961,9 +961,10 @@ if (updateButton) {
         async function () {
 
             updateButton.textContent =
-                "Aktualizuji...";
+                "Stahuji aktualizaci...";
 
             updateButton.disabled = true;
+
 
             try {
 
@@ -973,21 +974,29 @@ if (updateButton) {
                         await navigator.serviceWorker
                             .getRegistration();
 
+
                     if (registration) {
 
-                        // Zkontroluje, jestli je na serveru
-                        // nová verze Service Workeru
+                        // Zkontrolujeme novou verzi
+                        // Service Workeru
 
                         await registration.update();
 
 
-                        // Pokud je nová verze připravená,
-                        // aktivujeme ji
+                        // Pošleme Service Workeru příkaz,
+                        // aby stáhl všechny soubory
+                        // včetně MP3.
 
-                        if (registration.waiting) {
+                        const worker =
+                            registration.active ||
+                            registration.waiting ||
+                            registration.installing;
 
-                            registration.waiting.postMessage({
-                                type: "SKIP_WAITING"
+
+                        if (worker) {
+
+                            worker.postMessage({
+                                type: "UPDATE_CACHE"
                             });
 
                         }
@@ -996,6 +1005,21 @@ if (updateButton) {
 
                 }
 
+
+                // Dáme Service Workeru čas
+                // na stažení souborů.
+
+                updateButton.textContent =
+                    "Aktualizace probíhá...";
+
+
+                setTimeout(function () {
+
+                    window.location.reload();
+
+                }, 3000);
+
+
             } catch (error) {
 
                 console.error(
@@ -1003,17 +1027,13 @@ if (updateButton) {
                     error
                 );
 
+
+                updateButton.textContent =
+                    "Aktualizace se nepodařila";
+
+                updateButton.disabled = false;
+
             }
-
-
-            // Počkáme chvíli, aby se nová verze
-            // Service Workeru stihla aktivovat
-
-            setTimeout(function () {
-
-                window.location.reload();
-
-            }, 1000);
 
         }
     );
