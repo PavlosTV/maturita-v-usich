@@ -967,37 +967,59 @@ if (updateButton) {
 
             try {
 
-                // Pokud existuje Service Worker,
-                // požádáme ho o aktualizaci.
-
                 if ("serviceWorker" in navigator) {
 
                     const registration =
-                        await navigator.serviceWorker.getRegistration();
+                        await navigator.serviceWorker
+                            .getRegistration();
 
                     if (registration) {
+
+                        // Zkontroluje, jestli je na serveru
+                        // nová verze Service Workeru
+
                         await registration.update();
+
+
+                        // Pokud je nová verze připravená,
+                        // aktivujeme ji
+
+                        if (registration.waiting) {
+
+                            registration.waiting.postMessage({
+                                type: "SKIP_WAITING"
+                            });
+
+                        }
+
                     }
+
                 }
 
             } catch (error) {
 
-                console.log(
-                    "Aktualizace service workeru:",
+                console.error(
+                    "Aktualizace se nepodařila:",
                     error
                 );
 
             }
 
 
-            // Tvrdé obnovení stránky
+            // Počkáme chvíli, aby se nová verze
+            // Service Workeru stihla aktivovat
 
-            window.location.reload(true);
+            setTimeout(function () {
+
+                window.location.reload();
+
+            }, 1000);
 
         }
     );
 
 }
+
 
 // ========================================
 // START APLIKACE
