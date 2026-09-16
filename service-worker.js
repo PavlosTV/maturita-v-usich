@@ -1,4 +1,4 @@
-const CACHE_NAME = "maturita-v-usich-v5";
+const CACHE_NAME = "maturita-v-usich-v6";
 
 const FILES_TO_CACHE = [
     "./",
@@ -25,7 +25,13 @@ self.addEventListener("install", event => {
     event.waitUntil(
 
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(FILES_TO_CACHE))
+            .then(cache => {
+
+                return cache.addAll(
+                    FILES_TO_CACHE
+                );
+
+            })
 
     );
 
@@ -56,6 +62,11 @@ self.addEventListener("activate", event => {
                 );
 
             })
+            .then(() => {
+
+                return self.clients.claim();
+
+            })
 
     );
 
@@ -63,7 +74,7 @@ self.addEventListener("activate", event => {
 
 
 // ========================================
-// OFFLINE / CACHE
+// OFFLINE CACHE
 // ========================================
 
 self.addEventListener("fetch", event => {
@@ -73,16 +84,9 @@ self.addEventListener("fetch", event => {
         caches.match(event.request)
             .then(cachedResponse => {
 
-                // Máme soubor v cache?
-                // Použijeme ho i bez internetu.
-
                 if (cachedResponse) {
                     return cachedResponse;
                 }
-
-
-                // Pokud není v cache,
-                // zkusíme internet.
 
                 return fetch(event.request);
 
@@ -91,14 +95,66 @@ self.addEventListener("fetch", event => {
     );
 
 });
+
+
+// ========================================
+// RUČNÍ AKTUALIZACE
+// ========================================
+
 self.addEventListener("message", event => {
 
     if (
         event.data &&
-        event.data.type === "SKIP_WAITING"
+        event.data.type === "UPDATE_CACHE"
     ) {
 
-        self.skipWaiting();
+        event.waitUntil(
+
+            caches.open(CACHE_NAME)
+                .then(cache => {
+
+                    return Promise.all(
+
+                        FILES_TO_CACHE.map(
+                            async file => {
+
+                                try {
+
+                                    const response =
+                                        await fetch(
+                                            file,
+                                            {
+                                                cache: "no-store"
+                                            }
+                                        );
+
+                                    if (response.ok) {
+
+                                        await cache.put(
+                                            file,
+                                            response
+                                        );
+
+                                    }
+
+                                } catch (error) {
+
+                                    console.error(
+                                        "Nelze stáhnout:",
+                                        file,
+                                        error
+                                    );
+
+                                }
+
+                            }
+                        )
+
+                    );
+
+                })
+
+        );
 
     }
 
