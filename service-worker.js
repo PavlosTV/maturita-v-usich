@@ -1,4 +1,4 @@
-const CACHE_NAME = "maturita-v-usich-v4";
+const CACHE_NAME = "maturita-v-usich-v5";
 
 const FILES_TO_CACHE = [
     "./",
@@ -17,7 +17,7 @@ const FILES_TO_CACHE = [
 
 
 // ========================================
-// INSTALACE NOVÉ VERZE
+// INSTALACE
 // ========================================
 
 self.addEventListener("install", event => {
@@ -25,20 +25,7 @@ self.addEventListener("install", event => {
     event.waitUntil(
 
         caches.open(CACHE_NAME)
-            .then(cache => {
-
-                return cache.addAll(
-                    FILES_TO_CACHE
-                );
-
-            })
-            .then(() => {
-
-                // Nová verze se aktivuje okamžitě
-
-                return self.skipWaiting();
-
-            })
+            .then(cache => cache.addAll(FILES_TO_CACHE))
 
     );
 
@@ -69,14 +56,6 @@ self.addEventListener("activate", event => {
                 );
 
             })
-            .then(() => {
-
-                // Nový Service Worker začne
-                // okamžitě ovládat stránku
-
-                return self.clients.claim();
-
-            })
 
     );
 
@@ -84,7 +63,7 @@ self.addEventListener("activate", event => {
 
 
 // ========================================
-// NAČÍTÁNÍ SOUBORŮ
+// OFFLINE / CACHE
 // ========================================
 
 self.addEventListener("fetch", event => {
@@ -94,10 +73,16 @@ self.addEventListener("fetch", event => {
         caches.match(event.request)
             .then(cachedResponse => {
 
+                // Máme soubor v cache?
+                // Použijeme ho i bez internetu.
+
                 if (cachedResponse) {
                     return cachedResponse;
                 }
 
+
+                // Pokud není v cache,
+                // zkusíme internet.
 
                 return fetch(event.request);
 
