@@ -395,6 +395,12 @@ async function loadStredovek() {
                 přehrávání audia.
 
             </audio>
+            <button
+                id="downloadStredovek"
+                class="download-button"
+                type="button">
+                Stáhnout Středověk offline
+            </button>
 
 
             <div class="lyrics-container">
@@ -418,7 +424,7 @@ async function loadStredovek() {
 
     `;
 
-
+setupOfflineDownload();
     await loadLyrics();
 
 }
@@ -1049,3 +1055,139 @@ showScreen(
     homeScreen,
     "Maturita v uších"
 );
+async function setupOfflineDownload() {
+
+    const button =
+        document.getElementById(
+            "downloadStredovek"
+        );
+
+    if (!button) {
+        return;
+    }
+
+
+    // Zkontrolujeme, jestli už je
+    // Středověk uložený v cache.
+
+    if ("caches" in window) {
+
+        const cache =
+            await caches.open(
+                "maturita-v-usich-v6"
+            );
+
+
+        const audio =
+            await cache.match(
+                "./audio/stredovek.mp3"
+            );
+
+
+        const lyrics =
+            await cache.match(
+                "./data/stredovek.json"
+            );
+
+
+        if (audio && lyrics) {
+
+            button.textContent =
+                "✓ Středověk je offline";
+
+            button.disabled = true;
+
+            return;
+        }
+    }
+
+
+    // ========================================
+    // KLIK – STAŽENÍ OFFLINE
+    // ========================================
+
+    button.addEventListener(
+        "click",
+        async function() {
+
+            button.disabled = true;
+
+            button.textContent =
+                "Stahuji...";
+
+
+            try {
+
+                const cache =
+                    await caches.open(
+                        "maturita-v-usich-v6"
+                    );
+
+
+                // MP3
+
+                const audioResponse =
+                    await fetch(
+                        "./audio/stredovek.mp3",
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                if (!audioResponse.ok) {
+                    throw new Error(
+                        "Nepodařilo se stáhnout audio."
+                    );
+                }
+
+
+                await cache.put(
+                    "./audio/stredovek.mp3",
+                    audioResponse
+                );
+
+
+                // TEXT
+
+                const lyricsResponse =
+                    await fetch(
+                        "./data/stredovek.json",
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                if (!lyricsResponse.ok) {
+                    throw new Error(
+                        "Nepodařilo se stáhnout text."
+                    );
+                }
+
+
+                await cache.put(
+                    "./data/stredovek.json",
+                    lyricsResponse
+                );
+
+
+                button.textContent =
+                    "✓ Středověk je offline";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                button.textContent =
+                    "Stažení se nepodařilo";
+
+                button.disabled = false;
+
+            }
+
+        }
+    );
+}
