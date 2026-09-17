@@ -470,3 +470,41 @@ audio {
     opacity: 0.6;
     cursor: wait;
 }
+/* ========================================
+   OFFLINE STAŽENÍ
+======================================== */
+
+.download-button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #111827;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.download-button:hover {
+    background: #1f2937;
+}
+
+.download-button:active {
+    transform: scale(0.98);
+}
+
+.download-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
