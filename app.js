@@ -214,27 +214,27 @@ async function loadPeriods() {
 
             button.innerHTML = `
 
-                <div class="menu-icon">
-                    L
-                </div>
+    <div class="menu-icon">
+        L
+    </div>
 
-                <div>
+    <div>
 
-                    <h2>
-                        ${period.title}
-                    </h2>
+        <h2>
+            ${period.title}
+        </h2>
 
-                    <p>
-                        Otevřít literární období
-                    </p>
+        <p>
+            Otevřít literární období
+        </p>
 
-                </div>
+    </div>
 
-                <span class="arrow">
-                    ›
-                </span>
+    <span class="arrow">
+        ›
+    </span>
 
-            `;
+`;
 
 
             button.addEventListener(
