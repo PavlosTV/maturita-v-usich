@@ -1193,6 +1193,221 @@ if (updateButton) {
 
 }
 
+// ========================================
+// OFFLINE STAŽENÍ / ODEBRÁNÍ STŘEDOVĚKU
+// ========================================
+
+async function setupOfflineDownload() {
+
+    const button =
+        document.getElementById("downloadStredovek");
+
+    if (!button) {
+        return;
+    }
+
+    const CONTENT_CACHE =
+        "maturita-v-usich-content-v1";
+
+    const AUDIO_FILE =
+        "./audio/stredovek.mp3";
+
+    const LYRICS_FILE =
+        "./data/stredovek.json";
+
+
+    // ========================================
+    // KONTROLA, JESTLI JE STŘEDOVĚK OFFLINE
+    // ========================================
+
+    async function checkOffline() {
+
+        const cache =
+            await caches.open(CONTENT_CACHE);
+
+        const audio =
+            await cache.match(AUDIO_FILE);
+
+        const lyrics =
+            await cache.match(LYRICS_FILE);
+
+        return !!(audio && lyrics);
+    }
+
+
+    // ========================================
+    // AKTUALIZACE VZHLEDU TLAČÍTKA
+    // ========================================
+
+    async function updateButton() {
+
+        const offline =
+            await checkOffline();
+
+        if (offline) {
+
+            button.textContent =
+                "Odebrat Středověk z offline";
+
+            button.classList.add(
+                "downloaded"
+            );
+
+        } else {
+
+            button.textContent =
+                "Stáhnout Středověk offline";
+
+            button.classList.remove(
+                "downloaded"
+            );
+        }
+
+        button.disabled = false;
+    }
+
+
+    // ========================================
+    // KLIKNUTÍ
+    // ========================================
+
+    button.addEventListener(
+        "click",
+        async function() {
+
+            button.disabled = true;
+
+
+            try {
+
+                const cache =
+                    await caches.open(
+                        CONTENT_CACHE
+                    );
+
+                const offline =
+                    await checkOffline();
+
+
+                // ========================================
+                // ODEBRAT OFFLINE
+                // ========================================
+
+                if (offline) {
+
+                    button.textContent =
+                        "Odebírám...";
+
+                    await cache.delete(
+                        AUDIO_FILE
+                    );
+
+                    await cache.delete(
+                        LYRICS_FILE
+                    );
+
+                    button.textContent =
+                        "Středověk byl odebrán";
+
+                    setTimeout(
+                        updateButton,
+                        800
+                    );
+
+                    return;
+                }
+
+
+                // ========================================
+                // STÁHNOUT OFFLINE
+                // ========================================
+
+                button.textContent =
+                    "Stahuji audio...";
+
+                const audioResponse =
+                    await fetch(
+                        AUDIO_FILE +
+                        "?download=" +
+                        Date.now(),
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+                if (!audioResponse.ok) {
+                    throw new Error(
+                        "Audio se nepodařilo stáhnout."
+                    );
+                }
+
+
+                button.textContent =
+                    "Stahuji text...";
+
+                const lyricsResponse =
+                    await fetch(
+                        LYRICS_FILE +
+                        "?download=" +
+                        Date.now(),
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+                if (!lyricsResponse.ok) {
+                    throw new Error(
+                        "Text se nepodařilo stáhnout."
+                    );
+                }
+
+
+                // Uložíme oba soubory
+                await cache.put(
+                    AUDIO_FILE,
+                    audioResponse
+                );
+
+                await cache.put(
+                    LYRICS_FILE,
+                    lyricsResponse
+                );
+
+
+                button.textContent =
+                    "✓ Středověk je offline";
+
+                setTimeout(
+                    updateButton,
+                    800
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Offline operace selhala:",
+                    error
+                );
+
+                button.textContent =
+                    "Operace se nepodařila";
+
+                button.disabled = false;
+
+                setTimeout(
+                    updateButton,
+                    1500
+                );
+            }
+
+        }
+    );
+
+
+    // První kontrola při otevření stránky
+    await updateButton();
+}
 
 // ========================================
 // START APLIKACE
@@ -1202,139 +1417,3 @@ showScreen(
     homeScreen,
     "Maturita v uších"
 );
-async function setupOfflineDownload() {
-
-    const button =
-        document.getElementById(
-            "downloadStredovek"
-        );
-
-    if (!button) {
-        return;
-    }
-
-
-    // Zkontrolujeme, jestli už je
-    // Středověk uložený v cache.
-
-    if ("caches" in window) {
-
-        const cache =
-            await caches.open(
-                "maturita-v-usich-v6"
-            );
-
-
-        const audio =
-            await cache.match(
-                "./audio/stredovek.mp3"
-            );
-
-
-        const lyrics =
-            await cache.match(
-                "./data/stredovek.json"
-            );
-
-
-        if (audio && lyrics) {
-
-            button.textContent =
-                "✓ Středověk je offline";
-
-            button.disabled = true;
-
-            return;
-        }
-    }
-
-
-    // ========================================
-    // KLIK – STAŽENÍ OFFLINE
-    // ========================================
-
-    button.addEventListener(
-        "click",
-        async function() {
-
-            button.disabled = true;
-
-            button.textContent =
-                "Stahuji...";
-
-
-            try {
-
-                const cache =
-                    await caches.open(
-                        "maturita-v-usich-v6"
-                    );
-
-
-                // MP3
-
-                const audioResponse =
-                    await fetch(
-                        "./audio/stredovek.mp3",
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!audioResponse.ok) {
-                    throw new Error(
-                        "Nepodařilo se stáhnout audio."
-                    );
-                }
-
-
-                await cache.put(
-                    "./audio/stredovek.mp3",
-                    audioResponse
-                );
-
-
-                // TEXT
-
-                const lyricsResponse =
-                    await fetch(
-                        "./data/stredovek.json",
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!lyricsResponse.ok) {
-                    throw new Error(
-                        "Nepodařilo se stáhnout text."
-                    );
-                }
-
-
-                await cache.put(
-                    "./data/stredovek.json",
-                    lyricsResponse
-                );
-
-
-                button.textContent =
-                    "✓ Středověk je offline";
-
-
-            } catch (error) {
-
-                console.error(error);
-
-
-                button.textContent =
-                    "Stažení se nepodařilo";
-
-                button.disabled = false;
-
-            }
-
-        }
-    );
-}
