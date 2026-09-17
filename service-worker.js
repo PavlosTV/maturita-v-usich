@@ -1,18 +1,15 @@
-const CACHE_NAME = "maturita-v-usich-v6";
+const APP_CACHE = "maturita-v-usich-app-v1";
+const CONTENT_CACHE = "maturita-v-usich-content-v1";
 
-const FILES_TO_CACHE = [
+const APP_FILES = [
     "./",
     "./index.html",
     "./style.css",
     "./app.js",
     "./manifest.json",
-
     "./data/categories.json",
     "./data/periods.json",
-    "./data/songs.json",
-    "./data/stredovek.json",
-
-    "./audio/stredovek.mp3"
+    "./data/songs.json"
 ];
 
 
@@ -23,18 +20,11 @@ const FILES_TO_CACHE = [
 self.addEventListener("install", event => {
 
     event.waitUntil(
-
-        caches.open(CACHE_NAME)
-            .then(cache => {
-
-                return cache.addAll(
-                    FILES_TO_CACHE
-                );
-
-            })
-
+        caches.open(APP_CACHE)
+            .then(cache => cache.addAll(APP_FILES))
     );
 
+    self.skipWaiting();
 });
 
 
@@ -46,35 +36,29 @@ self.addEventListener("activate", event => {
 
     event.waitUntil(
 
-        caches.keys()
-            .then(cacheNames => {
+        caches.keys().then(cacheNames => {
 
-                return Promise.all(
+            return Promise.all(
 
-                    cacheNames
-                        .filter(name =>
-                            name !== CACHE_NAME
-                        )
-                        .map(name =>
-                            caches.delete(name)
-                        )
+                cacheNames
+                    .filter(name =>
+                        name !== APP_CACHE &&
+                        name !== CONTENT_CACHE
+                    )
+                    .map(name => caches.delete(name))
 
-                );
+            );
 
-            })
-            .then(() => {
-
-                return self.clients.claim();
-
-            })
+        })
 
     );
 
+    self.clients.claim();
 });
 
 
 // ========================================
-// OFFLINE CACHE
+// OFFLINE / CACHE
 // ========================================
 
 self.addEventListener("fetch", event => {
@@ -93,69 +77,5 @@ self.addEventListener("fetch", event => {
             })
 
     );
-
-});
-
-
-// ========================================
-// RUČNÍ AKTUALIZACE
-// ========================================
-
-self.addEventListener("message", event => {
-
-    if (
-        event.data &&
-        event.data.type === "UPDATE_CACHE"
-    ) {
-
-        event.waitUntil(
-
-            caches.open(CACHE_NAME)
-                .then(cache => {
-
-                    return Promise.all(
-
-                        FILES_TO_CACHE.map(
-                            async file => {
-
-                                try {
-
-                                    const response =
-                                        await fetch(
-                                            file,
-                                            {
-                                                cache: "no-store"
-                                            }
-                                        );
-
-                                    if (response.ok) {
-
-                                        await cache.put(
-                                            file,
-                                            response
-                                        );
-
-                                    }
-
-                                } catch (error) {
-
-                                    console.error(
-                                        "Nelze stáhnout:",
-                                        file,
-                                        error
-                                    );
-
-                                }
-
-                            }
-                        )
-
-                    );
-
-                })
-
-        );
-
-    }
 
 });
