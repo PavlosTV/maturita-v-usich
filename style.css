@@ -508,3 +508,12 @@ audio {
     opacity: 0.6;
     cursor: wait;
 }
+.download-button.downloaded {
+    background: #f3f4f6;
+    color: #111827;
+    border: 1px solid #d1d5db;
+}
+
+.download-button.downloaded:hover {
+    background: #e5e7eb;
+}
