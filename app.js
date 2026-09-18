@@ -414,22 +414,25 @@ if (updateButton) {
 
 async function setupOfflineDownload() {
     const button = document.getElementById("downloadStredovek");
-    if (!button) return;
+    const audioElement = document.getElementById("stredovekAudio");
+    if (!button || !audioElement) return;
 
     const CONTENT_CACHE = "maturita-v-usich-content-v1";
     
-    // OPRAVA 1: Převedeme adresy natvrdo na absolutní URL. 
-    // Tím zamezíme tomu, aby se prohlížeč ztratil v lomítkách.
-    const AUDIO_FILE = new URL("./audio/stredovek.mp3", window.location.href).href;
-    const LYRICS_FILE = new URL("./data/stredovek.json", window.location.href).href;
+    // Získáme 100% přesnou adresu přímo z přehrávače (vyřeší problémy s lomítky na GitHubu)
+    const AUDIO_FILE = audioElement.querySelector("source").src;
+    
+    // U textu si pomůžeme vytvořením odkazu
+    const a = document.createElement("a");
+    a.href = "./data/stredovek.json";
+    const LYRICS_FILE = a.href;
 
     async function checkOffline() {
         try {
             const cache = await caches.open(CONTENT_CACHE);
-            // OPRAVA 2: Musíme přidat { ignoreSearch: true }, aby cache ignorovala 
-            // ochranné otazníky, které jsme k souboru přidali při stahování.
-            const audio = await cache.match(AUDIO_FILE, { ignoreSearch: true });
-            const lyrics = await cache.match(LYRICS_FILE, { ignoreSearch: true });
+            // Žádné ignoreSearch. Nyní to hledá absolutně přesnou shodu.
+            const audio = await cache.match(AUDIO_FILE);
+            const lyrics = await cache.match(LYRICS_FILE);
             return !!(audio && lyrics);
         } catch (e) {
             return false;
@@ -448,7 +451,6 @@ async function setupOfflineDownload() {
             }
             button.disabled = false;
         } catch (error) {
-            console.error("Kontrola offline stavu selhala:", error);
             button.textContent = "Stáhnout Středověk offline";
             button.disabled = false;
         }
@@ -463,20 +465,23 @@ async function setupOfflineDownload() {
 
             if (offline) {
                 button.textContent = "Odebírám...";
-                // OPRAVA 3: I při mazání musíme ignorovat otazníky
-                await cache.delete(AUDIO_FILE, { ignoreSearch: true });
-                await cache.delete(LYRICS_FILE, { ignoreSearch: true });
+                await cache.delete(AUDIO_FILE);
+                await cache.delete(LYRICS_FILE);
                 button.textContent = "Středověk byl odebrán";
                 setTimeout(updateOfflineButtonState, 800);
                 return;
             }
 
             button.textContent = "Stahuji audio...";
-            const audioResponse = await fetch(AUDIO_FILE + "?download=" + Date.now(), { cache: "no-store" });
+            // Místo lepení otazníků (?download) použijeme { cache: "reload" }
+            // Tím získáme aktuální soubor, ale uloží se pod dokonalou, čistou URL
+            const audioRequest = new Request(AUDIO_FILE, { cache: "reload" });
+            const audioResponse = await fetch(audioRequest);
             if (!audioResponse.ok) throw new Error("Audio se nepodařilo stáhnout.");
 
             button.textContent = "Stahuji text...";
-            const lyricsResponse = await fetch(LYRICS_FILE + "?download=" + Date.now(), { cache: "no-store" });
+            const lyricsRequest = new Request(LYRICS_FILE, { cache: "reload" });
+            const lyricsResponse = await fetch(lyricsRequest);
             if (!lyricsResponse.ok) throw new Error("Text se nepodařilo stáhnout.");
 
             await cache.put(AUDIO_FILE, audioResponse);
@@ -487,7 +492,6 @@ async function setupOfflineDownload() {
 
         } catch (error) {
             console.error("Offline operace selhala:", error);
-            // Zde se nám ukáže přesný důvod, proč by to mobil případně zablokoval
             alert("Detaily chyby: " + error.message); 
             button.textContent = "Operace se nepodařila";
             button.disabled = false;
