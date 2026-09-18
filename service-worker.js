@@ -1,5 +1,5 @@
-const APP_CACHE = "maturita-v-usich-app-v1";
-const CONTENT_CACHE = "maturita-v-usich-content-v1";
+const APP_CACHE = "maturita-v-usich-app-v2";
+const CONTENT_CACHE = "maturita-v-usich-content-v2";
 
 const APP_FILES = [
     "./",
