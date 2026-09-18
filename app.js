@@ -345,55 +345,6 @@ async function openPeriod(period) {
     `;
 
 }
-// ========================================
-// OFFLINE STAŽENÍ STŘEDOVĚKU
-// ========================================
-
-async function setupOfflineDownload() {
-
-    const button =
-        document.getElementById("downloadStredovek");
-
-    if (!button) {
-        return;
-    }
-
-    const CONTENT_CACHE =
-        "maturita-v-usich-content-v1";
-
-    try {
-
-        const cache =
-            await caches.open(CONTENT_CACHE);
-
-        const audio =
-            await cache.match(
-                "./audio/stredovek.mp3"
-            );
-
-        const lyrics =
-            await cache.match(
-                "./data/stredovek.json"
-            );
-
-        if (audio && lyrics) {
-
-            button.textContent =
-                "✓ Středověk je offline";
-
-            button.disabled = true;
-
-            return;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Kontrola offline obsahu selhala:",
-            error
-        );
-
-    }
 
 
     button.addEventListener(
