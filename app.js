@@ -417,17 +417,25 @@ async function setupOfflineDownload() {
     if (!button) return;
 
     const CONTENT_CACHE = "maturita-v-usich-content-v1";
-    const AUDIO_FILE = "./audio/stredovek.mp3";
-    const LYRICS_FILE = "./data/stredovek.json";
+    
+    // OPRAVA 1: Převedeme adresy natvrdo na absolutní URL. 
+    // Tím zamezíme tomu, aby se prohlížeč ztratil v lomítkách.
+    const AUDIO_FILE = new URL("./audio/stredovek.mp3", window.location.href).href;
+    const LYRICS_FILE = new URL("./data/stredovek.json", window.location.href).href;
 
     async function checkOffline() {
-        const cache = await caches.open(CONTENT_CACHE);
-        const audio = await cache.match(AUDIO_FILE);
-        const lyrics = await cache.match(LYRICS_FILE);
-        return !!(audio && lyrics);
+        try {
+            const cache = await caches.open(CONTENT_CACHE);
+            // OPRAVA 2: Musíme přidat { ignoreSearch: true }, aby cache ignorovala 
+            // ochranné otazníky, které jsme k souboru přidali při stahování.
+            const audio = await cache.match(AUDIO_FILE, { ignoreSearch: true });
+            const lyrics = await cache.match(LYRICS_FILE, { ignoreSearch: true });
+            return !!(audio && lyrics);
+        } catch (e) {
+            return false;
+        }
     }
 
-    // Přejmenováno pro zabránění kolizi s updateButton elementem výše
     async function updateOfflineButtonState() {
         try {
             const offline = await checkOffline();
@@ -455,8 +463,9 @@ async function setupOfflineDownload() {
 
             if (offline) {
                 button.textContent = "Odebírám...";
-                await cache.delete(AUDIO_FILE);
-                await cache.delete(LYRICS_FILE);
+                // OPRAVA 3: I při mazání musíme ignorovat otazníky
+                await cache.delete(AUDIO_FILE, { ignoreSearch: true });
+                await cache.delete(LYRICS_FILE, { ignoreSearch: true });
                 button.textContent = "Středověk byl odebrán";
                 setTimeout(updateOfflineButtonState, 800);
                 return;
@@ -478,6 +487,8 @@ async function setupOfflineDownload() {
 
         } catch (error) {
             console.error("Offline operace selhala:", error);
+            // Zde se nám ukáže přesný důvod, proč by to mobil případně zablokoval
+            alert("Detaily chyby: " + error.message); 
             button.textContent = "Operace se nepodařila";
             button.disabled = false;
             setTimeout(updateOfflineButtonState, 1500);
