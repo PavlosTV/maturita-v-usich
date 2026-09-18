@@ -12,6 +12,15 @@
 
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
 </head>
 
 <body>
