@@ -2,27 +2,24 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <meta name="theme-color" content="#111827">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maturita v uších</title>
 
-    <!-- Propojení s manifestem pro Android/Chrome -->
-<link rel="manifest" href="./manifest.json">
+    <!-- 1. Klasická ikona pro ouško v prohlížeči na počítači (nahrazuje předchozí kód) -->
+    <link rel="icon" type="image/png" href="./icon-192.png">
 
-<!-- Barva horní lišty prohlížeče/systému -->
-<meta name="theme-color" content="#1a1a1a">
+    <!-- 2. Web App Manifest pro Android (instalace aplikace) -->
+    <link rel="manifest" href="./manifest.json">
 
-<!-- Ikona specificky pro iPhony (iOS) -->
-<link rel="apple-touch-icon" href="./icon-192.png">
+    <!-- 3. Barva horní lišty systému/prohlížeče -->
+    <meta name="theme-color" content="#1a1a1a">
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="./favicon.png">
-    <script src="app.js" defer></script>
+    <!-- 4. Speciální ikona pro instalaci na iPhony (iOS) -->
+    <link rel="apple-touch-icon" href="./icon-192.png">
+
+    <!-- Tvé styly a skripty -->
+    <link rel="stylesheet" href="./style.css">
+    <script src="./app.js" defer></script>
 </head>
 
 <body>
