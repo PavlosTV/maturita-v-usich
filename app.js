@@ -1087,23 +1087,7 @@ if (updateButton) {
                         await registration.update();
 
 
-                        // Pošleme Service Workeru příkaz,
-                        // aby stáhl všechny soubory
-                        // včetně MP3.
-
-                        const worker =
-                            registration.active ||
-                            registration.waiting ||
-                            registration.installing;
-
-
-                        if (worker) {
-
-                            worker.postMessage({
-                                type: "UPDATE_CACHE"
-                            });
-
-                        }
+                        
 
                     }
 
