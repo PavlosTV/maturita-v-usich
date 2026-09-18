@@ -1,3 +1,4 @@
+```javascript
 // ========================================
 // MATURITA V UŠÍCH
 // app.js
@@ -8,14 +9,26 @@
 // ZÁKLADNÍ PRVKY
 // ========================================
 
-const homeScreen = document.getElementById("homeScreen");
-const historieScreen = document.getElementById("historieScreen");
-const cetbaScreen = document.getElementById("cetbaScreen");
-const ustniScreen = document.getElementById("ustniScreen");
-const periodScreen = document.getElementById("periodScreen");
+const homeScreen =
+    document.getElementById("homeScreen");
 
-const pageTitle = document.getElementById("pageTitle");
-const backButton = document.getElementById("backButton");
+const historieScreen =
+    document.getElementById("historieScreen");
+
+const cetbaScreen =
+    document.getElementById("cetbaScreen");
+
+const ustniScreen =
+    document.getElementById("ustniScreen");
+
+const periodScreen =
+    document.getElementById("periodScreen");
+
+const pageTitle =
+    document.getElementById("pageTitle");
+
+const backButton =
+    document.getElementById("backButton");
 
 const periodsContainer =
     document.getElementById("periodsContainer");
@@ -35,8 +48,7 @@ let currentScreen = "home";
 
 
 // ========================================
-// POMOCNÁ FUNKCE
-// ZOBRAZÍ JEDNU OBRAZOVKU
+// ZOBRAZENÍ OBRAZOVKY
 // ========================================
 
 function showScreen(screen, title) {
@@ -84,8 +96,6 @@ function showScreen(screen, title) {
     }
 
 
-    // Vždy začneme nahoře
-
     window.scrollTo(0, 0);
 }
 
@@ -95,66 +105,73 @@ function showScreen(screen, title) {
 // ========================================
 
 const menuButtons =
-    document.querySelectorAll(".menu-card[data-section]");
+    document.querySelectorAll(
+        ".menu-card[data-section]"
+    );
 
 
 menuButtons.forEach(button => {
 
-    button.addEventListener("click", function(event) {
+    button.addEventListener(
+        "click",
+        function(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const section =
-            button.getAttribute("data-section");
+            const section =
+                button.getAttribute(
+                    "data-section"
+                );
 
 
-        // --------------------------------
-        // LITERÁRNÍ HISTORICKÝ KONTEXT
-        // --------------------------------
+            // --------------------------------
+            // LITERÁRNÍ HISTORICKÝ KONTEXT
+            // --------------------------------
 
-        if (section === "historie") {
+            if (section === "historie") {
 
-            showScreen(
-                historieScreen,
-                "Literární historický kontext"
-            );
+                showScreen(
+                    historieScreen,
+                    "Literární historický kontext"
+                );
 
-            loadPeriods();
+                loadPeriods();
 
-            return;
+                return;
+            }
+
+
+            // --------------------------------
+            // MATURITNÍ ČETBA
+            // --------------------------------
+
+            if (section === "cetba") {
+
+                showScreen(
+                    cetbaScreen,
+                    "Maturitní četba"
+                );
+
+                return;
+            }
+
+
+            // --------------------------------
+            // ÚSTNÍ MATURITA
+            // --------------------------------
+
+            if (section === "ustni") {
+
+                showScreen(
+                    ustniScreen,
+                    "Příprava k ústní maturitě"
+                );
+
+                return;
+            }
+
         }
-
-
-        // --------------------------------
-        // MATURITNÍ ČETBA
-        // --------------------------------
-
-        if (section === "cetba") {
-
-            showScreen(
-                cetbaScreen,
-                "Maturitní četba"
-            );
-
-            return;
-        }
-
-
-        // --------------------------------
-        // ÚSTNÍ MATURITA
-        // --------------------------------
-
-        if (section === "ustni") {
-
-            showScreen(
-                ustniScreen,
-                "Příprava k ústní maturitě"
-            );
-
-            return;
-        }
-
-    });
+    );
 
 });
 
@@ -184,9 +201,11 @@ async function loadPeriods() {
 
 
         if (!response.ok) {
+
             throw new Error(
                 "Soubor periods.json se nepodařilo načíst."
             );
+
         }
 
 
@@ -198,7 +217,7 @@ async function loadPeriods() {
 
 
         // --------------------------------
-        // VYTVOŘENÍ TLAČÍTEK OBDOBÍ
+        // VYTVOŘENÍ TLAČÍTEK
         // --------------------------------
 
         periods.forEach(period => {
@@ -214,27 +233,27 @@ async function loadPeriods() {
 
             button.innerHTML = `
 
-    <div class="menu-icon">
-        L
-    </div>
+                <div class="menu-icon">
+                    L
+                </div>
 
-    <div>
+                <div>
 
-        <h2>
-            ${period.title}
-        </h2>
+                    <h2>
+                        ${period.title}
+                    </h2>
 
-        <p>
-            Otevřít literární období
-        </p>
+                    <p>
+                        Otevřít literární období
+                    </p>
 
-    </div>
+                </div>
 
-    <span class="arrow">
-        ›
-    </span>
+                <span class="arrow">
+                    ›
+                </span>
 
-`;
+            `;
 
 
             button.addEventListener(
@@ -247,7 +266,9 @@ async function loadPeriods() {
             );
 
 
-            periodsContainer.appendChild(button);
+            periodsContainer.appendChild(
+                button
+            );
 
         });
 
@@ -327,32 +348,40 @@ async function openPeriod(period) {
     // OSTATNÍ OBDOBÍ
     // --------------------------------
 
-    songsContainer.innerHTML = `
+    if (songsContainer) {
 
-        <div class="placeholder-card">
+        songsContainer.innerHTML = `
 
-            <h2>
-                ${period.title}
-            </h2>
+            <div class="placeholder-card">
 
-            <p>
-                Obsah tohoto období
-                zatím připravujeme.
-            </p>
+                <h2>
+                    ${period.title}
+                </h2>
 
-        </div>
+                <p>
+                    Obsah tohoto období
+                    zatím připravujeme.
+                </p>
 
-    `;
+            </div>
+
+        `;
+
+    }
 
 }
 
 
-  
 // ========================================
 // STŘEDOVĚK
 // ========================================
 
 async function loadStredovek() {
+
+    if (!songsContainer) {
+        return;
+    }
+
 
     songsContainer.innerHTML = `
 
@@ -396,11 +425,15 @@ async function loadStredovek() {
                 přehrávání audia.
 
             </audio>
+
+
             <button
                 id="downloadStredovek"
                 class="download-button"
                 type="button">
+
                 Stáhnout Středověk offline
+
             </button>
 
 
@@ -425,7 +458,14 @@ async function loadStredovek() {
 
     `;
 
-setupOfflineDownload();
+
+    // Nastavení offline tlačítka
+
+    setupOfflineDownload();
+
+
+    // Načtení textu
+
     await loadLyrics();
 
 }
@@ -438,11 +478,15 @@ setupOfflineDownload();
 async function loadLyrics() {
 
     const lyricsContainer =
-        document.getElementById("lyrics");
+        document.getElementById(
+            "lyrics"
+        );
 
 
     const audio =
-        document.getElementById("stredovekAudio");
+        document.getElementById(
+            "stredovekAudio"
+        );
 
 
     if (!lyricsContainer || !audio) {
@@ -453,7 +497,9 @@ async function loadLyrics() {
     try {
 
         const response =
-            await fetch("./data/stredovek.json");
+            await fetch(
+                "./data/stredovek.json"
+            );
 
 
         if (!response.ok) {
@@ -491,7 +537,9 @@ async function loadLyrics() {
         data.lines.forEach(line => {
 
             const element =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             element.className =
@@ -585,7 +633,9 @@ async function loadLyrics() {
 
                 // Nic se nezměnilo
 
-                if (newIndex === activeIndex) {
+                if (
+                    newIndex === activeIndex
+                ) {
                     return;
                 }
 
@@ -636,13 +686,18 @@ async function loadLyrics() {
                 function() {
 
                     const start =
-                        Number(line.dataset.start);
+                        Number(
+                            line.dataset.start
+                        );
 
 
-                    if (!Number.isNaN(start)) {
+                    if (
+                        !Number.isNaN(start)
+                    ) {
 
                         audio.currentTime =
                             start;
+
 
                         audio.play();
 
@@ -688,17 +743,6 @@ async function loadLyrics() {
 // ========================================
 // POSOUVÁNÍ TEXTU
 // ========================================
-//
-// Tady je záměrně jiný systém.
-//
-// Nepoužíváme:
-// scrollIntoView()
-// scrollTo({ behavior: "smooth" })
-// ani automatické centrování.
-//
-// Aktivní řádek zůstává přibližně
-// ve stejné oblasti obrazovky.
-// ========================================
 
 function updateLyricsPosition(
     container,
@@ -706,9 +750,7 @@ function updateLyricsPosition(
     index
 ) {
 
-
-    // První tři řádky:
-    // vůbec neposouváme.
+    // První dva řádky neposouváme
 
     if (index < 2) {
         return;
@@ -716,27 +758,25 @@ function updateLyricsPosition(
 
 
     const containerTop =
-        container.getBoundingClientRect().top;
+        container.getBoundingClientRect()
+            .top;
 
 
     const lineTop =
-        activeLine.getBoundingClientRect().top;
+        activeLine.getBoundingClientRect()
+            .top;
 
 
     const lineBottom =
-        activeLine.getBoundingClientRect().bottom;
+        activeLine.getBoundingClientRect()
+            .bottom;
 
 
     const containerHeight =
         container.clientHeight;
 
 
-    /*
-        Aktivní řádek chceme mít
-        přibližně zde:
-
-        35 % výšky textového okna.
-    */
+    // Bezpečná oblast
 
     const desiredTop =
         containerTop +
@@ -748,16 +788,7 @@ function updateLyricsPosition(
         containerHeight * 0.45;
 
 
-    /*
-        Pokud je řádek příliš nahoře,
-        neposouváme.
-
-        Pokud je uvnitř bezpečné zóny,
-        neposouváme.
-
-        Posouváme pouze tehdy,
-        když skutečně opouští bezpečnou zónu.
-    */
+    // Řádek je v bezpečné oblasti
 
     if (
         lineTop >= desiredTop &&
@@ -765,18 +796,15 @@ function updateLyricsPosition(
     ) {
 
         return;
+
     }
 
 
-    /*
-        Řádek je příliš nízko.
-        Posuneme obsah pouze o rozdíl.
+    // Řádek je příliš nízko
 
-        Ne na pevnou absolutní pozici.
-        Pouze o potřebnou vzdálenost.
-    */
-
-    if (lineBottom > desiredBottom) {
+    if (
+        lineBottom > desiredBottom
+    ) {
 
         const difference =
             lineBottom -
@@ -790,19 +818,15 @@ function updateLyricsPosition(
 
 
         return;
+
     }
 
 
-    /*
-        Řádek je příliš nahoře.
+    // Řádek je příliš nahoře
 
-        To může nastat například při kliknutí
-        na starší řádek.
-
-        Posuneme pouze o nutný rozdíl.
-    */
-
-    if (lineTop < desiredTop) {
+    if (
+        lineTop < desiredTop
+    ) {
 
         const difference =
             lineTop -
@@ -820,26 +844,13 @@ function updateLyricsPosition(
 
 
 // ========================================
-// PLYNULÝ POSUN
+// PLYNULÝ POSUN TEXTU
 // ========================================
 
 function smoothLyricsMove(
     container,
     difference
 ) {
-
-    /*
-        Nepoužíváme CSS smooth scroll.
-
-        Uděláme jeden malý posun.
-
-        Další změna přijde až při dalším
-        přechodu řádku.
-
-        Tím zabráníme řetězení animací
-        a následnému skákání.
-    */
-
 
     const current =
         container.scrollTop;
@@ -864,8 +875,7 @@ function smoothLyricsMove(
         performance.now();
 
 
-    const duration =
-        350;
+    const duration = 350;
 
 
     function animate(now) {
@@ -873,13 +883,10 @@ function smoothLyricsMove(
         const progress =
             Math.min(
                 1,
-                (now - start) / duration
+                (now - start) /
+                duration
             );
 
-
-        /*
-            Jemné zpomalení na konci.
-        */
 
         const eased =
             1 -
@@ -923,28 +930,35 @@ if (backButton) {
         "click",
         function() {
 
-
             // Z období zpět na období
 
-            if (currentScreen === periodScreen) {
+            if (
+                currentScreen ===
+                periodScreen
+            ) {
 
                 showScreen(
                     historieScreen,
                     "Literární historický kontext"
                 );
 
+
                 loadPeriods();
 
                 return;
+
             }
 
 
             // Z hlavní sekce domů
 
             if (
-                currentScreen === historieScreen ||
-                currentScreen === cetbaScreen ||
-                currentScreen === ustniScreen
+                currentScreen ===
+                    historieScreen ||
+                currentScreen ===
+                    cetbaScreen ||
+                currentScreen ===
+                    ustniScreen
             ) {
 
                 showScreen(
@@ -958,60 +972,70 @@ if (backButton) {
     );
 
 }
+
+
+// ========================================
+// TLAČÍTKO AKTUALIZACE
+// ========================================
+
 const updateButton =
-    document.getElementById("updateButton");
+    document.getElementById(
+        "updateButton"
+    );
+
 
 if (updateButton) {
 
     updateButton.addEventListener(
         "click",
-        async function () {
+        async function() {
 
             updateButton.textContent =
                 "Stahuji aktualizaci...";
+
 
             updateButton.disabled = true;
 
 
             try {
 
-                if ("serviceWorker" in navigator) {
+                if (
+                    "serviceWorker" in
+                    navigator
+                ) {
 
                     const registration =
-                        await navigator.serviceWorker
+                        await navigator
+                            .serviceWorker
                             .getRegistration();
 
 
                     if (registration) {
 
-                        // Zkontrolujeme novou verzi
-                        // Service Workeru
-
                         await registration.update();
-
-
-                        
 
                     }
 
                 }
 
 
-                // Dáme Service Workeru čas
-                // na stažení souborů.
-
                 updateButton.textContent =
                     "Aktualizace probíhá...";
 
 
-                setTimeout(function () {
+                setTimeout(
+                    function() {
 
-                    window.location.reload();
+                        window.location.reload();
 
-                }, 3000);
+                    },
+                    3000
+                );
+
+            }
 
 
-            } catch (error) {
+            catch (error) {
 
                 console.error(
                     "Aktualizace se nepodařila:",
@@ -1022,6 +1046,7 @@ if (updateButton) {
                 updateButton.textContent =
                     "Aktualizace se nepodařila";
 
+
                 updateButton.disabled = false;
 
             }
@@ -1031,77 +1056,125 @@ if (updateButton) {
 
 }
 
+
 // ========================================
-// OFFLINE STAŽENÍ / ODEBRÁNÍ STŘEDOVĚKU
+// OFFLINE STAŽENÍ / ODEBRÁNÍ
+// STŘEDOVĚKU
 // ========================================
 
 async function setupOfflineDownload() {
 
     const button =
-        document.getElementById("downloadStredovek");
+        document.getElementById(
+            "downloadStredovek"
+        );
+
 
     if (!button) {
         return;
     }
 
+
     const CONTENT_CACHE =
         "maturita-v-usich-content-v1";
 
+
     const AUDIO_FILE =
         "./audio/stredovek.mp3";
+
 
     const LYRICS_FILE =
         "./data/stredovek.json";
 
 
     // ========================================
-    // KONTROLA, JESTLI JE STŘEDOVĚK OFFLINE
+    // KONTROLA OFFLINE STAVU
     // ========================================
 
     async function checkOffline() {
 
         const cache =
-            await caches.open(CONTENT_CACHE);
+            await caches.open(
+                CONTENT_CACHE
+            );
+
 
         const audio =
-            await cache.match(AUDIO_FILE);
+            await cache.match(
+                AUDIO_FILE
+            );
+
 
         const lyrics =
-            await cache.match(LYRICS_FILE);
+            await cache.match(
+                LYRICS_FILE
+            );
 
-        return !!(audio && lyrics);
+
+        return !!(
+            audio &&
+            lyrics
+        );
+
     }
 
 
     // ========================================
-    // AKTUALIZACE VZHLEDU TLAČÍTKA
+    // AKTUALIZACE TLAČÍTKA
     // ========================================
 
     async function updateButton() {
 
-        const offline =
-            await checkOffline();
+        try {
 
-        if (offline) {
+            const offline =
+                await checkOffline();
 
-            button.textContent =
-                "Odebrat Středověk z offline";
 
-            button.classList.add(
-                "downloaded"
+            if (offline) {
+
+                button.textContent =
+                    "Odebrat Středověk z offline";
+
+
+                button.classList.add(
+                    "downloaded"
+                );
+
+            } else {
+
+                button.textContent =
+                    "Stáhnout Středověk offline";
+
+
+                button.classList.remove(
+                    "downloaded"
+                );
+
+            }
+
+
+            button.disabled = false;
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "Kontrola offline stavu selhala:",
+                error
             );
 
-        } else {
 
             button.textContent =
                 "Stáhnout Středověk offline";
 
-            button.classList.remove(
-                "downloaded"
-            );
+
+            button.disabled = false;
+
         }
 
-        button.disabled = false;
     }
 
 
@@ -1123,12 +1196,13 @@ async function setupOfflineDownload() {
                         CONTENT_CACHE
                     );
 
+
                 const offline =
                     await checkOffline();
 
 
                 // ========================================
-                // ODEBRAT OFFLINE
+                // ODEBRAT
                 // ========================================
 
                 if (offline) {
@@ -1136,32 +1210,39 @@ async function setupOfflineDownload() {
                     button.textContent =
                         "Odebírám...";
 
+
                     await cache.delete(
                         AUDIO_FILE
                     );
+
 
                     await cache.delete(
                         LYRICS_FILE
                     );
 
+
                     button.textContent =
                         "Středověk byl odebrán";
+
 
                     setTimeout(
                         updateButton,
                         800
                     );
 
+
                     return;
+
                 }
 
 
                 // ========================================
-                // STÁHNOUT OFFLINE
+                // STÁHNOUT
                 // ========================================
 
                 button.textContent =
                     "Stahuji audio...";
+
 
                 const audioResponse =
                     await fetch(
@@ -1173,15 +1254,19 @@ async function setupOfflineDownload() {
                         }
                     );
 
+
                 if (!audioResponse.ok) {
+
                     throw new Error(
                         "Audio se nepodařilo stáhnout."
                     );
+
                 }
 
 
                 button.textContent =
                     "Stahuji text...";
+
 
                 const lyricsResponse =
                     await fetch(
@@ -1193,18 +1278,25 @@ async function setupOfflineDownload() {
                         }
                     );
 
+
                 if (!lyricsResponse.ok) {
+
                     throw new Error(
                         "Text se nepodařilo stáhnout."
                     );
+
                 }
 
 
-                // Uložíme oba soubory
+                // ========================================
+                // ULOŽENÍ
+                // ========================================
+
                 await cache.put(
                     AUDIO_FILE,
                     audioResponse
                 );
+
 
                 await cache.put(
                     LYRICS_FILE,
@@ -1215,37 +1307,49 @@ async function setupOfflineDownload() {
                 button.textContent =
                     "✓ Středověk je offline";
 
+
                 setTimeout(
                     updateButton,
                     800
                 );
 
+            }
 
-            } catch (error) {
+
+            catch (error) {
 
                 console.error(
                     "Offline operace selhala:",
                     error
                 );
 
+
                 button.textContent =
                     "Operace se nepodařila";
 
+
                 button.disabled = false;
+
 
                 setTimeout(
                     updateButton,
                     1500
                 );
+
             }
 
         }
     );
 
 
-    // První kontrola při otevření stránky
+    // ========================================
+    // PRVNÍ KONTROLA
+    // ========================================
+
     await updateButton();
+
 }
+
 
 // ========================================
 // START APLIKACE
@@ -1255,3 +1359,4 @@ showScreen(
     homeScreen,
     "Maturita v uších"
 );
+```
