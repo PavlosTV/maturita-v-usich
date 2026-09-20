@@ -270,15 +270,34 @@ async function loadPeriodDetail(periodId, periodName, periodDescription) {
     try {
         const response = await fetch(`./data/${periodId}.json`);
         if (!response.ok) throw new Error(`Nenalezen soubor ${periodId}.json`);
-        const songs = await response.json();
         
+        const data = await response.json();
         if (songsContainer) songsContainer.innerHTML = '';
 
-        songs.forEach(song => {
-            // Ochrana pro případ různě strukturovaného JSON souboru s písničkami
+        let songsToRender = [];
+
+        // ROZHODOVACÍ LOGIKA: Zjistíme, co v souboru vlastně je
+        if (Array.isArray(data)) {
+            // Je to seznam skladeb (např. [ {title: "Píseň 1"}, {title: "Píseň 2"} ])
+            songsToRender = data;
+        } else if (data.lines) {
+            // Je to přímo tvůj soubor s textem (má v sobě "lines") - vytvoříme z něj jednu skladbu
+            songsToRender = [{
+                id: periodId,
+                title: data.title || periodName,
+                audioSrc: `./audio/${periodId}.mp3`,
+                jsonSrc: `./data/${periodId}.json`
+            }];
+        } else {
+            throw new Error("Neznámý formát dat v JSON souboru.");
+        }
+
+        // Vykreslení
+        songsToRender.forEach(song => {
             const songTitle = song.title || song.name || 'Neznámá skladba';
             const songId = song.id || songTitle.toLowerCase().replace(/\s+/g, '');
             const audioUrl = song.audioSrc || song.url || `./audio/${songId}.mp3`;
+            const jsonUrl = song.jsonSrc || `./data/${songId}.json`;
             
             const songDiv = document.createElement('div');
             songDiv.className = 'song-card';
@@ -290,7 +309,8 @@ async function loadPeriodDetail(periodId, periodName, periodDescription) {
                 </audio>
             `;
             
-            const downloadBtn = createDownloadButton(songId, audioUrl, `./data/${songId}.json`);
+            // Vygenerujeme offline tlačítko, které stáhne MP3 i tvůj JSON s texty
+            const downloadBtn = createDownloadButton(songId, audioUrl, jsonUrl);
             songDiv.appendChild(downloadBtn);
             
             if (songsContainer) songsContainer.appendChild(songDiv);
@@ -300,7 +320,7 @@ async function loadPeriodDetail(periodId, periodName, periodDescription) {
         if (songsContainer) {
             songsContainer.innerHTML = `
                 <div style="padding: 20px; text-align: center;">
-                    <p>Nebyly nalezeny žádné skladby (soubor <b>./data/${periodId}.json</b> chybí nebo je poškozený).</p>
+                    <p>Nebyly nalezeny žádné skladby nebo je chybný formát.</p>
                 </div>
             `;
         }
