@@ -22,6 +22,22 @@ const periodDescription = document.getElementById("periodDescription");
 // STAV APLIKACE
 // ========================================
 
+
+// Požádá mobilní telefon o trvalé úložiště (zabrání promazávání audia)
+async function initPersistentStorage() {
+    if (navigator.storage && navigator.storage.persist) {
+        const isPersisted = await navigator.storage.persisted();
+        if (!isPersisted) {
+            const granted = await navigator.storage.persist();
+            console.log(`Trvalé úložiště schváleno: ${granted}`);
+        } else {
+            console.log("Trvalé úložiště již bylo dříve schváleno.");
+        }
+    }
+}
+
+// Zavolej při spuštění aplikace
+initPersistentStorage();
 let currentScreen = "home";
 let isScrolling = false; // Zámek proti přehlcení animacemi
 
