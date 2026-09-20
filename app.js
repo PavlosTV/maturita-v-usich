@@ -428,26 +428,45 @@ if (updateButton) {
 // STŘEDOVĚKU
 // ========================================
 
+// ========================================
+// TRVALÉ ÚLOŽIŠTĚ (Zabrání smazání dat OS)
+// ========================================
+async function requestPersistentStorage() {
+    if (navigator.storage && navigator.storage.persist) {
+        const isPersisted = await navigator.storage.persisted();
+        if (!isPersisted) {
+            const granted = await navigator.storage.persist();
+            console.log(granted ? "Trvalé úložiště povoleno." : "Trvalé úložiště zamítnuto.");
+        }
+    }
+}
+
+// ========================================
+// OFFLINE STAŽENÍ / ODEBRÁNÍ (STŘEDOVĚK)
+// ========================================
 async function setupOfflineDownload() {
     const button = document.getElementById("downloadStredovek");
     const audioElement = document.getElementById("stredovekAudio");
     if (!button || !audioElement) return;
 
+    // 1. Zabezpečíme, že nám telefon data automaticky nesmaže
+    await requestPersistentStorage();
+
     const CONTENT_CACHE = "maturita-v-usich-content-v1";
-    const AUDIO_FILE = audioElement.querySelector("source").src;
     
+    // Získání přesných absolutních cest bez rizika špatného formátování na GitHub Pages
+    const AUDIO_FILE = audioElement.querySelector("source").src;
     const a = document.createElement("a");
     a.href = "./data/stredovek.json";
     const LYRICS_FILE = a.href;
 
-    // 1. KONTROLA STAVU Z LOCALSTORAGE (Okamžitá a neprůstřelná na ploše)
-    function isDownloadedInStorage() {
-        return localStorage.getItem("offline_stredovek") === "true";
+    // 2. Kontrola stavu probíhá bleskově z lokální paměti, nevyužíváme zdlouhavé dotazy na Cache API
+    function isDownloaded() {
+        return localStorage.getItem("stredovek_offline_state") === "true";
     }
 
-    async function updateOfflineButtonState() {
-        const offline = isDownloadedInStorage();
-        if (offline) {
+    function updateButtonState() {
+        if (isDownloaded()) {
             button.textContent = "Odebrat Středověk z offline";
             button.classList.add("downloaded");
         } else {
@@ -462,21 +481,22 @@ async function setupOfflineDownload() {
 
         try {
             const cache = await caches.open(CONTENT_CACHE);
-            const offline = isDownloadedInStorage();
 
-            if (offline) {
+            // Pokud je staženo, provedeme odebrání
+            if (isDownloaded()) {
                 button.textContent = "Odebírám...";
                 await cache.delete(AUDIO_FILE);
                 await cache.delete(LYRICS_FILE);
                 
-                // Uložíme stav "smazáno"
-                localStorage.setItem("offline_stredovek", "false");
+                // Uložíme nový stav
+                localStorage.setItem("stredovek_offline_state", "false");
                 
                 button.textContent = "Středověk byl odebrán";
-                setTimeout(updateOfflineButtonState, 800);
+                setTimeout(updateButtonState, 800);
                 return;
             }
 
+            // Pokud není staženo, provedeme stažení
             button.textContent = "Stahuji audio...";
             const audioRequest = new Request(AUDIO_FILE, { cache: "reload" });
             const audioResponse = await fetch(audioRequest);
@@ -490,22 +510,23 @@ async function setupOfflineDownload() {
             await cache.put(AUDIO_FILE, audioResponse);
             await cache.put(LYRICS_FILE, lyricsResponse);
 
-            // Uložíme stav "staženo" do trvalé paměti aplikace
-            localStorage.setItem("offline_stredovek", "true");
+            // Úspěšně staženo do Cache, potvrdíme stav do lokální paměti
+            localStorage.setItem("stredovek_offline_state", "true");
 
             button.textContent = "✓ Středověk je offline";
-            setTimeout(updateOfflineButtonState, 800);
+            setTimeout(updateButtonState, 800);
 
         } catch (error) {
             console.error("Offline operace selhala:", error);
-            alert("Detaily chyby: " + error.message); 
+            alert("Nelze stáhnout: " + error.message); 
             button.textContent = "Operace se nepodařila";
             button.disabled = false;
-            setTimeout(updateOfflineButtonState, 1500);
+            setTimeout(updateButtonState, 1500);
         }
     });
 
-    await updateOfflineButtonState();
+    // Okamžitá aktualizace UI při načtení stránky
+    updateButtonState();
 }
 
 // ========================================
