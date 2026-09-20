@@ -1,536 +1,257 @@
-// ========================================
-// MATURITA V UŠÍCH
-// app.js
-// ========================================
+// ==========================================
+// 1. REGISTRACE SERVICE WORKERU
+// ==========================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('Service Worker registrován'))
+            .catch(err => console.error('Registrace SW selhala:', err));
+    });
+}
 
-// ========================================
-// ZÁKLADNÍ PRVKY
-// ========================================
-
-const homeScreen = document.getElementById("homeScreen");
-const historieScreen = document.getElementById("historieScreen");
-const cetbaScreen = document.getElementById("cetbaScreen");
-const ustniScreen = document.getElementById("ustniScreen");
-const periodScreen = document.getElementById("periodScreen");
-const pageTitle = document.getElementById("pageTitle");
-const backButton = document.getElementById("backButton");
-const periodsContainer = document.getElementById("periodsContainer");
-const songsContainer = document.getElementById("songs");
-const periodDescription = document.getElementById("periodDescription");
-
-// ========================================
-// STAV APLIKACE
-// ========================================
-
-
-// Požádá mobilní telefon o trvalé úložiště (zabrání promazávání audia)
+// ==========================================
+// 2. OCHRANA DAT (PERSISTENT STORAGE)
+// ==========================================
 async function initPersistentStorage() {
     if (navigator.storage && navigator.storage.persist) {
         const isPersisted = await navigator.storage.persisted();
         if (!isPersisted) {
-            const granted = await navigator.storage.persist();
-            console.log(`Trvalé úložiště schváleno: ${granted}`);
-        } else {
-            console.log("Trvalé úložiště již bylo dříve schváleno.");
+            await navigator.storage.persist();
         }
     }
 }
-
-// Zavolej při spuštění aplikace
 initPersistentStorage();
-let currentScreen = "home";
-let isScrolling = false; // Zámek proti přehlcení animacemi
 
-// ========================================
-// ZOBRAZENÍ OBRAZOVKY
-// ========================================
+// ==========================================
+// 3. DATABÁZE (INDEXED-DB) PRO STAV TLAČÍTEK
+// ==========================================
+const DB_NAME = 'MaturitaOfflineDB';
+const STORE_NAME = 'song_states';
 
-function showScreen(screen, title) {
-    const screens = [
-        homeScreen,
-        historieScreen,
-        cetbaScreen,
-        ustniScreen,
-        periodScreen
-    ];
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME);
+            }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
 
-    screens.forEach(item => {
-        if (item) {
-            item.classList.add("hidden");
+async function isSongOffline(songId) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.get(songId);
+        request.onsuccess = () => resolve(request.result === true);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+async function setSongOfflineState(songId, isOffline) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.put(isOffline, songId);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// ==========================================
+// 4. NAVIGACE A PŘEPÍNÁNÍ OBRAZOVEK
+// ==========================================
+const screens = {
+    home: document.getElementById('homeScreen'),
+    historie: document.getElementById('historieScreen'),
+    period: document.getElementById('periodScreen'),
+    cetba: document.getElementById('cetbaScreen'),
+    ustni: document.getElementById('ustniScreen')
+};
+
+const backButton = document.getElementById('backButton');
+const pageTitle = document.getElementById('pageTitle');
+let navigationHistory = ['home'];
+
+function showScreen(screenId, title = 'Maturita v uších') {
+    Object.values(screens).forEach(screen => {
+        if (screen) screen.classList.add('hidden');
+    });
+    if (screens[screenId]) screens[screenId].classList.remove('hidden');
+    if (pageTitle) pageTitle.textContent = title;
+
+    if (screenId === 'home') {
+        navigationHistory = ['home'];
+        if (backButton) backButton.classList.add('hidden');
+    } else {
+        if (navigationHistory[navigationHistory.length - 1] !== screenId) {
+            navigationHistory.push(screenId);
+        }
+        if (backButton) backButton.classList.remove('hidden');
+    }
+}
+
+if (backButton) {
+    backButton.addEventListener('click', () => {
+        if (navigationHistory.length > 1) {
+            navigationHistory.pop();
+            const previousScreen = navigationHistory[navigationHistory.length - 1];
+            showScreen(previousScreen, previousScreen === 'home' ? 'Maturita v uších' : pageTitle.textContent);
         }
     });
-
-    if (screen) {
-        screen.classList.remove("hidden");
-    }
-
-    if (pageTitle) {
-        pageTitle.textContent = title;
-    }
-
-    currentScreen = screen;
-
-    if (backButton) {
-        if (screen === homeScreen) {
-            backButton.classList.add("hidden");
-        } else {
-            backButton.classList.remove("hidden");
-        }
-    }
-
-    window.scrollTo(0, 0);
 }
 
-// ========================================
-// ÚVODNÍ STRÁNKA
-// ========================================
+// ==========================================
+// 5. OFFLINE STAHOVÁNÍ (CACHE + INDEXED-DB)
+// ==========================================
+const CONTENT_CACHE = 'maturita-content-v1';
 
-const menuButtons = document.querySelectorAll(".menu-card[data-section]");
+async function handleOfflineToggle(songId, audioUrl, jsonUrl, buttonElement) {
+    buttonElement.disabled = true;
+    try {
+        const cache = await caches.open(CONTENT_CACHE);
+        const offline = await isSongOffline(songId);
 
-menuButtons.forEach(button => {
-    button.addEventListener("click", function(event) {
-        event.preventDefault();
-        const section = button.getAttribute("data-section");
+        if (offline) {
+            buttonElement.textContent = "Odebírám...";
+            await cache.delete(audioUrl);
+            if (jsonUrl) await cache.delete(jsonUrl);
+            await setSongOfflineState(songId, false);
+        } else {
+            buttonElement.textContent = "Stahuji audio...";
+            const audioRequest = new Request(audioUrl, { cache: "reload" });
+            const audioResponse = await fetch(audioRequest);
+            if (!audioResponse.ok) throw new Error("Nelze stáhnout audio.");
+            
+            let lyricsResponse = null;
+            if (jsonUrl) {
+                buttonElement.textContent = "Stahuji data...";
+                const lyricsRequest = new Request(jsonUrl, { cache: "reload" });
+                lyricsResponse = await fetch(lyricsRequest);
+            }
 
-        if (section === "historie") {
-            showScreen(historieScreen, "Literární historický kontext");
-            loadPeriods();
-            return;
+            await cache.put(audioUrl, audioResponse);
+            if (lyricsResponse && lyricsResponse.ok) await cache.put(jsonUrl, lyricsResponse);
+            await setSongOfflineState(songId, true);
         }
+    } catch (error) {
+        console.error("Chyba:", error);
+        alert("Nezdařilo se: " + error.message);
+    } finally {
+        await updateButtonUI(songId, buttonElement);
+    }
+}
 
-        if (section === "cetba") {
-            showScreen(cetbaScreen, "Maturitní četba");
-            return;
-        }
+async function updateButtonUI(songId, buttonElement) {
+    const offline = await isSongOffline(songId);
+    if (offline) {
+        buttonElement.textContent = "✓ Uloženo offline";
+        buttonElement.classList.add('downloaded');
+    } else {
+        buttonElement.textContent = "Stáhnout offline";
+        buttonElement.classList.remove('downloaded');
+    }
+    buttonElement.disabled = false;
+}
 
-        if (section === "ustni") {
-            showScreen(ustniScreen, "Příprava k ústní maturitě");
-            return;
+function createDownloadButton(songId, audioUrl, jsonUrl = null) {
+    const btn = document.createElement('button');
+    btn.className = 'download-btn';
+    btn.textContent = 'Načítám...';
+    btn.disabled = true;
+    
+    updateButtonUI(songId, btn);
+    btn.addEventListener('click', () => handleOfflineToggle(songId, audioUrl, jsonUrl, btn));
+    
+    return btn;
+}
+
+// ==========================================
+// 6. NAČÍTÁNÍ DYNAMICKÉHO OBSAHU A INICIALIZACE
+// ==========================================
+
+// Propojení hlavního menu
+document.querySelectorAll('.menu-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const target = card.dataset.section;
+        if (target) {
+            showScreen(target, card.querySelector('h2').textContent);
+            // Pokud jdeme do historie, načteme období
+            if (target === 'historie') loadPeriods();
         }
     });
 });
 
-// ========================================
-// NAČTENÍ LITERÁRNÍCH OBDOBÍ
-// ========================================
-
+// Zde nahraď fetch podle toho, jak máš strukturovaná svá data (předpokládám periods.json)
 async function loadPeriods() {
-    if (!periodsContainer) return;
-
-    periodsContainer.innerHTML = `
-        <div class="loading">
-            Načítám literární období...
-        </div>
-    `;
+    const container = document.getElementById('periodsContainer');
+    // Pokud už jsou načtená, nebudeme je stahovat znovu
+    if (container.children.length > 0) return;
 
     try {
-        const response = await fetch("./data/periods.json");
-        if (!response.ok) {
-            throw new Error("Soubor periods.json se nepodařilo načíst.");
-        }
-
+        const response = await fetch('./data/periods.json');
+        if (!response.ok) throw new Error('Nelze načíst seznam období.');
         const periods = await response.json();
-        periodsContainer.innerHTML = "";
 
+        container.innerHTML = '';
         periods.forEach(period => {
-            const button = document.createElement("button");
-            button.type = "button";
-            button.className = "menu-card";
-
-            button.innerHTML = `
-                <div class="menu-icon">L</div>
+            const btn = document.createElement('button');
+            btn.className = 'menu-card';
+            btn.innerHTML = `
                 <div>
-                    <h2>${period.title}</h2>
-                    <p>Otevřít literární období</p>
+                    <h2>${period.name}</h2>
                 </div>
                 <span class="arrow">›</span>
             `;
-
-            button.addEventListener("click", function() {
-                openPeriod(period);
-            });
-
-            periodsContainer.appendChild(button);
+            btn.addEventListener('click', () => loadPeriodDetail(period));
+            container.appendChild(btn);
         });
-
-    } catch (error) {
-        console.error(error);
-        periodsContainer.innerHTML = `
-            <div class="error-card">
-                <h2>Nelze načíst období</h2>
-                <p>Zkontroluj soubor <strong>data/periods.json</strong>.</p>
-            </div>
-        `;
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p>Nepodařilo se načíst data.</p>';
     }
 }
 
-// ========================================
-// OTEVŘENÍ OBDOBÍ
-// ========================================
-
-async function openPeriod(period) {
-    showScreen(periodScreen, period.title);
-
-    if (periodDescription) {
-        periodDescription.innerHTML = "";
-    }
-
-    if (songsContainer) {
-        songsContainer.innerHTML = `
-            <div class="loading">Načítám obsah...</div>
-        `;
-    }
-
-    if (period.content === "stredovek") {
-        await loadStredovek();
-        return;
-    }
-
-    if (songsContainer) {
-        songsContainer.innerHTML = `
-            <div class="placeholder-card">
-                <h2>${period.title}</h2>
-                <p>Obsah tohoto období zatím připravujeme.</p>
-            </div>
-        `;
-    }
-}
-
-// ========================================
-// STŘEDOVĚK
-// ========================================
-
-async function loadStredovek() {
-    if (!songsContainer) return;
-
-    songsContainer.innerHTML = `
-        <div class="song-card">
-            <div class="cover">
-                <span>ČESKÝ JAZYK</span>
-                <strong>STŘEDOVĚK</strong>
-            </div>
-            <h2>Středověk</h2>
-            <p class="description">
-                Hus, Kosmas, legendy, kroniky a středověká literatura.
-            </p>
-            <audio id="stredovekAudio" controls preload="metadata">
-                <source src="./audio/stredovek.mp3" type="audio/mpeg">
-                Tvůj prohlížeč nepodporuje přehrávání audia.
-            </audio>
-            <button id="downloadStredovek" class="download-button" type="button">
-                Stáhnout Středověk offline
-            </button>
-            <div class="lyrics-container">
-                <h3>Text písně</h3>
-                <div id="lyrics">
-                    <div class="loading">Načítám text...</div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    setupOfflineDownload();
-    await loadLyrics();
-}
-
-// ========================================
-// NAČTENÍ TEXTU
-// ========================================
-
-async function loadLyrics() {
-    const lyricsContainer = document.getElementById("lyrics");
-    const audio = document.getElementById("stredovekAudio");
-
-    if (!lyricsContainer || !audio) return;
-
-    try {
-        const response = await fetch("./data/stredovek.json");
-        if (!response.ok) {
-            throw new Error("Soubor stredovek.json se nepodařilo načíst.");
-        }
-
-        const data = await response.json();
-        if (!data.lines || !Array.isArray(data.lines)) {
-            throw new Error("stredovek.json nemá správný formát.");
-        }
-
-        lyricsContainer.innerHTML = "";
-
-        data.lines.forEach(line => {
-            const element = document.createElement("div");
-            element.className = "lyric-line";
-            element.dataset.start = Number(line.start);
-            element.dataset.end = Number(line.end);
-            element.textContent = line.text;
-            lyricsContainer.appendChild(element);
-        });
-
-        const lines = Array.from(lyricsContainer.querySelectorAll(".lyric-line"));
-        let activeIndex = -1;
-
-        audio.addEventListener("timeupdate", function() {
-            const time = audio.currentTime;
-            let newIndex = -1;
-
-            for (let i = 0; i < lines.length; i++) {
-                const start = Number(lines[i].dataset.start);
-                const end = Number(lines[i].dataset.end);
-
-                if (time >= start && time < end) {
-                    newIndex = i;
-                    break;
-                }
-            }
-
-            if (newIndex === -1 || newIndex === activeIndex) return;
-
-            activeIndex = newIndex;
-
-            lines.forEach(line => line.classList.remove("active"));
-            lines[activeIndex].classList.add("active");
-
-            updateLyricsPosition(lyricsContainer, lines[activeIndex], activeIndex);
-        });
-
-        lines.forEach(line => {
-            line.addEventListener("click", function() {
-                const start = Number(line.dataset.start);
-                if (!Number.isNaN(start)) {
-                    audio.currentTime = start;
-                    audio.play();
-                }
-            });
-        });
-
-    } catch (error) {
-        console.error(error);
-        lyricsContainer.innerHTML = `
-            <div class="error-card">
-                <h2>Chyba při načítání textu</h2>
-                <p>Zkontroluj soubor <strong>data/stredovek.json</strong>.</p>
-            </div>
-        `;
-    }
-}
-
-// ========================================
-// POSOUVÁNÍ TEXTU
-// ========================================
-
-function updateLyricsPosition(container, activeLine, index) {
-    if (index < 2) return;
-
-    const containerTop = container.getBoundingClientRect().top;
-    const lineTop = activeLine.getBoundingClientRect().top;
-    const lineBottom = activeLine.getBoundingClientRect().bottom;
-    const containerHeight = container.clientHeight;
-
-    const desiredTop = containerTop + containerHeight * 0.10;
-    const desiredBottom = containerTop + containerHeight * 0.45;
-
-    if (lineTop >= desiredTop && lineBottom <= desiredBottom) return;
-
-    if (lineBottom > desiredBottom) {
-        smoothLyricsMove(container, lineBottom - desiredBottom);
-        return;
-    }
-
-    if (lineTop < desiredTop) {
-        smoothLyricsMove(container, lineTop - desiredTop);
-    }
-}
-
-// ========================================
-// PLYNULÝ POSUN TEXTU (OPRAVENO)
-// ========================================
-
-function smoothLyricsMove(container, difference) {
-    if (isScrolling) return; // Zabrání lavině animací
-    isScrolling = true;
-
-    const current = container.scrollTop;
-    const max = container.scrollHeight - container.clientHeight;
-    const target = Math.max(0, Math.min(current + difference, max));
-    const start = performance.now();
-    const duration = 350;
-
-    function animate(now) {
-        const progress = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        container.scrollTop = current + (target - current) * eased;
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-            isScrolling = false; // Po dokončení odemkneme
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-// ========================================
-// TLAČÍTKO ZPĚT
-// ========================================
-
-if (backButton) {
-    backButton.addEventListener("click", function() {
-        if (currentScreen === periodScreen) {
-            showScreen(historieScreen, "Literární historický kontext");
-            loadPeriods();
-            return;
-        }
-
-        if (
-            currentScreen === historieScreen ||
-            currentScreen === cetbaScreen ||
-            currentScreen === ustniScreen
-        ) {
-            showScreen(homeScreen, "Maturita v uších");
-        }
-    });
-}
-
-// ========================================
-// TLAČÍTKO AKTUALIZACE
-// ========================================
-
-const updateButton = document.getElementById("updateButton");
-
-if (updateButton) {
-    updateButton.addEventListener("click", async function() {
-        updateButton.textContent = "Stahuji aktualizaci...";
-        updateButton.disabled = true;
-
-        try {
-            if ("serviceWorker" in navigator) {
-                const registration = await navigator.serviceWorker.getRegistration();
-                if (registration) {
-                    await registration.update();
-                }
-            }
-
-            updateButton.textContent = "Aktualizace probíhá...";
-            setTimeout(function() {
-                window.location.reload();
-            }, 3000);
-
-        } catch (error) {
-            console.error("Aktualizace se nepodařila:", error);
-            updateButton.textContent = "Aktualizace se nepodařila";
-            updateButton.disabled = false;
-        }
-    });
-}
-
-// ========================================
-// OFFLINE STAŽENÍ / ODEBRÁNÍ
-// STŘEDOVĚKU
-// ========================================
-
-// ========================================
-// TRVALÉ ÚLOŽIŠTĚ (Zabrání smazání dat OS)
-// ========================================
-async function requestPersistentStorage() {
-    if (navigator.storage && navigator.storage.persist) {
-        const isPersisted = await navigator.storage.persisted();
-        if (!isPersisted) {
-            const granted = await navigator.storage.persist();
-            console.log(granted ? "Trvalé úložiště povoleno." : "Trvalé úložiště zamítnuto.");
-        }
-    }
-}
-
-// ========================================
-// OFFLINE STAŽENÍ / ODEBRÁNÍ (STŘEDOVĚK)
-// ========================================
-async function setupOfflineDownload() {
-    const button = document.getElementById("downloadStredovek");
-    const audioElement = document.getElementById("stredovekAudio");
-    if (!button || !audioElement) return;
-
-    // 1. Zabezpečíme, že nám telefon data automaticky nesmaže
-    await requestPersistentStorage();
-
-    const CONTENT_CACHE = "maturita-v-usich-content-v1";
+async function loadPeriodDetail(period) {
+    showScreen('period', period.name);
+    const desc = document.getElementById('periodDescription');
+    const songsContainer = document.getElementById('songs');
     
-    // Získání přesných absolutních cest bez rizika špatného formátování na GitHub Pages
-    const AUDIO_FILE = audioElement.querySelector("source").src;
-    const a = document.createElement("a");
-    a.href = "./data/stredovek.json";
-    const LYRICS_FILE = a.href;
+    desc.textContent = period.description || '';
+    songsContainer.innerHTML = 'Načítám skladby...';
 
-    // 2. Kontrola stavu probíhá bleskově z lokální paměti, nevyužíváme zdlouhavé dotazy na Cache API
-    function isDownloaded() {
-        return localStorage.getItem("stredovek_offline_state") === "true";
+    // Generování konkrétních skladeb pro dané období
+    try {
+        // Zde si uprav logiku, podle toho, kde máš uloženy detaily období
+        const response = await fetch(`./data/${period.id}.json`);
+        const songs = await response.json();
+        songsContainer.innerHTML = '';
+
+        songs.forEach(song => {
+            const songDiv = document.createElement('div');
+            songDiv.className = 'song-card';
+            
+            songDiv.innerHTML = `
+                <h3>${song.title}</h3>
+                <audio controls>
+                    <source src="${song.audioSrc}" type="audio/mpeg">
+                </audio>
+            `;
+            
+            // 💡 Zde kouzlo probíhá: Vygenerujeme PWA offline tlačítko na míru
+            const downloadBtn = createDownloadButton(song.id, song.audioSrc, `./data/${song.id}.json`);
+            songDiv.appendChild(downloadBtn);
+            
+            songsContainer.appendChild(songDiv);
+        });
+    } catch (err) {
+        console.error(err);
+        songsContainer.innerHTML = '<p>Nebyly nalezeny žádné skladby pro toto období.</p>';
     }
-
-    function updateButtonState() {
-        if (isDownloaded()) {
-            button.textContent = "Odebrat Středověk z offline";
-            button.classList.add("downloaded");
-        } else {
-            button.textContent = "Stáhnout Středověk offline";
-            button.classList.remove("downloaded");
-        }
-        button.disabled = false;
-    }
-
-    button.addEventListener("click", async function() {
-        button.disabled = true;
-
-        try {
-            const cache = await caches.open(CONTENT_CACHE);
-
-            // Pokud je staženo, provedeme odebrání
-            if (isDownloaded()) {
-                button.textContent = "Odebírám...";
-                await cache.delete(AUDIO_FILE);
-                await cache.delete(LYRICS_FILE);
-                
-                // Uložíme nový stav
-                localStorage.setItem("stredovek_offline_state", "false");
-                
-                button.textContent = "Středověk byl odebrán";
-                setTimeout(updateButtonState, 800);
-                return;
-            }
-
-            // Pokud není staženo, provedeme stažení
-            button.textContent = "Stahuji audio...";
-            const audioRequest = new Request(AUDIO_FILE, { cache: "reload" });
-            const audioResponse = await fetch(audioRequest);
-            if (!audioResponse.ok) throw new Error("Audio se nepodařilo stáhnout.");
-
-            button.textContent = "Stahuji text...";
-            const lyricsRequest = new Request(LYRICS_FILE, { cache: "reload" });
-            const lyricsResponse = await fetch(lyricsRequest);
-            if (!lyricsResponse.ok) throw new Error("Text se nepodařilo stáhnout.");
-
-            await cache.put(AUDIO_FILE, audioResponse);
-            await cache.put(LYRICS_FILE, lyricsResponse);
-
-            // Úspěšně staženo do Cache, potvrdíme stav do lokální paměti
-            localStorage.setItem("stredovek_offline_state", "true");
-
-            button.textContent = "✓ Středověk je offline";
-            setTimeout(updateButtonState, 800);
-
-        } catch (error) {
-            console.error("Offline operace selhala:", error);
-            alert("Nelze stáhnout: " + error.message); 
-            button.textContent = "Operace se nepodařila";
-            button.disabled = false;
-            setTimeout(updateButtonState, 1500);
-        }
-    });
-
-    // Okamžitá aktualizace UI při načtení stránky
-    updateButtonState();
 }
-
-// ========================================
-// START APLIKACE
-// ========================================
-
-showScreen(homeScreen, "Maturita v uších");
