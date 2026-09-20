@@ -434,42 +434,27 @@ async function setupOfflineDownload() {
     if (!button || !audioElement) return;
 
     const CONTENT_CACHE = "maturita-v-usich-content-v1";
-    
-    // Získáme 100% přesnou adresu přímo z přehrávače (vyřeší problémy s lomítky na GitHubu)
     const AUDIO_FILE = audioElement.querySelector("source").src;
     
-    // U textu si pomůžeme vytvořením odkazu
     const a = document.createElement("a");
     a.href = "./data/stredovek.json";
     const LYRICS_FILE = a.href;
 
-    async function checkOffline() {
-        try {
-            const cache = await caches.open(CONTENT_CACHE);
-            // Žádné ignoreSearch. Nyní to hledá absolutně přesnou shodu.
-            const audio = await cache.match(AUDIO_FILE);
-            const lyrics = await cache.match(LYRICS_FILE);
-            return !!(audio && lyrics);
-        } catch (e) {
-            return false;
-        }
+    // 1. KONTROLA STAVU Z LOCALSTORAGE (Okamžitá a neprůstřelná na ploše)
+    function isDownloadedInStorage() {
+        return localStorage.getItem("offline_stredovek") === "true";
     }
 
     async function updateOfflineButtonState() {
-        try {
-            const offline = await checkOffline();
-            if (offline) {
-                button.textContent = "Odebrat Středověk z offline";
-                button.classList.add("downloaded");
-            } else {
-                button.textContent = "Stáhnout Středověk offline";
-                button.classList.remove("downloaded");
-            }
-            button.disabled = false;
-        } catch (error) {
+        const offline = isDownloadedInStorage();
+        if (offline) {
+            button.textContent = "Odebrat Středověk z offline";
+            button.classList.add("downloaded");
+        } else {
             button.textContent = "Stáhnout Středověk offline";
-            button.disabled = false;
+            button.classList.remove("downloaded");
         }
+        button.disabled = false;
     }
 
     button.addEventListener("click", async function() {
@@ -477,20 +462,22 @@ async function setupOfflineDownload() {
 
         try {
             const cache = await caches.open(CONTENT_CACHE);
-            const offline = await checkOffline();
+            const offline = isDownloadedInStorage();
 
             if (offline) {
                 button.textContent = "Odebírám...";
                 await cache.delete(AUDIO_FILE);
                 await cache.delete(LYRICS_FILE);
+                
+                // Uložíme stav "smazáno"
+                localStorage.setItem("offline_stredovek", "false");
+                
                 button.textContent = "Středověk byl odebrán";
                 setTimeout(updateOfflineButtonState, 800);
                 return;
             }
 
             button.textContent = "Stahuji audio...";
-            // Místo lepení otazníků (?download) použijeme { cache: "reload" }
-            // Tím získáme aktuální soubor, ale uloží se pod dokonalou, čistou URL
             const audioRequest = new Request(AUDIO_FILE, { cache: "reload" });
             const audioResponse = await fetch(audioRequest);
             if (!audioResponse.ok) throw new Error("Audio se nepodařilo stáhnout.");
@@ -502,6 +489,9 @@ async function setupOfflineDownload() {
 
             await cache.put(AUDIO_FILE, audioResponse);
             await cache.put(LYRICS_FILE, lyricsResponse);
+
+            // Uložíme stav "staženo" do trvalé paměti aplikace
+            localStorage.setItem("offline_stredovek", "true");
 
             button.textContent = "✓ Středověk je offline";
             setTimeout(updateOfflineButtonState, 800);
