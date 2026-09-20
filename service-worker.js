@@ -1,4 +1,4 @@
-const APP_CACHE = 'maturita-app-shell-v1';
+const APP_CACHE = 'maturita-app-shell-v2';
 const CONTENT_CACHE = 'maturita-content-v1'; // Zde budeme v app.js ukládat audio
 
 // Zde definujeme pouze soubory kostry, bez MP3 a JSON
