@@ -1,5 +1,9 @@
-const APP_CACHE = 'maturita-app-shell-v2';
-const CONTENT_CACHE = 'maturita-content-v1'; // Zde budeme v app.js ukládat audio
+// ========================================
+// SERVICE WORKER - MATURITA V UŠÍCH
+// ========================================
+
+const APP_CACHE = 'maturita-app-shell-v1';
+const CONTENT_CACHE = 'maturita-content-v1'; // Tuto schránku budeme chránit
 
 // Zde definujeme pouze soubory kostry, bez MP3 a JSON
 const ASSETS = [
@@ -42,19 +46,20 @@ self.addEventListener('activate', event => {
 
 // 3. FETCH (Získávání dat) - Cache First strategie
 self.addEventListener('fetch', event => {
-    // Ignorujeme požadavky z rozšíření prohlížeče atd.
+    // Ignorujeme požadavky z jiných webů a pluginů
     if (!event.request.url.startsWith('http')) return;
 
     event.respondWith(
+        // Díky { ignoreSearch: true } najde soubor i když má za otazníkem parametry
         caches.match(event.request, { ignoreSearch: true }).then(cachedResponse => {
-            // Pokud soubor najdeme v jakékoliv cache (kostra i audio), vrátíme ho
+            // Pokud jsme soubor (audio nebo appku) našli v cache, vrátíme ho
             if (cachedResponse) {
                 return cachedResponse;
             }
             
-            // Jinak ho normálně stáhneme z internetu
+            // Pokud v cache není, stáhneme ho normálně z internetu
             return fetch(event.request).catch(() => {
-                // Pokud selže i síť (člověk je offline a soubor nemá)
+                // Pokud spadne i internet (jsme offline a soubor není stažený), nic se nestane
                 console.log("Zařízení je offline a soubor není v cache.");
             });
         })
