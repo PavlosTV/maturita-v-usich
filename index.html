@@ -5,31 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maturita v uších</title>
 
-    <!-- 1. Klasická ikona pro ouško v prohlížeči na počítači (nahrazuje předchozí kód) -->
     <link rel="icon" type="image/png" href="./icon-192.png">
-
-    <!-- 2. Web App Manifest pro Android (instalace aplikace) -->
     <link rel="manifest" href="./manifest.json">
-
-    <!-- 3. Barva horní lišty systému/prohlížeče -->
     <meta name="theme-color" content="#1a1a1a">
-
-    <!-- 4. Speciální ikona pro instalaci na iPhony (iOS) -->
     <link rel="apple-touch-icon" href="./icon-192.png">
 
-    <!-- Tvé styly a skripty -->
     <link rel="stylesheet" href="./style.css">
     <script src="./app.js" defer></script>
 </head>
 
 <body>
-
     <header class="app-header">
         <div class="header-content">
             <button id="backButton" class="back-button hidden">
                 ← Zpět
             </button>
-
             <div>
                 <div class="app-label">MATURITA V UŠÍCH</div>
                 <h1 id="pageTitle">Maturita v uších</h1>
@@ -37,146 +27,86 @@
         </div>
     </header>
 
-
     <main class="app-container">
-
         <!-- HLAVNÍ MENU -->
         <section id="homeScreen" class="screen">
-
             <div class="welcome">
-                <p>
-                    Uč se k maturitě pomocí krátkých výukových skladeb.
-                </p>
+                <p>Uč se k maturitě pomocí krátkých výukových skladeb.</p>
             </div>
+            
             <button id="updateButton" class="update-button">
                 Aktualizovat
             </button>
+            
             <div class="menu-grid">
-
-                <button class="menu-card"
-                        data-section="cetba">
-
+                <button class="menu-card" data-section="cetba">
                     <div class="menu-icon">Č</div>
-
                     <div>
                         <h2>Maturitní četba</h2>
-                        <p>
-                            Přehled děl a jejich obsah.
-                        </p>
+                        <p>Přehled děl a jejich obsah.</p>
                     </div>
-
                     <span class="arrow">›</span>
-
                 </button>
 
-
-                <button class="menu-card"
-                        data-section="historie">
-
+                <button class="menu-card" data-section="historie">
                     <div class="menu-icon">L</div>
-
                     <div>
                         <h2>Literární historický kontext</h2>
-                        <p>
-                            Období, směry, autoři a důležitá díla.
-                        </p>
+                        <p>Období, směry, autoři a důležitá díla.</p>
                     </div>
-
                     <span class="arrow">›</span>
-
                 </button>
 
-
-                <button class="menu-card"
-                        data-section="ustni">
-
+                <button class="menu-card" data-section="ustni">
                     <div class="menu-icon">M</div>
-
                     <div>
                         <h2>Příprava k ústní maturitě</h2>
-                        <p>
-                            Opakování a příprava na ústní zkoušku.
-                        </p>
+                        <p>Opakování a příprava na ústní zkoušku.</p>
                     </div>
-
                     <span class="arrow">›</span>
-
                 </button>
-
             </div>
-
         </section>
-
 
         <!-- LITERÁRNÍ HISTORICKÝ KONTEXT -->
         <section id="historieScreen" class="screen hidden">
-
             <div class="section-heading">
                 <p>Vyber literární období</p>
             </div>
-
             <div id="periodsContainer" class="menu-grid">
                 <!-- Období se načtou z periods.json -->
             </div>
-
         </section>
 
-
-        <!-- KONKRÉTNÍ OBDOBÍ -->
+        <!-- KONKRÉTNÍ OBDOBÍ (ZDE SE BUDOU GENEROVAT I TLAČÍTKA PRO OFFLINE) -->
         <section id="periodScreen" class="screen hidden">
-
             <div id="periodDescription" class="section-description"></div>
-
             <div id="songs">
-                <!-- Obsah období -->
+                <!-- Obsah období a stahovací tlačítka -->
             </div>
-
         </section>
-
 
         <!-- MATURITNÍ ČETBA -->
         <section id="cetbaScreen" class="screen hidden">
-
             <div class="section-heading">
-                <p>
-                    Zde bude přehled tvé maturitní četby.
-                </p>
+                <p>Zde bude přehled tvé maturitní četby.</p>
             </div>
-
             <div class="placeholder-card">
                 <h2>Maturitní četba</h2>
-
-                <p>
-                    Tuto část postupně doplníme o jednotlivé knihy.
-                </p>
+                <p>Tuto část postupně doplníme o jednotlivé knihy.</p>
             </div>
-
         </section>
-
 
         <!-- ÚSTNÍ MATURITA -->
         <section id="ustniScreen" class="screen hidden">
-
             <div class="section-heading">
-                <p>
-                    Zde bude příprava na ústní maturitu.
-                </p>
+                <p>Zde bude příprava na ústní maturitu.</p>
             </div>
-
             <div class="placeholder-card">
                 <h2>Příprava k ústní maturitě</h2>
-
-                <p>
-                    Tuto část doplníme později.
-                </p>
+                <p>Tuto část doplníme později.</p>
             </div>
-
         </section>
-
     </main>
-
-
-    
-
 </body>
 </html>
