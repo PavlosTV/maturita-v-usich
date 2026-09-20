@@ -2,7 +2,7 @@
 // SERVICE WORKER - MATURITA V UŠÍCH
 // ========================================
 
-const APP_CACHE = "maturita-v-usich-app-v9"; // Zvýšili jsme verzi
+const APP_CACHE = "maturita-v-usich-app-v10"; // Zvýšili jsme verzi
 const CONTENT_CACHE = "maturita-v-usich-content-v1"; // Tuto schránku budeme chránit
 
 // Seznam chráněných schránek (tyto se nesmí smazat)
