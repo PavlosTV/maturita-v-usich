@@ -1,19 +1,14 @@
 [
   {
-    "id": "starovek",
-    "title": "Starověk"
-  },
-  {
     "id": "stredovek",
-    "title": "Středověk",
-    "content": "stredovek"
+    "title": "Středověk"
   },
   {
-    "id": "renesance",
-    "title": "Renesance"
+    "id": "humanismus",
+    "title": "Renesance a humanismus"
   },
   {
-    "id": "baroko",
-    "title": "Baroko"
+    "id": "narodni-obrozeni",
+    "title": "Národní obrození"
   }
 ]
