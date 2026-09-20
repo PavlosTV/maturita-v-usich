@@ -178,34 +178,66 @@ async function loadPeriods() {
     }
 }
 
-async function loadPeriodDetail(periodId) {
-    const container = document.getElementById('songs');
-    const descContainer = document.getElementById('periodDescription');
-    if (!container) return;
+async function loadPeriodDetail(period) {
+    showScreen('period', period.name || period.title);
+    const desc = document.getElementById('periodDescription');
+    const songsContainer = document.getElementById('songs');
     
-    container.innerHTML = '<div class="loading">Načítám skladby...</div>';
-    if (descContainer) descContainer.innerHTML = '';
-    
+    if (desc) desc.textContent = period.description || '';
+    songsContainer.innerHTML = 'Načítám obsah...';
+
     try {
-        const response = await fetch(`./data/${periodId}.json`, { cache: 'no-store' });
-        if (!response.ok) throw new Error("Chyba sítě");
+        const response = await fetch(`./data/${period.id}.json`);
+        if (!response.ok) throw new Error("Soubor nelze načíst");
         const data = await response.json();
-        
-        container.innerHTML = '';
-        
+        songsContainer.innerHTML = '';
+
+        // 1. VARIANTA: Pokud je v JSONu klíč 'lines' (např. tvůj stredovek.json)
         if (data.lines) {
-             renderSong(container, data, periodId);
+            const songDiv = document.createElement('div');
+            songDiv.className = 'song-card';
+            
+            // Odvodíme cestu k audiu (např. ./audio/stredovek.mp3)
+            const audioSrc = `./audio/${period.id}.mp3`;
+            
+            songDiv.innerHTML = `
+                <h3>${data.title || period.name}</h3>
+                <audio controls id="stredovekAudio">
+                    <source src="${audioSrc}" type="audio/mpeg">
+                </audio>
+            `;
+            
+            // Vytvoření PWA offline tlačítka s IndexedDB / Cache
+            const downloadBtn = createDownloadButton(period.id, audioSrc, `./data/${period.id}.json`);
+            songDiv.appendChild(downloadBtn);
+            songsContainer.appendChild(songDiv);
         } 
-        else if (data.songs && Array.isArray(data.songs)) {
-             data.songs.forEach((song, index) => renderSong(container, song, `${periodId}_${index}`));
-        }
+        // 2. VARIANTA: Pokud je v JSONu pole vícero skladeb
         else if (Array.isArray(data)) {
-            data.forEach((song, index) => renderSong(container, song, `${periodId}_${index}`));
+            data.forEach((song, index) => {
+                const songId = song.id || `${period.id}_${index}`;
+                const audioSrc = song.audioSrc || song.audio || `./audio/${songId}.mp3`;
+
+                const songDiv = document.createElement('div');
+                songDiv.className = 'song-card';
+                songDiv.innerHTML = `
+                    <h3>${song.title}</h3>
+                    <audio controls>
+                        <source src="${audioSrc}" type="audio/mpeg">
+                    </audio>
+                `;
+                
+                const downloadBtn = createDownloadButton(songId, audioSrc, `./data/${songId}.json`);
+                songDiv.appendChild(downloadBtn);
+                songsContainer.appendChild(songDiv);
+            });
         } else {
-             container.innerHTML = '<div class="error">Neznámý formát dat.</div>';
+            songsContainer.innerHTML = '<p>Neznámý formát dat v JSON souboru.</p>';
         }
+
     } catch (err) {
-        container.innerHTML = `<div class="error">Nepodařilo se načíst ${periodId}.json.</div>`;
+        console.error(err);
+        songsContainer.innerHTML = `<p>Soubor ./data/${period.id}.json chybí nebo je poškozen.</p>`;
     }
 }
 
