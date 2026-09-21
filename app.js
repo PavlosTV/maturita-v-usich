@@ -1,744 +1,235 @@
-// ==========================================
+// =====================================================
 // MATURITA V UŠÍCH
-// HLAVNÍ LOGIKA APLIKACE
-// ==========================================
+// app.js
+// =====================================================
 
-const APP_CACHE = 'maturita-app-shell-v1';
-const CONTENT_CACHE = 'maturita-content-v1';
+const homeScreen = document.getElementById("homeScreen");
+const historieScreen = document.getElementById("historieScreen");
+const periodScreen = document.getElementById("periodScreen");
+const cetbaScreen = document.getElementById("cetbaScreen");
+const ustniScreen = document.getElementById("ustniScreen");
+
+const pageTitle = document.getElementById("pageTitle");
+const backButton = document.getElementById("backButton");
+
+const periodsContainer = document.getElementById("periodsContainer");
+const songsContainer = document.getElementById("songs");
+
+const periodDescription = document.getElementById("periodDescription");
+
+let currentScreen = "home";
+let currentPeriodId = null;
+let currentLyricIndex = -1;
+let lyricAnimationFrame = null;
 
 
-// ==========================================
-// 1. SERVICE WORKER
-// ==========================================
+// =====================================================
+// ZÁKLADNÍ NAVIGACE
+// =====================================================
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-        try {
-            const registration = await navigator.serviceWorker.register(
-                './service-worker.js'
-            );
-
-            console.log('Service Worker registrován:', registration.scope);
-        } catch (error) {
-            console.error('Registrace Service Workeru selhala:', error);
-        }
-    });
+function hideAllScreens() {
+    if (homeScreen) homeScreen.style.display = "none";
+    if (historieScreen) historieScreen.style.display = "none";
+    if (periodScreen) periodScreen.style.display = "none";
+    if (cetbaScreen) cetbaScreen.style.display = "none";
+    if (ustniScreen) ustniScreen.style.display = "none";
 }
 
 
-// ==========================================
-// 2. AKTUALIZACE APLIKACE
-// ==========================================
+function showHome() {
+    hideAllScreens();
 
-const updateButton = document.getElementById('updateButton');
+    if (homeScreen) {
+        homeScreen.style.display = "";
+    }
 
-if (updateButton) {
-    updateButton.addEventListener('click', async () => {
-        updateButton.disabled = true;
-        updateButton.textContent = 'Aktualizuji...';
+    currentScreen = "home";
+    currentPeriodId = null;
 
-        try {
-            const registration =
-                await navigator.serviceWorker.getRegistration();
+    if (pageTitle) {
+        pageTitle.textContent = "Maturita v uších";
+    }
 
-            if (registration) {
-                await registration.update();
-            }
-
-            window.location.reload();
-
-        } catch (error) {
-            console.error('Aktualizace selhala:', error);
-            window.location.reload();
-        }
-    });
-}
-
-
-// ==========================================
-// 3. PERSISTENT STORAGE
-// ==========================================
-
-async function initPersistentStorage() {
-    try {
-        if (
-            navigator.storage &&
-            navigator.storage.persist
-        ) {
-            const persisted =
-                await navigator.storage.persisted();
-
-            if (!persisted) {
-                const granted =
-                    await navigator.storage.persist();
-
-                console.log(
-                    granted
-                        ? 'Persistent Storage aktivní.'
-                        : 'Persistent Storage nebylo povoleno.'
-                );
-            }
-        }
-    } catch (error) {
-        console.warn(
-            'Persistent Storage není dostupné:',
-            error
-        );
+    if (backButton) {
+        backButton.style.display = "none";
     }
 }
 
-initPersistentStorage();
 
+function showScreen(screen) {
+    hideAllScreens();
 
-// ==========================================
-// 4. INDEXED DB
-// ==========================================
-
-const DB_NAME = 'MaturitaOfflineDB';
-const STORE_NAME = 'song_states';
-
-function openDB() {
-    return new Promise((resolve, reject) => {
-
-        const request =
-            indexedDB.open(DB_NAME, 1);
-
-        request.onupgradeneeded = event => {
-
-            const db = event.target.result;
-
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME);
-            }
-        };
-
-        request.onsuccess = () => {
-            resolve(request.result);
-        };
-
-        request.onerror = () => {
-            reject(request.error);
-        };
-    });
-}
-
-
-async function isSongOffline(songId) {
-
-    const db = await openDB();
-
-    return new Promise((resolve, reject) => {
-
-        const transaction =
-            db.transaction(STORE_NAME, 'readonly');
-
-        const store =
-            transaction.objectStore(STORE_NAME);
-
-        const request =
-            store.get(songId);
-
-        request.onsuccess = () => {
-            resolve(request.result === true);
-        };
-
-        request.onerror = () => {
-            reject(request.error);
-        };
-    });
-}
-
-
-async function setSongOfflineState(songId, state) {
-
-    const db = await openDB();
-
-    return new Promise((resolve, reject) => {
-
-        const transaction =
-            db.transaction(STORE_NAME, 'readwrite');
-
-        const store =
-            transaction.objectStore(STORE_NAME);
-
-        const request =
-            store.put(state, songId);
-
-        request.onsuccess = () => {
-            resolve();
-        };
-
-        request.onerror = () => {
-            reject(request.error);
-        };
-    });
-}
-
-
-// ==========================================
-// 5. NAVIGACE
-// ==========================================
-
-const screens = {
-
-    home:
-        document.getElementById('homeScreen'),
-
-    historie:
-        document.getElementById('historieScreen'),
-
-    period:
-        document.getElementById('periodScreen'),
-
-    cetba:
-        document.getElementById('cetbaScreen'),
-
-    ustni:
-        document.getElementById('ustniScreen')
-};
-
-
-const pageTitle =
-    document.getElementById('pageTitle');
-
-const backButton =
-    document.getElementById('backButton');
-
-
-let historyStack = ['home'];
-
-
-function showScreen(screenId, title) {
-
-    Object.values(screens).forEach(screen => {
-
-        if (screen) {
-            screen.classList.add('hidden');
-        }
-    });
-
-
-    if (screens[screenId]) {
-
-        screens[screenId]
-            .classList.remove('hidden');
+    if (screen) {
+        screen.style.display = "";
     }
 
-
-    if (pageTitle && title) {
-
-        pageTitle.textContent = title;
+    if (backButton) {
+        backButton.style.display = "";
     }
-
-
-    if (screenId === 'home') {
-
-        if (backButton) {
-            backButton.classList.add('hidden');
-        }
-
-        historyStack = ['home'];
-
-    } else {
-
-        if (backButton) {
-            backButton.classList.remove('hidden');
-        }
-
-        if (
-            historyStack[
-                historyStack.length - 1
-            ] !== screenId
-        ) {
-            historyStack.push(screenId);
-        }
-    }
-
-
-    window.scrollTo(0, 0);
 }
 
 
-// ==========================================
-// ZPĚT
-// ==========================================
-
-if (backButton) {
-
-    backButton.addEventListener('click', () => {
-
-        if (historyStack.length <= 1) {
-            showScreen(
-                'home',
-                'Maturita v uších'
-            );
-            return;
-        }
-
-
-        historyStack.pop();
-
-        const previousScreen =
-            historyStack[
-                historyStack.length - 1
-            ] || 'home';
-
-
-        let title = 'Maturita v uších';
-
-
-        if (previousScreen === 'historie') {
-            title = 'Literární kontext';
-        }
-
-        if (previousScreen === 'cetba') {
-            title = 'Maturitní četba';
-        }
-
-        if (previousScreen === 'ustni') {
-            title = 'Ústní zkouška';
-        }
-
-
-        showScreen(
-            previousScreen,
-            title
-        );
-    });
-}
-
-
-// ==========================================
-// 6. HLAVNÍ MENU
-// ==========================================
-
-document
-    .querySelectorAll('.menu-card[data-section]')
-    .forEach(button => {
-
-        button.addEventListener('click', () => {
-
-            const section =
-                button.dataset.section;
-
-
-            if (section === 'historie') {
-
-                showScreen(
-                    'historie',
-                    'Literární kontext'
-                );
-
-                loadPeriods();
-            }
-
-
-            if (section === 'cetba') {
-
-                showScreen(
-                    'cetba',
-                    'Maturitní četba'
-                );
-            }
-
-
-            if (section === 'ustni') {
-
-                showScreen(
-                    'ustni',
-                    'Ústní zkouška'
-                );
-            }
-        });
-    });
-
-
-// ==========================================
-// 7. POMOCNÉ FUNKCE PRO URL
-// ==========================================
-
-function absoluteUrl(path) {
-
-    return new URL(
-        path,
-        window.location.href
-    ).href;
-}
-
-
-// ==========================================
-// 8. NAČTENÍ OBDOBÍ
-// ==========================================
+// =====================================================
+// NAČTENÍ OBDOBÍ
+// =====================================================
 
 async function loadPeriods() {
-
-    const container =
-        document.getElementById(
-            'periodsContainer'
-        );
-
-    if (!container) return;
-
-
-    container.innerHTML =
-        '<div class="loading">Načítám období...</div>';
-
+    if (!periodsContainer) {
+        console.error("Chybí #periodsContainer v index.html");
+        return;
+    }
 
     try {
-
-        const url =
-            './data/periods.json';
-
-
-        const response =
-            await fetch(url);
-
+        const response = await fetch("./data/periods.json");
 
         if (!response.ok) {
             throw new Error(
-                `HTTP ${response.status}`
+                `Nepodařilo se načíst periods.json (${response.status})`
             );
         }
 
+        const periods = await response.json();
 
-        const periods =
-            await response.json();
-
+        periodsContainer.innerHTML = "";
 
         if (!Array.isArray(periods)) {
-
-            throw new Error(
-                'periods.json není pole.'
-            );
+            throw new Error("periods.json musí obsahovat pole.");
         }
 
-
-        renderPeriods(
-            container,
-            periods
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            'Načtení periods.json selhalo:',
-            error
-        );
-
-
-        // ----------------------------------
-        // OFFLINE FALLBACK
-        // ----------------------------------
-
-        try {
-
-            const cached =
-                await caches.match(
-                    absoluteUrl(
-                        './data/periods.json'
-                    )
-                );
-
-
-            if (cached) {
-
-                const periods =
-                    await cached.json();
-
-
-                renderPeriods(
-                    container,
-                    periods
-                );
-
+        periods.forEach(period => {
+            if (!period || !period.id) {
+                console.warn("Přeskakuji neplatné období:", period);
                 return;
             }
 
-        } catch (cacheError) {
+            const button = document.createElement("button");
 
-            console.error(
-                'Offline cache selhala:',
-                cacheError
-            );
-        }
+            button.className = "period-button";
+            button.textContent =
+                period.title ||
+                period.name ||
+                period.id;
 
-
-        container.innerHTML = `
-            <div class="error">
-                <h3>Nepodařilo se načíst období.</h3>
-                <p>
-                    Soubor periods.json není dostupný
-                    ani online, ani offline.
-                </p>
-            </div>
-        `;
-    }
-}
-
-
-// ==========================================
-// 9. VYKRESLENÍ OBDOBÍ
-// ==========================================
-
-function renderPeriods(
-    container,
-    periods
-) {
-
-    container.innerHTML = '';
-
-
-    periods.forEach(period => {
-
-        // DŮLEŽITÉ:
-        // ID MUSÍ BÝT VŽDY JEDNOZNAČNÉ
-
-        const id =
-            period.id ||
-            period.content ||
-            period.slug;
-
-
-        const title =
-            period.title ||
-            period.name ||
-            id;
-
-
-        if (!id) {
-
-            console.error(
-                'Období nemá ID:',
-                period
-            );
-
-            return;
-        }
-
-
-        const button =
-            document.createElement('button');
-
-
-        button.className =
-            'menu-card';
-
-
-        button.innerHTML = `
-            <div class="menu-icon">L</div>
-
-            <div>
-                <h2>${title}</h2>
-                <p>Otevřít období</p>
-            </div>
-
-            <span class="arrow">›</span>
-        `;
-
-
-        button.addEventListener(
-            'click',
-            () => {
-
-                // POSÍLÁME ID, NE CELÝ OBJEKT
+            button.addEventListener("click", () => {
                 openPeriod(
-                    id,
-                    title
+                    period.id,
+                    period.title || period.name || period.id
                 );
-            }
-        );
+            });
 
+            periodsContainer.appendChild(button);
+        });
 
-        container.appendChild(button);
-    });
-}
+    } catch (error) {
+        console.error("Chyba při načítání období:", error);
 
-
-// ==========================================
-// 10. OTEVŘENÍ KONKRÉTNÍHO OBDOBÍ
-// ==========================================
-
-async function openPeriod(
-    periodId,
-    periodTitle
-) {
-
-    // Bezpečnostní kontrola
-    if (
-        !periodId ||
-        periodId === 'undefined' ||
-        periodId === 'null'
-    ) {
-
-        console.error(
-            'Neplatné ID období:',
-            periodId
-        );
-
-        return;
-    }
-
-
-    showScreen(
-        'period',
-        periodTitle
-    );
-
-
-    await loadPeriodDetail(
-        periodId,
-        periodTitle
-    );
-}
-
-
-// ==========================================
-// 11. NAČTENÍ DETAILU OBDOBÍ
-// ==========================================
-
-async function loadPeriodDetail(
-    periodId,
-    periodTitle
-) {
-
-    const container =
-        document.getElementById('songs');
-
-
-    const description =
-        document.getElementById(
-            'periodDescription'
-        );
-
-
-    if (!container) return;
-
-
-    container.innerHTML =
-        '<div class="loading">Načítám obsah...</div>';
-
-
-    if (description) {
-        description.innerHTML = '';
-    }
-
-
-    // ----------------------------------
-    // OCHRANA PROTI undefined.json
-    // ----------------------------------
-
-    if (
-        !periodId ||
-        periodId === 'undefined' ||
-        periodId === 'null'
-    ) {
-
-        console.error(
-            'Pokus o načtení neplatného období:',
-            periodId
-        );
-
-
-        container.innerHTML = `
-            <div class="error">
-                Neplatné ID období.
-            </div>
+        periodsContainer.innerHTML = `
+            <p>
+                Nepodařilo se načíst seznam období.
+            </p>
         `;
+    }
+}
 
+
+// =====================================================
+// OTEVŘENÍ KONKRÉTNÍHO OBDOBÍ
+// =====================================================
+
+function openPeriod(periodId, periodTitle) {
+
+    // OCHRANA PROTI undefined.json
+    if (
+        typeof periodId !== "string" ||
+        periodId.trim() === "" ||
+        periodId === "undefined" ||
+        periodId === "null"
+    ) {
+        console.error(
+            "openPeriod() dostal neplatné ID:",
+            periodId
+        );
+
+        alert("Chybí ID tohoto období.");
         return;
     }
 
+    currentPeriodId = periodId;
 
-    const jsonUrl =
-        `./data/${periodId}.json`;
+    if (pageTitle) {
+        pageTitle.textContent = periodTitle;
+    }
+
+    showScreen(periodScreen);
+
+    loadPeriodDetail(periodId, periodTitle);
+}
 
 
-    console.log(
-        'Načítám období:',
-        jsonUrl
-    );
+// =====================================================
+// NAČTENÍ FINÁLNÍ STRÁNKY OBDOBÍ
+// =====================================================
 
+async function loadPeriodDetail(periodId, periodTitle) {
+
+    if (!songsContainer) {
+        console.error("Chybí #songs v index.html");
+        return;
+    }
+
+    // ID už máme ověřené v openPeriod()
+    const jsonUrl = `./data/${periodId}.json`;
+    const audioUrl = `./audio/${periodId}.mp3`;
+
+    console.log("Načítám období:");
+    console.log("ID:", periodId);
+    console.log("JSON:", jsonUrl);
+    console.log("Audio:", audioUrl);
+
+    songsContainer.innerHTML = `
+        <p>Načítám...</p>
+    `;
 
     try {
 
-        const response =
-            await fetch(jsonUrl);
-
+        const response = await fetch(jsonUrl);
 
         if (!response.ok) {
-
             throw new Error(
-                `HTTP ${response.status}`
+                `Soubor ${jsonUrl} nebyl nalezen (${response.status}).`
             );
         }
 
+        const data = await response.json();
 
-        const data =
-            await response.json();
-
+        console.log("Načtená data:", data);
 
         renderPeriodData(
-            container,
             data,
             periodId,
-            periodTitle
+            periodTitle,
+            audioUrl
         );
-
 
     } catch (error) {
 
         console.error(
-            `Načtení ${jsonUrl} selhalo:`,
+            "Chyba při načítání období:",
             error
         );
 
+        songsContainer.innerHTML = `
+            <div class="error-message">
+                <h3>Nepodařilo se načíst obsah</h3>
 
-        // ----------------------------------
-        // OFFLINE FALLBACK
-        // ----------------------------------
-
-        try {
-
-            const cached =
-                await caches.match(
-                    absoluteUrl(jsonUrl)
-                );
-
-
-            if (cached) {
-
-                const data =
-                    await cached.json();
-
-
-                renderPeriodData(
-                    container,
-                    data,
-                    periodId,
-                    periodTitle
-                );
-
-                return;
-            }
-
-
-        } catch (cacheError) {
-
-            console.error(
-                'Offline detail selhal:',
-                cacheError
-            );
-        }
-
-
-        container.innerHTML = `
-            <div class="error">
-                <h3>Nepodařilo se načíst období.</h3>
                 <p>
-                    Soubor
-                    <strong>${periodId}.json</strong>
-                    není dostupný.
+                    Nepodařilo se načíst:
+                    <strong>${jsonUrl}</strong>
+                </p>
+
+                <p>
+                    Zkontroluj, že tento soubor existuje
+                    ve složce <strong>data</strong>.
                 </p>
             </div>
         `;
@@ -746,368 +237,310 @@ async function loadPeriodDetail(
 }
 
 
-// ==========================================
-// 12. VYKRESLENÍ DAT OBDOBÍ
-// ==========================================
+// =====================================================
+// ZPRACOVÁNÍ DAT
+// =====================================================
 
 function renderPeriodData(
-    container,
     data,
     periodId,
-    periodTitle
+    periodTitle,
+    audioUrl
 ) {
 
-    container.innerHTML = '';
+    if (!songsContainer) {
+        return;
+    }
 
+    songsContainer.innerHTML = "";
 
-    // ----------------------------------
-    // VARIANTA A:
+    // -------------------------------------------------
+    // VARIANTA 1:
     // { lines: [...] }
-    // ----------------------------------
+    // -------------------------------------------------
 
     if (
         data &&
+        typeof data === "object" &&
         Array.isArray(data.lines)
     ) {
 
         renderSong(
-            container,
-            data,
-            periodId
+            {
+                id: periodId,
+                title: data.title || periodTitle,
+                lines: data.lines
+            },
+            audioUrl
         );
 
         return;
     }
 
 
-    // ----------------------------------
-    // VARIANTA B:
+    // -------------------------------------------------
+    // VARIANTA 2:
     // { songs: [...] }
-    // ----------------------------------
+    // -------------------------------------------------
 
     if (
         data &&
+        typeof data === "object" &&
         Array.isArray(data.songs)
     ) {
 
-        data.songs.forEach(
-            (song, index) => {
+        data.songs.forEach((song, index) => {
 
-                const songId =
-                    song.id ||
-                    `${periodId}_${index}`;
-
-
-                renderSong(
-                    container,
-                    song,
-                    songId
-                );
+            if (!song) {
+                return;
             }
-        );
+
+            const songId =
+                song.id ||
+                `${periodId}_${index}`;
+
+            const songAudio =
+                song.audio ||
+                song.audioUrl ||
+                `./audio/${periodId}.mp3`;
+
+            renderSong(
+                {
+                    ...song,
+                    id: songId
+                },
+                songAudio
+            );
+        });
 
         return;
     }
 
 
-    // ----------------------------------
-    // VARIANTA C:
+    // -------------------------------------------------
+    // VARIANTA 3:
     // [...]
-    // ----------------------------------
+    // -------------------------------------------------
 
     if (Array.isArray(data)) {
 
-        data.forEach(
-            (song, index) => {
+        data.forEach((song, index) => {
 
-                const songId =
-                    song.id ||
-                    `${periodId}_${index}`;
-
-
-                renderSong(
-                    container,
-                    song,
-                    songId
-                );
+            if (!song) {
+                return;
             }
-        );
+
+            const songId =
+                song.id ||
+                `${periodId}_${index}`;
+
+            const songAudio =
+                song.audio ||
+                song.audioUrl ||
+                `./audio/${periodId}.mp3`;
+
+            renderSong(
+                {
+                    ...song,
+                    id: songId
+                },
+                songAudio
+            );
+        });
 
         return;
     }
 
 
-    container.innerHTML = `
-        <div class="error">
-            <h3>Neznámý formát dat.</h3>
+    // -------------------------------------------------
+    // NEZNÁMÝ FORMÁT
+    // -------------------------------------------------
+
+    songsContainer.innerHTML = `
+        <div class="error-message">
+            <h3>Neznámý formát dat</h3>
+
             <p>
-                ${periodId}.json neobsahuje
-                očekávaná data.
+                Soubor <strong>${periodId}.json</strong>
+                byl nalezen, ale jeho struktura není podporována.
             </p>
         </div>
     `;
 }
 
 
-// ==========================================
-// 13. VYKRESLENÍ SKLADBY
-// ==========================================
+// =====================================================
+// VYKRESLENÍ SKLADBY
+// =====================================================
 
-function renderSong(
-    container,
-    songData,
-    uniqueId
-) {
+function renderSong(song, audioUrl) {
 
-    const card =
-        document.createElement('div');
+    const songDiv = document.createElement("div");
+
+    songDiv.className = "song";
+
+    const title = document.createElement("h3");
+
+    title.textContent =
+        song.title ||
+        "Maturitní skladba";
+
+    songDiv.appendChild(title);
 
 
-    card.className =
-        'song-card';
-
-
-    // ----------------------------------
+    // -------------------------------------------------
     // AUDIO
-    // ----------------------------------
+    // -------------------------------------------------
 
-    const audioUrl =
-        songData.audio ||
-        songData.audioSrc ||
-        `./audio/${uniqueId.split('_')[0]}.mp3`;
+    const audio = document.createElement("audio");
 
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.src = audioUrl;
 
-    const title =
-        songData.title ||
-        songData.name ||
-        'Skladba';
+    songDiv.appendChild(audio);
 
 
-    // ----------------------------------
-    // TEXT
-    // ----------------------------------
-
-    let lyricsHTML =
-        '<p>Text není k dispozici.</p>';
-
-
-    if (
-        Array.isArray(
-            songData.lines
-        )
-    ) {
-
-        lyricsHTML =
-            songData.lines
-                .map((line, index) => {
-
-                    const start =
-                        Number(
-                            line.start ??
-                            line.time ??
-                            0
-                        );
-
-
-                    const end =
-                        Number(
-                            line.end ??
-                            (start + 5)
-                        );
-
-
-                    return `
-                        <p
-                            class="lyric-line"
-                            data-index="${index}"
-                            data-start="${start}"
-                            data-end="${end}"
-                        >
-                            ${escapeHTML(
-                                line.text || ''
-                            )}
-                        </p>
-                    `;
-                })
-                .join('');
-    }
-
-
-    // ----------------------------------
-    // DOM
-    // ----------------------------------
-
-    card.innerHTML = `
-
-        <div class="cover">
-
-            <span>ČESKÝ JAZYK</span>
-
-            <strong>
-                ${escapeHTML(
-                    title.toUpperCase()
-                )}
-            </strong>
-
-        </div>
-
-
-        <h2>
-            ${escapeHTML(title)}
-        </h2>
-
-
-        <audio
-            id="audio_${uniqueId}"
-            controls
-            preload="metadata"
-        >
-
-            <source
-                src="${audioUrl}"
-                type="audio/mpeg"
-            >
-
-            Tvůj prohlížeč nepodporuje audio.
-        </audio>
-
-
-        <button
-            id="btn_${uniqueId}"
-            class="download-button"
-            type="button"
-        >
-            Načítám stav...
-        </button>
-
-
-        <div class="lyrics-container">
-
-            <h3>Text</h3>
-
-            <div
-                class="lyrics-content"
-                id="lyrics_${uniqueId}"
-            >
-                ${lyricsHTML}
-            </div>
-
-        </div>
-    `;
-
-
-    container.appendChild(card);
-
-
-    // Offline
-    setupOfflineButton(
-        uniqueId,
-        audioUrl,
-        `./data/${uniqueId.split('_')[0]}.json`
-    );
-
-
-    // Synchronizace
-    setupLyricsSync(
-        uniqueId
-    );
-}
-
-
-// ==========================================
-// 14. OCHRANA HTML
-// ==========================================
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-}
-
-
-// ==========================================
-// 15. SYNCHRONIZACE TEXTU
-// ==========================================
-
-function setupLyricsSync(uniqueId) {
-
-    const audio =
-        document.getElementById(
-            `audio_${uniqueId}`
-        );
-
+    // -------------------------------------------------
+    // LYRICS BOX
+    // -------------------------------------------------
 
     const lyricsContainer =
-        document.getElementById(
-            `lyrics_${uniqueId}`
+        document.createElement("div");
+
+    lyricsContainer.className =
+        "lyrics-container";
+
+
+    const lyrics =
+        document.createElement("div");
+
+    lyrics.id = "lyrics";
+
+
+    song.lines = Array.isArray(song.lines)
+        ? song.lines
+        : [];
+
+
+    song.lines.forEach((line, index) => {
+
+        const lineElement =
+            document.createElement("div");
+
+        lineElement.className =
+            "lyric-line";
+
+        lineElement.textContent =
+            line.text || "";
+
+        lineElement.dataset.index =
+            index;
+
+        if (line.start !== undefined) {
+            lineElement.dataset.start =
+                line.start;
+        }
+
+        if (line.end !== undefined) {
+            lineElement.dataset.end =
+                line.end;
+        }
+
+
+        // Kliknutí na řádek přesune audio
+        lineElement.addEventListener(
+            "click",
+            () => {
+
+                if (line.start !== undefined) {
+                    audio.currentTime =
+                        Number(line.start);
+                }
+
+                audio.play().catch(() => {});
+            }
         );
 
 
-    if (
-        !audio ||
-        !lyricsContainer
-    ) {
-        return;
-    }
+        lyrics.appendChild(lineElement);
+    });
 
 
-    const lines =
-        Array.from(
-            lyricsContainer.querySelectorAll(
-                '.lyric-line'
-            )
-        );
+    lyricsContainer.appendChild(lyrics);
+    songDiv.appendChild(lyricsContainer);
 
 
-    if (!lines.length) {
-        return;
-    }
+    // -------------------------------------------------
+    // SYNCHRONIZACE
+    // -------------------------------------------------
 
+    setupLyricSync(
+        audio,
+        lyrics,
+        song.lines
+    );
+
+
+    songsContainer.appendChild(songDiv);
+}
+
+
+// =====================================================
+// SYNCHRONIZACE TEXTU
+// =====================================================
+
+function setupLyricSync(
+    audio,
+    lyrics,
+    lines
+) {
 
     let activeIndex = -1;
 
 
     audio.addEventListener(
-        'timeupdate',
+        "timeupdate",
         () => {
 
-            const currentTime =
-                audio.currentTime;
+            if (!lines.length) {
+                return;
+            }
 
+            const time =
+                audio.currentTime;
 
             let newIndex = -1;
 
 
-            lines.forEach(
-                (line, index) => {
+            for (
+                let i = 0;
+                i < lines.length;
+                i++
+            ) {
 
-                    const start =
-                        Number(
-                            line.dataset.start
-                        );
+                const start =
+                    Number(lines[i].start);
+
+                const end =
+                    lines[i].end !== undefined
+                        ? Number(lines[i].end)
+                        : Infinity;
 
 
-                    const end =
-                        Number(
-                            line.dataset.end
-                        );
+                if (
+                    time >= start &&
+                    time <= end
+                ) {
 
-
-                    if (
-                        currentTime >= start &&
-                        currentTime < end
-                    ) {
-                        newIndex = index;
-                    }
+                    newIndex = i;
+                    break;
                 }
-            );
+            }
 
 
             if (
+                newIndex === -1 ||
                 newIndex === activeIndex
             ) {
                 return;
@@ -1116,286 +549,306 @@ function setupLyricsSync(uniqueId) {
 
             activeIndex = newIndex;
 
-
-            lines.forEach(
-                (line, index) => {
-
-                    line.classList.toggle(
-                        'active',
-                        index === activeIndex
-                    );
-                }
-            );
+            const allLines =
+                lyrics.querySelectorAll(
+                    ".lyric-line"
+                );
 
 
-            if (
-                activeIndex >= 0
-            ) {
-
-                const activeLine =
-                    lines[activeIndex];
+            allLines.forEach(line => {
+                line.classList.remove("active");
+            });
 
 
-                activeLine.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
+            const activeLine =
+                allLines[activeIndex];
+
+            if (!activeLine) {
+                return;
             }
+
+
+            activeLine.classList.add("active");
+
+
+            // První tři řádky
+            // zbytečně neposouváme.
+            if (activeIndex < 3) {
+                return;
+            }
+
+
+            moveLyricsSmoothly(
+                lyrics,
+                activeLine
+            );
         }
     );
 }
 
 
-// ==========================================
-// 16. OFFLINE TLAČÍTKO
-// ==========================================
+// =====================================================
+// PLYNULÝ POSUN TEXTU
+// =====================================================
 
-async function setupOfflineButton(
-    uniqueId,
-    audioUrl,
-    jsonUrl
+function moveLyricsSmoothly(
+    container,
+    line
 ) {
 
-    const button =
-        document.getElementById(
-            `btn_${uniqueId}`
+    const containerRect =
+        container.getBoundingClientRect();
+
+    const lineRect =
+        line.getBoundingClientRect();
+
+
+    const containerHeight =
+        containerRect.height;
+
+
+    // Aktivní řádek chceme
+    // spíše v horní části boxu.
+    const desiredTop =
+        containerRect.top +
+        containerHeight * 0.10;
+
+
+    const desiredBottom =
+        containerRect.top +
+        containerHeight * 0.35;
+
+
+    let targetScroll =
+        container.scrollTop;
+
+
+    if (
+        lineRect.top < desiredTop
+    ) {
+
+        targetScroll +=
+            lineRect.top -
+            desiredTop;
+
+    } else if (
+        lineRect.bottom >
+        desiredBottom
+    ) {
+
+        targetScroll +=
+            lineRect.bottom -
+            desiredBottom;
+    }
+
+
+    targetScroll =
+        Math.max(
+            0,
+            Math.min(
+                targetScroll,
+                container.scrollHeight -
+                container.clientHeight
+            )
         );
 
 
-    if (!button) {
+    if (
+        Math.abs(
+            targetScroll -
+            container.scrollTop
+        ) < 1
+    ) {
         return;
     }
 
 
-    const audioAbsolute =
-        absoluteUrl(audioUrl);
+    animateLyricsScroll(
+        container,
+        targetScroll
+    );
+}
 
 
-    const jsonAbsolute =
-        absoluteUrl(jsonUrl);
+// =====================================================
+// VLASTNÍ ANIMACE SCROLLU
+// =====================================================
+
+function animateLyricsScroll(
+    container,
+    target
+) {
+
+    if (lyricAnimationFrame) {
+        cancelAnimationFrame(
+            lyricAnimationFrame
+        );
+    }
 
 
-    async function updateButton() {
+    const start =
+        container.scrollTop;
 
-        try {
+    const distance =
+        target - start;
 
-            const offline =
-                await isSongOffline(
-                    uniqueId
-                );
+    const duration = 350;
 
-
-            if (offline) {
-
-                button.textContent =
-                    '✓ Odebrat z offline';
-
-                button.classList.add(
-                    'downloaded'
-                );
-
-            } else {
-
-                button.textContent =
-                    'Stáhnout offline';
-
-                button.classList.remove(
-                    'downloaded'
-                );
-            }
+    const startTime =
+        performance.now();
 
 
-            button.disabled = false;
+    function easeInOut(t) {
+
+        return t < 0.5
+            ? 2 * t * t
+            : 1 -
+              Math.pow(
+                  -2 * t + 2,
+                  2
+              ) / 2;
+    }
 
 
-        } catch (error) {
+    function animate(now) {
 
-            console.error(
-                'Stav offline:',
-                error
+        const progress =
+            Math.min(
+                (now - startTime) /
+                duration,
+                1
             );
 
-            button.textContent =
-                'Stáhnout offline';
 
-            button.disabled = false;
+        const eased =
+            easeInOut(progress);
+
+
+        container.scrollTop =
+            start +
+            distance * eased;
+
+
+        if (progress < 1) {
+
+            lyricAnimationFrame =
+                requestAnimationFrame(
+                    animate
+                );
+
+        } else {
+
+            lyricAnimationFrame = null;
         }
     }
 
 
-    await updateButton();
+    lyricAnimationFrame =
+        requestAnimationFrame(
+            animate
+        );
+}
 
 
-    button.addEventListener(
-        'click',
-        async () => {
+// =====================================================
+// ZPĚT
+// =====================================================
 
-            button.disabled = true;
+if (backButton) {
 
+    backButton.addEventListener(
+        "click",
+        () => {
 
-            try {
-
-                const cache =
-                    await caches.open(
-                        CONTENT_CACHE
-                    );
-
-
-                const offline =
-                    await isSongOffline(
-                        uniqueId
-                    );
-
-
-                // -------------------------
-                // ODEBRAT
-                // -------------------------
-
-                if (offline) {
-
-                    button.textContent =
-                        'Odebírám...';
-
-
-                    await cache.delete(
-                        audioAbsolute
-                    );
-
-
-                    await cache.delete(
-                        jsonAbsolute
-                    );
-
-
-                    await setSongOfflineState(
-                        uniqueId,
-                        false
-                    );
-
-
-                    await updateButton();
-
-                    return;
-                }
-
-
-                // -------------------------
-                // STÁHNOUT
-                // -------------------------
-
-                button.textContent =
-                    'Stahuji...';
-
-
-                const audioResponse =
-                    await fetch(
-                        audioAbsolute
-                    );
-
-
-                if (!audioResponse.ok) {
-
-                    throw new Error(
-                        `Audio HTTP ${audioResponse.status}`
-                    );
-                }
-
-
-                const jsonResponse =
-                    await fetch(
-                        jsonAbsolute
-                    );
-
-
-                if (!jsonResponse.ok) {
-
-                    throw new Error(
-                        `JSON HTTP ${jsonResponse.status}`
-                    );
-                }
-
-
-                await cache.put(
-                    audioAbsolute,
-                    audioResponse.clone()
-                );
-
-
-                await cache.put(
-                    jsonAbsolute,
-                    jsonResponse.clone()
-                );
-
-
-                // ----------------------------------
-                // DŮLEŽITÉ:
-                // uložíme také periods.json
-                // ----------------------------------
-
-                try {
-
-                    const periodsUrl =
-                        absoluteUrl(
-                            './data/periods.json'
-                        );
-
-
-                    const periodsResponse =
-                        await fetch(
-                            periodsUrl
-                        );
-
-
-                    if (periodsResponse.ok) {
-
-                        await cache.put(
-                            periodsUrl,
-                            periodsResponse.clone()
-                        );
-                    }
-
-                } catch (error) {
-
-                    console.warn(
-                        'periods.json se nepodařilo uložit:',
-                        error
-                    );
-                }
-
-
-                await setSongOfflineState(
-                    uniqueId,
-                    true
-                );
-
-
-                button.textContent =
-                    '✓ Staženo';
-
-
-                setTimeout(
-                    updateButton,
-                    1000
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    'Offline download error:',
-                    error
-                );
-
-
-                button.textContent =
-                    'Chyba stahování';
-
-
-                setTimeout(
-                    updateButton,
-                    2000
-                );
+            if (
+                currentScreen === "period"
+            ) {
+                showHome();
+                return;
             }
+
+            showHome();
         }
     );
 }
+
+
+// =====================================================
+// HLAVNÍ MENU
+// =====================================================
+
+document
+    .querySelectorAll(".menu-card")
+    .forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                const section =
+                    card.dataset.section;
+
+                if (
+                    section === "historie"
+                ) {
+
+                    currentScreen =
+                        "historie";
+
+                    showScreen(
+                        historieScreen
+                    );
+
+                    if (pageTitle) {
+                        pageTitle.textContent =
+                            "Literární kontext";
+                    }
+
+                    loadPeriods();
+
+                } else if (
+                    section === "cetba"
+                ) {
+
+                    currentScreen =
+                        "cetba";
+
+                    showScreen(
+                        cetbaScreen
+                    );
+
+                    if (pageTitle) {
+                        pageTitle.textContent =
+                            "Maturitní četba";
+                    }
+
+                } else if (
+                    section === "ustni"
+                ) {
+
+                    currentScreen =
+                        "ustni";
+
+                    showScreen(
+                        ustniScreen
+                    );
+
+                    if (pageTitle) {
+                        pageTitle.textContent =
+                            "Ústní zkoušení";
+                    }
+                }
+            }
+        );
+    });
+
+
+// =====================================================
+// START APLIKACE
+// =====================================================
+
+showHome();
+
+console.log(
+    "Maturita v uších – app.js načten."
+);
