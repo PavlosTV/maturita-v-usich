@@ -231,62 +231,59 @@ audio {
 .error {
     color: #ff5252;
 }
-/* ========================================
-   SYNCHRONIZOVANÝ TEXT (KARAOKE)
-======================================== */
-/* ========================================
-   SYNCHRONIZOVANÝ TEXT (KARAOKE - SPOTIFY STYLE)
-======================================== */
-.lyrics-container {
-    margin-top: 20px;
-    width: 100%;
-}
+/* ==========================================
+   SPOTIFY KARAOKE OKNO (Box na 5-7 řádků)
+   ========================================== */
 
-/* Hlavní scrollovací box - nezávislé okno */
-#lyrics {
-    height: 400px; /* Pevná výška okna (můžeš upravit dle potřeby) */
-    overflow-y: auto; /* Scrollování pouze uvnitř tohoto boxu */
+.spotify-lyrics-box {
+    /* Výška cca na 5-7 řádků (upravte podle potřeby) */
+    height: 300px; 
+    overflow-y: auto;
     position: relative;
+    scroll-behavior: auto; /* Zajišťuje JS plynulost */
     
-    /* Vypneme CSS smooth scrolling, protože to děláme přes JS, 
-       jinak by se ty dvě animace "přetahovaly" */
-    scroll-behavior: auto; 
+    /* Horní a dolní padding zaručí, že i 1. a poslední řádek dojedou přesně doprostřed okna */
+    padding: 130px 10px; 
     
-    /* Vycpávky, aby první a poslední řádek mohl dojet až doprostřed okna */
-    padding: 180px 10px; 
-    
-    background: var(--surface-color, #1e1e1e);
+    background: var(--surface-color, #1a1a1a);
     border: 1px solid var(--border-color, #333333);
     border-radius: 16px;
     
-    /* Maska pro plynulé vytracení textu nahoře a dole (volitelné, vypadá to profi) */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    /* Ztmavení u horního a dolního okraje (Fade-out efekt) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
 }
 
-/* Skrytí ošklivého nativního posuvníku (zůstane čistý design) */
-#lyrics::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+/* Skrytí posuvníku pro čistý vzhled aplikací */
+.spotify-lyrics-box::-webkit-scrollbar {
+    display: none;
 }
 
-/* Jednotlivý řádek */
+/* ==========================================
+   JEDNOTLIVÉ ŘÁDKY TEXTU
+   ========================================== */
+
 .lyric-line {
-    padding: 12px 14px;
-    border-radius: 10px;
-    color: var(--text-muted, #6b7280);
-    font-size: 16px; /* O něco větší pro lepší čitelnost */
-    line-height: 1.5;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-size: 1.1rem;
+    color: #777; /* Neaktivní text je zašedlý */
+    text-align: center;
+    border-radius: 12px; /* Zakulacení budoucího "boxu" */
     cursor: pointer;
-    transition: all 0.3s ease; /* Plynulý přechod barev a velikosti */
-    text-align: center; /* Ve Spotify je text často centrovaný */
-    transform-origin: center;
+    
+    /* Tohle vytvoří efekt plynulého přeskočení / animace */
+    transition: all 0.3s ease-in-out;
 }
 
-/* Zvýrazněný (zpívaný) řádek */
+/* ==========================================
+   AKTIVNÍ ŘÁDEK (Skákající box)
+   ========================================== */
+
 .lyric-line.active {
-    color: var(--text-color, #ffffff);
-    font-weight: 700;
-    font-size: 20px; /* Aktivní řádek se mírně zvětší */
-    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+    color: #ffffff; /* Bílý text */
+    background-color: rgba(255, 255, 255, 0.15); /* Zvýrazněný box za textem */
+    transform: scale(1.05); /* Lehce se zvětší (pop-up efekt) */
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
