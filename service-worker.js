@@ -1,4 +1,4 @@
-const APP_CACHE = 'maturita-app-v3';
+const APP_CACHE = 'maturita-app-v4';
 const CONTENT_CACHE = 'maturita-content-v1';
 
 const APP_FILES = [
