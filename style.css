@@ -231,3 +231,47 @@ audio {
 .error {
     color: #ff5252;
 }
+/* ========================================
+   SYNCHRONIZOVANÝ TEXT (KARAOKE)
+======================================== */
+.lyrics-container {
+    margin-top: 30px;
+}
+
+/* Hlavní scrollovací box */
+#lyrics {
+    height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 10px;
+    border: 1px solid var(--border-color, #e5e7eb); /* Použije tmavý border, pokud existuje */
+    border-radius: 16px;
+    background: var(--surface-color, #f9fafb); /* Tmavé pozadí pro Dark Mode z tvého kořene */
+    scroll-behavior: smooth; /* Základní plynulost */
+}
+
+/* Jednotlivý řádek */
+.lyric-line {
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: var(--text-muted, #6b7280); /* Šedá pro neaktivní text */
+    font-size: 15px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover efekt (přejetí myší na PC) */
+.lyric-line:hover {
+    background: rgba(255, 255, 255, 0.05); /* Decentní zesvětlení pro tmavý režim */
+}
+
+/* Zvýrazněný (zpívaný) řádek */
+.lyric-line.active {
+    background: rgba(187, 134, 252, 0.15); /* Jemné fialové pozadí (tvá primary barva) */
+    color: var(--text-color, #ffffff); /* Jasně bílý text */
+    font-weight: 700;
+    transform: translateX(4px); /* Lehké odskočení doprava */
+}
