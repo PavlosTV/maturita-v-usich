@@ -234,44 +234,59 @@ audio {
 /* ========================================
    SYNCHRONIZOVANÝ TEXT (KARAOKE)
 ======================================== */
+/* ========================================
+   SYNCHRONIZOVANÝ TEXT (KARAOKE - SPOTIFY STYLE)
+======================================== */
 .lyrics-container {
-    margin-top: 30px;
+    margin-top: 20px;
+    width: 100%;
 }
 
-/* Hlavní scrollovací box */
+/* Hlavní scrollovací box - nezávislé okno */
 #lyrics {
-    height: 420px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 20px 10px;
-    border: 1px solid var(--border-color, #e5e7eb); /* Použije tmavý border, pokud existuje */
+    height: 400px; /* Pevná výška okna (můžeš upravit dle potřeby) */
+    overflow-y: auto; /* Scrollování pouze uvnitř tohoto boxu */
+    position: relative;
+    
+    /* Vypneme CSS smooth scrolling, protože to děláme přes JS, 
+       jinak by se ty dvě animace "přetahovaly" */
+    scroll-behavior: auto; 
+    
+    /* Vycpávky, aby první a poslední řádek mohl dojet až doprostřed okna */
+    padding: 180px 10px; 
+    
+    background: var(--surface-color, #1e1e1e);
+    border: 1px solid var(--border-color, #333333);
     border-radius: 16px;
-    background: var(--surface-color, #f9fafb); /* Tmavé pozadí pro Dark Mode z tvého kořene */
-    scroll-behavior: smooth; /* Základní plynulost */
+    
+    /* Maska pro plynulé vytracení textu nahoře a dole (volitelné, vypadá to profi) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* Skrytí ošklivého nativního posuvníku (zůstane čistý design) */
+#lyrics::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
 
 /* Jednotlivý řádek */
 .lyric-line {
     padding: 12px 14px;
     border-radius: 10px;
-    color: var(--text-muted, #6b7280); /* Šedá pro neaktivní text */
-    font-size: 15px;
+    color: var(--text-muted, #6b7280);
+    font-size: 16px; /* O něco větší pro lepší čitelnost */
     line-height: 1.5;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-/* Hover efekt (přejetí myší na PC) */
-.lyric-line:hover {
-    background: rgba(255, 255, 255, 0.05); /* Decentní zesvětlení pro tmavý režim */
+    transition: all 0.3s ease; /* Plynulý přechod barev a velikosti */
+    text-align: center; /* Ve Spotify je text často centrovaný */
+    transform-origin: center;
 }
 
 /* Zvýrazněný (zpívaný) řádek */
 .lyric-line.active {
-    background: rgba(187, 134, 252, 0.15); /* Jemné fialové pozadí (tvá primary barva) */
-    color: var(--text-color, #ffffff); /* Jasně bílý text */
+    color: var(--text-color, #ffffff);
     font-weight: 700;
-    transform: translateX(4px); /* Lehké odskočení doprava */
+    font-size: 20px; /* Aktivní řádek se mírně zvětší */
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
 }
