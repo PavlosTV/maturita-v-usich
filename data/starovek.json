@@ -1,0 +1,628 @@
+{
+  "title": "Starověk",
+  "version": 2,
+  "sync": "line",
+  "audio": "./audio/starovek.mp3",
+  "lines": [
+    {
+      "start": 0,
+      "end": 35,
+      "text": "STAROVĚK!"
+    },
+    {
+      "start": 35,
+      "end": 37,
+      "text": "Egypt!"
+    },
+    {
+      "start": 37,
+      "end": 39,
+      "text": "Mezopotámie!"
+    },
+    {
+      "start": 39,
+      "end": 40,
+      "text": "Indie!"
+    },
+    {
+      "start": 40,
+      "end": 41,
+      "text": "Čína!"
+    },
+    {
+      "start": 41,
+      "end": 43,
+      "text": "Řecko!"
+    },
+    {
+      "start": 43,
+      "end": 53,
+      "text": "Řím!"
+    },
+    {
+      "start": 53,
+      "end": 54,
+      "text": "Písmo – začátek!"
+    },
+    {
+      "start": 54,
+      "end": 55,
+      "text": "Čtvrté tisíciletí před Kristem."
+    },
+    {
+      "start": 55,
+      "end": 57,
+      "text": "Pád Říma – konec!"
+    },
+    {
+      "start": 57,
+      "end": 59,
+      "text": "Mnoho bohů – polyteismus!"
+    },
+    {
+      "start": 59,
+      "end": 60,
+      "text": "Filozofie – hledá pravdu!"
+    },
+    {
+      "start": 60,
+      "end": 61,
+      "text": "Rétorika – umění mluvit!"
+    },
+    {
+      "start": 61,
+      "end": 63,
+      "text": "Politika – řízení státu!"
+    },
+    {
+      "start": 63,
+      "end": 67,
+      "text": "STAROVĚK! Písmo – začátek. Pád Říma – konec."
+    },
+
+    {
+      "start": 67,
+      "end": 71,
+      "text": "Mezopotámie – Epos o Gilgamešovi!"
+    },
+    {
+      "start": 71,
+      "end": 73,
+      "text": "Nejstarší velký epos!"
+    },
+    {
+      "start": 73,
+      "end": 75,
+      "text": "Gilgameš hledá nesmrtelnost!"
+    },
+    {
+      "start": 75,
+      "end": 78,
+      "text": "Smrt člověka – hlavní téma!"
+    },
+    {
+      "start": 78,
+      "end": 81,
+      "text": "Egypt – Kniha mrtvých, texty pro cestu do posmrtného života."
+    },
+    {
+      "start": 81,
+      "end": 83,
+      "text": "Indie – Mahábhárata!"
+    },
+    {
+      "start": 83,
+      "end": 85,
+      "text": "Obrovský epos!"
+    },
+    {
+      "start": 85,
+      "end": 87,
+      "text": "Válka, hrdinové, dharma!"
+    },
+    {
+      "start": 87,
+      "end": 89,
+      "text": "Čína – Kniha písní!"
+    },
+    {
+      "start": 89,
+      "end": 92,
+      "text": "Stará sbírka čínské poezie."
+    },
+    {
+      "start": 92,
+      "end": 93,
+      "text": "Gilgameš – Mezopotámie!"
+    },
+    {
+      "start": 93,
+      "end": 95,
+      "text": "Kniha mrtvých – Egypt!"
+    },
+    {
+      "start": 95,
+      "end": 97,
+      "text": "Mahábhárata – Indie!"
+    },
+    {
+      "start": 97,
+      "end": 100,
+      "text": "Kniha písní – Čína!"
+    },
+    {
+      "start": 100,
+      "end": 103,
+      "text": "Gilgameš – Mezopotámie!"
+    },
+    {
+      "start": 103,
+      "end": 106,
+      "text": "Kniha mrtvých – Egypt!"
+    },
+    {
+      "start": 106,
+      "end": 110,
+      "text": "Mahábhárata – Indie! Kniha písní – Čína!"
+    },
+
+    {
+      "start": 110,
+      "end": 113,
+      "text": "BIBLE!"
+    },
+    {
+      "start": 113,
+      "end": 117,
+      "text": "Starý zákon – Nový zákon!"
+    },
+    {
+      "start": 117,
+      "end": 118,
+      "text": "Starý zákon – hlavně hebrejsky."
+    },
+    {
+      "start": 118,
+      "end": 120,
+      "text": "Nový zákon – řecky."
+    },
+    {
+      "start": 120,
+      "end": 123,
+      "text": "Bible vzniká postupně."
+    },
+    {
+      "start": 123,
+      "end": 125,
+      "text": "Od prvního tisíciletí před Kristem"
+    },
+    {
+      "start": 125,
+      "end": 127,
+      "text": "do prvních století našeho letopočtu."
+    },
+    {
+      "start": 127,
+      "end": 129,
+      "text": "Genesis, Exodus, žalmy,"
+    },
+    {
+      "start": 129,
+      "end": 131,
+      "text": "evangelia, Skutky, epištoly,"
+    },
+    {
+      "start": 131,
+      "end": 133,
+      "text": "Zjevení – Apokalypsa."
+    },
+    {
+      "start": 133,
+      "end": 135,
+      "text": "Žalm – píseň nebo modlitba!"
+    },
+    {
+      "start": 135,
+      "end": 137,
+      "text": "Evangelium – zpráva o Ježíši!"
+    },
+    {
+      "start": 137,
+      "end": 139,
+      "text": "Podobenství – příběh s poučením!"
+    },
+    {
+      "start": 139,
+      "end": 141,
+      "text": "Epištola – dopis!"
+    },
+    {
+      "start": 141,
+      "end": 144,
+      "text": "Apokalypsa – zjevení a konec světa!"
+    },
+    {
+      "start": 144,
+      "end": 145,
+      "text": "Adam a Eva!"
+    },
+    {
+      "start": 145,
+      "end": 146,
+      "text": "Noe!"
+    },
+    {
+      "start": 146,
+      "end": 147,
+      "text": "Mojžíš!"
+    },
+    {
+      "start": 147,
+      "end": 148,
+      "text": "David!"
+    },
+    {
+      "start": 148,
+      "end": 149,
+      "text": "Jonáš!"
+    },
+    {
+      "start": 149,
+      "end": 150,
+      "text": "Ježíš!"
+    },
+    {
+      "start": 150,
+      "end": 153,
+      "text": "Ukřižování – zmrtvýchvstání!"
+    },
+    {
+      "start": 153,
+      "end": 156,
+      "text": "Septuaginta – řecký překlad."
+    },
+    {
+      "start": 156,
+      "end": 159,
+      "text": "Vulgata – latinský překlad."
+    },
+    {
+      "start": 159,
+      "end": 162,
+      "text": "Bible kralická – významný český překlad."
+    },
+    {
+      "start": 162,
+      "end": 166,
+      "text": "STARÝ ZÁKON – NOVÝ ZÁKON!"
+    },
+    {
+      "start": 166,
+      "end": 169,
+      "text": "HEBREJŠTINA – ŘEČTINA!"
+    },
+    {
+      "start": 169,
+      "end": 171,
+      "text": "ŽALM – MODLITBA!"
+    },
+    {
+      "start": 171,
+      "end": 173,
+      "text": "EVANGELIUM – JEŽÍŠ!"
+    },
+    {
+      "start": 173,
+      "end": 175,
+      "text": "EPIŠTOLA – DOPIS!"
+    },
+    {
+      "start": 175,
+      "end": 187,
+      "text": "APOKALYPSA – ZJEVENÍ!"
+    },
+
+    {
+      "start": 187,
+      "end": 188,
+      "text": "ŘECKO!"
+    },
+    {
+      "start": 188,
+      "end": 190,
+      "text": "Homér – Ilias, Odysseia!"
+    },
+    {
+      "start": 190,
+      "end": 192,
+      "text": "EPOSY!"
+    },
+    {
+      "start": 192,
+      "end": 195,
+      "text": "Ilias – trojská válka."
+    },
+    {
+      "start": 195,
+      "end": 198,
+      "text": "Odysseia – Odysseův návrat domů."
+    },
+    {
+      "start": 198,
+      "end": 200,
+      "text": "Ezop – BAJKY!"
+    },
+    {
+      "start": 200,
+      "end": 203,
+      "text": "Zvířata jednají jako lidé."
+    },
+    {
+      "start": 203,
+      "end": 205,
+      "text": "Krátký příběh,"
+    },
+    {
+      "start": 205,
+      "end": 207,
+      "text": "na konci MRAVNÍ POUČENÍ!"
+    },
+    {
+      "start": 207,
+      "end": 209,
+      "text": "Aristotelés – Poetika!"
+    },
+    {
+      "start": 209,
+      "end": 211,
+      "text": "Teorie dramatu!"
+    },
+    {
+      "start": 211,
+      "end": 213,
+      "text": "Mimésis – napodobení skutečnosti!"
+    },
+    {
+      "start": 213,
+      "end": 216,
+      "text": "Katarze – očištění emocí!"
+    },
+    {
+      "start": 216,
+      "end": 219,
+      "text": "HOMÉR – EPOS!"
+    },
+    {
+      "start": 219,
+      "end": 222,
+      "text": "EZOP – BAJKY!"
+    },
+    {
+      "start": 222,
+      "end": 224,
+      "text": "ARISTOTELÉS – DRAMA!"
+    },
+    {
+      "start": 224,
+      "end": 227,
+      "text": "ILIAS – TROJSKÁ VÁLKA!"
+    },
+    {
+      "start": 227,
+      "end": 230,
+      "text": "ODYSSEIA – NÁVRAT DOMŮ!"
+    },
+
+    {
+      "start": 230,
+      "end": 233,
+      "text": "Řecké drama vzniká z oslav Dionýsa."
+    },
+    {
+      "start": 233,
+      "end": 235,
+      "text": "Rozvíjí se hlavně v Athénách"
+    },
+    {
+      "start": 235,
+      "end": 237,
+      "text": "v pátém století před Kristem."
+    },
+    {
+      "start": 237,
+      "end": 238,
+      "text": "Herci!"
+    },
+    {
+      "start": 238,
+      "end": 239,
+      "text": "Sbor!"
+    },
+    {
+      "start": 239,
+      "end": 240,
+      "text": "Masky!"
+    },
+    {
+      "start": 240,
+      "end": 241,
+      "text": "Divadlo!"
+    },
+    {
+      "start": 241,
+      "end": 244,
+      "text": "TRAGÉDIE – vážný konflikt, tragický konec."
+    },
+    {
+      "start": 244,
+      "end": 246,
+      "text": "KOMEDIE – humor, výsměch, kritika."
+    },
+    {
+      "start": 246,
+      "end": 249,
+      "text": "SATYRSKÁ HRA – groteskní hra."
+    },
+    {
+      "start": 249,
+      "end": 251,
+      "text": "TRAGÉDIE!"
+    },
+    {
+      "start": 251,
+      "end": 253,
+      "text": "KOMEDIE!"
+    },
+    {
+      "start": 253,
+      "end": 255,
+      "text": "TRAGÉDIE!"
+    },
+    {
+      "start": 255,
+      "end": 257,
+      "text": "KOMEDIE!"
+    },
+
+    {
+      "start": 257,
+      "end": 260,
+      "text": "ŘÍM! Římané navazují na Řeky."
+    },
+    {
+      "start": 260,
+      "end": 263,
+      "text": "Vergilius – AENEIS!"
+    },
+    {
+      "start": 263,
+      "end": 265,
+      "text": "Aeneas – epos o původu Říma."
+    },
+    {
+      "start": 265,
+      "end": 267,
+      "text": "Ovidius – PROMĚNY!"
+    },
+    {
+      "start": 267,
+      "end": 269,
+      "text": "Řecké a římské mýty,"
+    },
+    {
+      "start": 269,
+      "end": 271,
+      "text": "spojené motivem PROMĚNY."
+    },
+    {
+      "start": 271,
+      "end": 273,
+      "text": "Plautus – komedie!"
+    },
+    {
+      "start": 273,
+      "end": 275,
+      "text": "Záměny, intriky, humor!"
+    },
+    {
+      "start": 275,
+      "end": 277,
+      "text": "Terentius – komedie!"
+    },
+    {
+      "start": 277,
+      "end": 280,
+      "text": "Běžný život, uhlazenější styl!"
+    },
+    {
+      "start": 280,
+      "end": 283,
+      "text": "VERGILIUS – AENEIS!"
+    },
+    {
+      "start": 283,
+      "end": 286,
+      "text": "OVIDIUS – PROMĚNY!"
+    },
+    {
+      "start": 286,
+      "end": 289,
+      "text": "PLAUSUTUS – KOMEDIE!"
+    },
+    {
+      "start": 289,
+      "end": 292,
+      "text": "TERENTIUS – KOMEDIE!"
+    },
+    {
+      "start": 292,
+      "end": 295,
+      "text": "HOMÉR – EPOS!"
+    },
+    {
+      "start": 295,
+      "end": 298,
+      "text": "EZOP – BAJKY!"
+    },
+    {
+      "start": 298,
+      "end": 301,
+      "text": "ARISTOTELÉS – DRAMA!"
+    },
+    {
+      "start": 301,
+      "end": 303,
+      "text": "STAROVĚK!"
+    },
+    {
+      "start": 303,
+      "end": 305,
+      "text": "Písmo – začátek!"
+    },
+    {
+      "start": 305,
+      "end": 307,
+      "text": "Pád Říma – konec!"
+    },
+    {
+      "start": 307,
+      "end": 309,
+      "text": "ŘECKO!"
+    },
+    {
+      "start": 309,
+      "end": 311,
+      "text": "ŘÍM!"
+    },
+    {
+      "start": 311,
+      "end": 313,
+      "text": "BIBLE!"
+    },
+    {
+      "start": 313,
+      "end": 315,
+      "text": "ORIENT!"
+    },
+    {
+      "start": 315,
+      "end": 318,
+      "text": "STAROVĚK!"
+    },
+    {
+      "start": 318,
+      "end": 320,
+      "text": "STAROVĚK!"
+    },
+    {
+      "start": 320,
+      "end": 322,
+      "text": "STAROVĚK!"
+    },
+    {
+      "start": 322,
+      "end": 324,
+      "text": "TEĎ UŽ TO ZNÁŠ!"
+    }
+  ]
+}
