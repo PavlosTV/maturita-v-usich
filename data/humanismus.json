@@ -1,0 +1,23 @@
+{
+  "title": "Renesance a humanismus",
+  "version": 1,
+  "sync": "line",
+  "audio": "./audio/renesance.mp3",
+  "lines": [
+    {
+      "start": 0,
+      "end": 5,
+      "text": "Renesance – návrat k člověku, antice a pozemskému životu."
+    },
+    {
+      "start": 5,
+      "end": 10,
+      "text": "Čtrnácté až šestnácté století, hlavně Itálie."
+    },
+    {
+      "start": 10,
+      "end": 15,
+      "text": "Humanismus zdůrazňuje člověka, vzdělání a rozum."
+    }
+  ]
+}
