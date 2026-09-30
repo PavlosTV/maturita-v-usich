@@ -5,19 +5,604 @@
   "audio": "./audio/renesance.mp3",
   "lines": [
     {
-      "start": 0,
-      "end": 5,
-      "text": "Renesance – návrat k člověku, antice a pozemskému životu."
-    },
-    {
-      "start": 5,
-      "end": 10,
-      "text": "Čtrnácté až šestnácté století, hlavně Itálie."
-    },
-    {
       "start": 10,
       "end": 15,
-      "text": "Humanismus zdůrazňuje člověka, vzdělání a rozum."
+      "text": "Renesance – čtrnácté až šestnácté století."
+    },
+    {
+      "start": 15,
+      "end": 20,
+      "text": "Z Itálie do Evropy její myšlenka letí."
+    },
+    {
+      "start": 20,
+      "end": 24,
+      "text": "Humanismus – člověk, rozum, vzdělání."
+    },
+    {
+      "start": 24,
+      "end": 28,
+      "text": "Antika se vrací, nový pohled na svět přichází."
+    },
+    {
+      "start": 28,
+      "end": 30,
+      "text": "Obnova antiky."
+    },
+    {
+      "start": 30,
+      "end": 34,
+      "text": "Humanismus – člověk v centru pozornosti."
+    },
+    {
+      "start": 34,
+      "end": 36,
+      "text": "Renesance – návrat k antice."
+    },
+    {
+      "start": 36,
+      "end": 39,
+      "text": "Humanismus – člověk a jeho schopnosti."
+    },
+    {
+      "start": 39,
+      "end": 41,
+      "text": "Rozum, vzdělání, pozemský život."
+    },
+    {
+      "start": 41,
+      "end": 44,
+      "text": "Antické vzory, příroda, harmonie."
+    },
+    {
+      "start": 44,
+      "end": 45,
+      "text": "Renesance – obnova."
+    },
+    {
+      "start": 45,
+      "end": 46,
+      "text": "Humanismus – člověk."
+    },
+    {
+      "start": 46,
+      "end": 48,
+      "text": "Renesance – umění."
+    },
+    {
+      "start": 48,
+      "end": 54,
+      "text": "Humanismus – vzdělání."
+    },
+    {
+      "start": 54,
+      "end": 58,
+      "text": "Renesance vzniká v Itálii, hlavně ve městech bohatých."
+    },
+    {
+      "start": 58,
+      "end": 61,
+      "text": "Obchodem Florencie, Benátky říše."
+    },
+    {
+      "start": 61,
+      "end": 63,
+      "text": "Měšťanstvo a mecenáši podporují umění."
+    },
+    {
+      "start": 63,
+      "end": 66,
+      "text": "Objevné cesty, knihy, tisk, rozvoj vědy."
+    },
+    {
+      "start": 66,
+      "end": 68,
+      "text": "Člověk začíná svět poznávat jinak."
+    },
+    {
+      "start": 68,
+      "end": 70,
+      "text": "Renesance znamená znovuzrození."
+    },
+    {
+      "start": 70,
+      "end": 72,
+      "text": "Návrat k antice, kráse a harmonii."
+    },
+    {
+      "start": 72,
+      "end": 75,
+      "text": "Humanismus – vzdělanostní a myšlenkové hnutí."
+    },
+    {
+      "start": 75,
+      "end": 78,
+      "text": "Člověk, jeho rozum a schopnosti jsou důležité."
+    },
+    {
+      "start": 78,
+      "end": 81,
+      "text": "Humanista studuje jazyky, historii, antiku."
+    },
+    {
+      "start": 81,
+      "end": 84,
+      "text": "Věří ve vzdělání a rozvoj člověka."
+    },
+    {
+      "start": 84,
+      "end": 87,
+      "text": "Renesance – znovuzrození antiky."
+    },
+    {
+      "start": 87,
+      "end": 90,
+      "text": "Humanismus – člověk, rozum, vzdělání."
+    },
+    {
+      "start": 90,
+      "end": 91,
+      "text": "Itálie – začátek."
+    },
+    {
+      "start": 91,
+      "end": 94,
+      "text": "Pak celá Evropa."
+    },
+    {
+      "start": 94,
+      "end": 97,
+      "text": "Leonardo da Vinci – Mona Lisa."
+    },
+    {
+      "start": 97,
+      "end": 99,
+      "text": "Poslední večeře – vědec i umělec."
+    },
+    {
+      "start": 99,
+      "end": 101,
+      "text": "Michelangelo – David, Sixtinská kaple."
+    },
+    {
+      "start": 101,
+      "end": 104,
+      "text": "Rafael – Madonna, Sixtinské kaple."
+    },
+    {
+      "start": 104,
+      "end": 106,
+      "text": "Leonardo, Michelangelo, Rafael."
+    },
+    {
+      "start": 106,
+      "end": 109,
+      "text": "Představitelé renesančního umění."
+    },
+    {
+      "start": 109,
+      "end": 112,
+      "text": "Itálie – Dante, Petrarca."
+    },
+    {
+      "start": 112,
+      "end": 114,
+      "text": "Boccaccio, Petrarca."
+    },
+    {
+      "start": 114,
+      "end": 117,
+      "text": "Sonety, Laura, láska."
+    },
+    {
+      "start": 117,
+      "end": 118,
+      "text": "Dekameron."
+    },
+    {
+      "start": 118,
+      "end": 120,
+      "text": "Sto novel vyprávěných během moru."
+    },
+    {
+      "start": 120,
+      "end": 123,
+      "text": "Francie – François Villon."
+    },
+    {
+      "start": 123,
+      "end": 127,
+      "text": "Básník, autor Velkého testamentu."
+    },
+    {
+      "start": 127,
+      "end": 130,
+      "text": "Proslulý villonskou baladou."
+    },
+    {
+      "start": 130,
+      "end": 132,
+      "text": "Španělsko – Miguel de Cervantes."
+    },
+    {
+      "start": 132,
+      "end": 135,
+      "text": "Don Quijote – parodie rytířských románů."
+    },
+    {
+      "start": 135,
+      "end": 138,
+      "text": "Příběh idealisty, který bojuje s větrnými mlýny."
+    },
+    {
+      "start": 138,
+      "end": 141,
+      "text": "Anglie – William Shakespeare."
+    },
+    {
+      "start": 141,
+      "end": 143,
+      "text": "Nejvýznamnější dramatik."
+    },
+    {
+      "start": 143,
+      "end": 144,
+      "text": "Renesanční tragédie."
+    },
+    {
+      "start": 144,
+      "end": 146,
+      "text": "Hamlet, Macbeth, Romeo a Julie."
+    },
+    {
+      "start": 146,
+      "end": 148,
+      "text": "Komedie – Zkrocení zlé ženy."
+    },
+    {
+      "start": 148,
+      "end": 151,
+      "text": "Sen noci svatojánské."
+    },
+    {
+      "start": 151,
+      "end": 152,
+      "text": "Shakespeare – drama, Hamlet."
+    },
+    {
+      "start": 152,
+      "end": 155,
+      "text": "Váhající princ, Romeo a Julie."
+    },
+    {
+      "start": 155,
+      "end": 157,
+      "text": "Tragická láska, Macbeth."
+    },
+    {
+      "start": 157,
+      "end": 160,
+      "text": "Moc, vina a tragédie."
+    },
+    {
+      "start": 160,
+      "end": 163,
+      "text": "Itálie – Petrarca, Boccaccio."
+    },
+    {
+      "start": 163,
+      "end": 165,
+      "text": "Francie – Villon, Španělsko – Cervantes."
+    },
+    {
+      "start": 165,
+      "end": 168,
+      "text": "Anglie – Shakespeare."
+    },
+    {
+      "start": 168,
+      "end": 170,
+      "text": "Petrarca – sonety, Boccaccio."
+    },
+    {
+      "start": 170,
+      "end": 172,
+      "text": "Dekameron, Villon – balada."
+    },
+    {
+      "start": 172,
+      "end": 175,
+      "text": "Cervantes – Don Quijote, Shakespeare."
+    },
+    {
+      "start": 175,
+      "end": 178,
+      "text": "Drama – Hamlet."
+    },
+    {
+      "start": 178,
+      "end": 180,
+      "text": "Váhající princ, Romeo a Julie."
+    },
+    {
+      "start": 180,
+      "end": 182,
+      "text": "Tragická láska, Macbeth."
+    },
+    {
+      "start": 182,
+      "end": 184,
+      "text": "Moc, vina a tragédie."
+    },
+    {
+      "start": 184,
+      "end": 187,
+      "text": "Itálie – Petrarca, Boccaccio."
+    },
+    {
+      "start": 187,
+      "end": 190,
+      "text": "Francie – Villon, Španělsko – Cervantes."
+    },
+    {
+      "start": 190,
+      "end": 193,
+      "text": "Anglie – Shakespeare."
+    },
+    {
+      "start": 193,
+      "end": 195,
+      "text": "Petrarca – sonety, Boccaccio."
+    },
+    {
+      "start": 195,
+      "end": 197,
+      "text": "Dekameron, Villon – balada."
+    },
+    {
+      "start": 197,
+      "end": 200,
+      "text": "Cervantes – Don Quijote, Shakespeare."
+    },
+    {
+      "start": 200,
+      "end": 203,
+      "text": "Drama – sonet."
+    },
+    {
+      "start": 203,
+      "end": 205,
+      "text": "Čtrnáct veršů."
+    },
+    {
+      "start": 205,
+      "end": 208,
+      "text": "Pevně uspořádaná lyrická báseň."
+    },
+    {
+      "start": 208,
+      "end": 212,
+      "text": "Často láska, příroda nebo úvaha."
+    },
+    {
+      "start": 212,
+      "end": 214,
+      "text": "Novela – kratší prozaický útvar."
+    },
+    {
+      "start": 214,
+      "end": 216,
+      "text": "Jeden hlavní příběh, rychlý děj."
+    },
+    {
+      "start": 216,
+      "end": 218,
+      "text": "Často překvapivý závěr."
+    },
+    {
+      "start": 218,
+      "end": 220,
+      "text": "Villonská balada – lyrická báseň."
+    },
+    {
+      "start": 220,
+      "end": 223,
+      "text": "Tři sloky a závěrečné poslání."
+    },
+    {
+      "start": 223,
+      "end": 226,
+      "text": "Opakovaný refrén neboli rýmové schéma."
+    },
+    {
+      "start": 226,
+      "end": 228,
+      "text": "Typická pro Françoise Villona."
+    },
+    {
+      "start": 228,
+      "end": 230,
+      "text": "Sonet – čtrnáct veršů."
+    },
+    {
+      "start": 230,
+      "end": 232,
+      "text": "Novela – kratší próza."
+    },
+    {
+      "start": 232,
+      "end": 234,
+      "text": "Villonská balada – Villon!"
+    },
+    {
+      "start": 234,
+      "end": 236,
+      "text": "Český humanismus má dvě linie."
+    },
+    {
+      "start": 236,
+      "end": 238,
+      "text": "Latinskou a českou."
+    },
+    {
+      "start": 238,
+      "end": 241,
+      "text": "Latinská linie – vzdělanci píšou latinsky."
+    },
+    {
+      "start": 241,
+      "end": 244,
+      "text": "Obracejí se k evropské vzdělanosti."
+    },
+    {
+      "start": 244,
+      "end": 247,
+      "text": "Bohuslav Hasištejnský z Lobkovic."
+    },
+    {
+      "start": 247,
+      "end": 249,
+      "text": "Listy z hor."
+    },
+    {
+      "start": 249,
+      "end": 252,
+      "text": "Jan z Rabštejna."
+    },
+    {
+      "start": 252,
+      "end": 255,
+      "text": "Dialogus – politický dialog."
+    },
+    {
+      "start": 255,
+      "end": 258,
+      "text": "Česká linie – píší česky."
+    },
+    {
+      "start": 258,
+      "end": 261,
+      "text": "Rozvoj vzdělanosti a českého jazyka."
+    },
+    {
+      "start": 261,
+      "end": 264,
+      "text": "Viktorin Kornel ze Všehrd – Knihy devatery."
+    },
+    {
+      "start": 264,
+      "end": 267,
+      "text": "O právech země české."
+    },
+    {
+      "start": 267,
+      "end": 270,
+      "text": "Daniel Adam z Veleslavína."
+    },
+    {
+      "start": 270,
+      "end": 272,
+      "text": "Kalendář historický."
+    },
+    {
+      "start": 272,
+      "end": 274,
+      "text": "Humanismus – latina i čeština."
+    },
+    {
+      "start": 274,
+      "end": 277,
+      "text": "Vzdělání, jazyk, člověk a antika."
+    },
+    {
+      "start": 277,
+      "end": 279,
+      "text": "Znovuzrození antiky."
+    },
+    {
+      "start": 279,
+      "end": 281,
+      "text": "Humanismus – člověk."
+    },
+    {
+      "start": 281,
+      "end": 283,
+      "text": "Rozum, vzdělání, Itálie."
+    },
+    {
+      "start": 283,
+      "end": 285,
+      "text": "Petrarca, Boccaccio."
+    },
+    {
+      "start": 285,
+      "end": 286,
+      "text": "Francie – Villon."
+    },
+    {
+      "start": 286,
+      "end": 288,
+      "text": "Španělsko – Cervantes."
+    },
+    {
+      "start": 288,
+      "end": 290,
+      "text": "Anglie – Shakespeare."
+    },
+    {
+      "start": 290,
+      "end": 292,
+      "text": "Sonet – čtrnáct veršů."
+    },
+    {
+      "start": 292,
+      "end": 294,
+      "text": "Novela – kratší próza."
+    },
+    {
+      "start": 294,
+      "end": 296,
+      "text": "Villonská balada – Villon."
+    },
+    {
+      "start": 296,
+      "end": 298,
+      "text": "Český humanismus."
+    },
+    {
+      "start": 298,
+      "end": 301,
+      "text": "Latinská linie."
+    },
+    {
+      "start": 301,
+      "end": 303,
+      "text": "Česká linie."
+    },
+    {
+      "start": 303,
+      "end": 305,
+      "text": "Hasištejnský, Rabštejn."
+    },
+    {
+      "start": 305,
+      "end": 308,
+      "text": "Kornel ze Všehrd, Veleslavín."
+    },
+    {
+      "start": 308,
+      "end": 310,
+      "text": "Renesance – obnova antiky."
+    },
+    {
+      "start": 310,
+      "end": 314,
+      "text": "Humanismus – člověk v centru."
+    },
+    {
+      "start": 314,
+      "end": 318,
+      "text": "Renesance a humanismus – když to znáš."
     }
   ]
 }
