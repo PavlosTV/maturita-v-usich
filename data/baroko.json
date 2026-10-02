@@ -1,0 +1,298 @@
+{
+  "title": "Baroko",
+  "version": 1,
+  "sync": "line",
+  "audio": "./audio/baroko.mp3",
+  "lines": [
+    {
+      "start": 30,
+      "end": 32,
+      "text": "BAROKO!"
+    },
+    {
+      "start": 32,
+      "end": 34,
+      "text": "Vzniká v Itálii, šíří se Evropou."
+    },
+    {
+      "start": 34,
+      "end": 36,
+      "text": "Sedmnácté století, začátek baroka."
+    },
+    {
+      "start": 36,
+      "end": 39,
+      "text": "První půlka osmnáctého, konec jeho éry."
+    },
+    {
+      "start": 39,
+      "end": 41,
+      "text": "Silná víra, silné city, silné kontrasty."
+    },
+    {
+      "start": 41,
+      "end": 44,
+      "text": "České země, Bílá hora."
+    },
+    {
+      "start": 44,
+      "end": 46,
+      "text": "Rok šestnáct dvacet, změna doby."
+    },
+    {
+      "start": 46,
+      "end": 49,
+      "text": "Rekatolizace, katolická víra."
+    },
+    {
+      "start": 49,
+      "end": 51,
+      "text": "Jezuité, Bůh a církev!"
+    },
+    {
+      "start": 51,
+      "end": 54,
+      "text": "Víra! Bůh! Smrt! Naděje!"
+    },
+    {
+      "start": 54,
+      "end": 56,
+      "text": "Život! Smrt! Duše! Tělo!"
+    },
+    {
+      "start": 56,
+      "end": 58,
+      "text": "Kontrast, cit, pomíjivý svět."
+    },
+    {
+      "start": 58,
+      "end": 61,
+      "text": "Baroko, baroko, pamatuj to teď!"
+    },
+    {
+      "start": 61,
+      "end": 63,
+      "text": "České baroko, oficiální tvorba."
+    },
+    {
+      "start": 63,
+      "end": 66,
+      "text": "Katolická víra, Bůh je v centru."
+    },
+    {
+      "start": 66,
+      "end": 67,
+      "text": "Bridel! Co Bůh? Člověk?"
+    },
+    {
+      "start": 67,
+      "end": 70,
+      "text": "Bůh je věčný, člověk malý."
+    },
+    {
+      "start": 70,
+      "end": 72,
+      "text": "Bůh je mocný, člověk slabý."
+    },
+    {
+      "start": 72,
+      "end": 75,
+      "text": "Bůh a člověk, silný kontrast."
+    },
+    {
+      "start": 75,
+      "end": 77,
+      "text": "Bridel, Bridel, Co Bůh? Člověk?"
+    },
+    {
+      "start": 77,
+      "end": 79,
+      "text": "Balbín! Čeština!"
+    },
+    {
+      "start": 79,
+      "end": 81,
+      "text": "Rozprava na obranu jazyka českého."
+    },
+    {
+      "start": 81,
+      "end": 83,
+      "text": "Balbín hájí český jazyk."
+    },
+    {
+      "start": 83,
+      "end": 85,
+      "text": "Bridel – Bůh a člověk!"
+    },
+    {
+      "start": 85,
+      "end": 87,
+      "text": "Balbín – český jazyk!"
+    },
+    {
+      "start": 87,
+      "end": 89,
+      "text": "Bridel – Bůh a člověk!"
+    },
+    {
+      "start": 89,
+      "end": 91,
+      "text": "Balbín – český jazyk!"
+    },
+    {
+      "start": 91,
+      "end": 94,
+      "text": "Víra! Bůh! Smrt! Naděje!"
+    },
+    {
+      "start": 94,
+      "end": 97,
+      "text": "Kontrast, cit, pomíjivý svět!"
+    },
+    {
+      "start": 97,
+      "end": 100,
+      "text": "Exilová literatura po Bílé hoře."
+    },
+    {
+      "start": 100,
+      "end": 102,
+      "text": "Komenský, Jan Amos!"
+    },
+    {
+      "start": 102,
+      "end": 104,
+      "text": "Labyrint světa a ráj srdce."
+    },
+    {
+      "start": 104,
+      "end": 107,
+      "text": "Svět je labyrint, člověk hledá cestu."
+    },
+    {
+      "start": 107,
+      "end": 109,
+      "text": "Nakonec svůj klid nachází v Bohu."
+    },
+    {
+      "start": 109,
+      "end": 112,
+      "text": "Komenský! Labyrint světa!"
+    },
+    {
+      "start": 112,
+      "end": 114,
+      "text": "Komenský! Ráj srdce!"
+    },
+    {
+      "start": 114,
+      "end": 117,
+      "text": "Pansofie, vševěda."
+    },
+    {
+      "start": 117,
+      "end": 119,
+      "text": "Poznání světa, vzdělání člověka."
+    },
+    {
+      "start": 119,
+      "end": 123,
+      "text": "Bílá hora, rekatolizace."
+    },
+    {
+      "start": 123,
+      "end": 125,
+      "text": "Bridel, Balbín, Komenský – exil."
+    },
+    {
+      "start": 125,
+      "end": 129,
+      "text": "Bůh, člověk, svět, labyrint!"
+    },
+    {
+      "start": 129,
+      "end": 131,
+      "text": "Lidová tvorba žije mezi lidmi."
+    },
+    {
+      "start": 131,
+      "end": 134,
+      "text": "Předává se ústně, z generace dál."
+    },
+    {
+      "start": 134,
+      "end": 136,
+      "text": "Pohádky, pověsti, písně, říkadla."
+    },
+    {
+      "start": 136,
+      "end": 138,
+      "text": "Přísloví, pranostiky, lidové balady."
+    },
+    {
+      "start": 138,
+      "end": 142,
+      "text": "Pololidová tvorba, mezi lidem a vzdělanci."
+    },
+    {
+      "start": 142,
+      "end": 146,
+      "text": "Autor často známý, tvorba blíž lidem."
+    },
+    {
+      "start": 146,
+      "end": 149,
+      "text": "Lidová – ústní! Pololidová – mezi světy!"
+    },
+    {
+      "start": 149,
+      "end": 154,
+      "text": "Baroko! Sedmnácté století, první půlka osmnáctého!"
+    },
+    {
+      "start": 154,
+      "end": 157,
+      "text": "Víra! Bůh! Smrt! Naděje!"
+    },
+    {
+      "start": 157,
+      "end": 159,
+      "text": "Život! Smrt! Duše! Tělo!"
+    },
+    {
+      "start": 159,
+      "end": 162,
+      "text": "Bridel, co Bůh? Člověk! Balbín!"
+    },
+    {
+      "start": 162,
+      "end": 164,
+      "text": "Český exil, Komenský – Labyrint!"
+    },
+    {
+      "start": 164,
+      "end": 166,
+      "text": "Komenský – Ráj srdce!"
+    },
+    {
+      "start": 166,
+      "end": 169,
+      "text": "Lidová – ústně! Pololidová – mezi lidmi!"
+    },
+    {
+      "start": 169,
+      "end": 172,
+      "text": "Baroko! Víra a kontrast!"
+    },
+    {
+      "start": 172,
+      "end": 175,
+      "text": "Baroko! Bůh a člověk!"
+    },
+    {
+      "start": 175,
+      "end": 178,
+      "text": "BAROKO! Pamatuj to!"
+    }
+  ]
+}
