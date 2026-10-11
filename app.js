@@ -345,7 +345,7 @@ async function openBook(book) {
 
         container.innerHTML = '';
 
-        renderSong(container, songData, book.id);
+        renderSong(container, songData, book.id, book.data);
     } catch (error) {
         console.error('Načtení skladby knihy selhalo:', error);
 
@@ -494,7 +494,7 @@ function renderPeriodData(container, data, periodId, periodTitle) {
 // 13. VYKRESLENÍ SKLADBY (Upraveno pro Spotify Karaoke)
 // ==========================================
 
-function renderSong(container, songData, uniqueId) {
+function renderSong(container, songData, uniqueId, jsonUrl) {
     const card = document.createElement('div');
     card.className = 'song-card';
 
@@ -544,7 +544,7 @@ function renderSong(container, songData, uniqueId) {
     `;
 
     container.appendChild(card);
-    setupOfflineButton(uniqueId, audioUrl, `./data/${uniqueId.split('_')[0]}.json`);
+    setupOfflineButton(uniqueId, audioUrl, jsonUrl);
     setupLyricsSync(uniqueId);
 }
 
