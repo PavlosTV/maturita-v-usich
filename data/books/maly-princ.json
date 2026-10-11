@@ -4,7 +4,7 @@
   "sync": "line",
   "audio": "./audio/maly-princ.mp3",
   "lines": [
-    {"start": 3.24, "end": 4.74, "text": "Malý princ, Malý princ,"},
+    {"start": 0.00, "end": 4.74, "text": "Malý princ, Malý princ,"},
     {"start": 4.74, "end": 6.72, "text": "příběh, který učí žít."},
     {"start": 6.72, "end": 9.24, "text": "Pod povrchem dětské pohádky"},
     {"start": 9.24, "end": 12.02, "text": "skrývá se, jak světu porozumět."},
