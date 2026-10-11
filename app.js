@@ -196,7 +196,9 @@ document.querySelectorAll('.menu-card[data-section]').forEach(button => {
             loadPeriods();
         }
         if (section === 'cetba') {
-            showScreen('cetba', 'Maturitní četba');
+        showScreen('cetba', 'Maturitní četba');
+        loadBooks();
+        }
         }
         if (section === 'ustni') {
             showScreen('ustni', 'Ústní zkouška');
@@ -252,6 +254,67 @@ async function loadPeriods() {
                 <h3>Nepodařilo se načíst období.</h3>
                 <p>Soubor periods.json není dostupný ani online, ani offline.</p>
             </div>
+        `;
+    }
+}
+
+async function loadBooks() {
+    const container = document.querySelector('#cetbaScreen .section-heading');
+
+    if (!container) return;
+
+    container.innerHTML = '<p>Načítám seznam knih...</p>';
+
+    try {
+        const response = await fetch('./data/books.json');
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const books = await response.json();
+
+        if (!Array.isArray(books)) {
+            throw new Error('books.json není pole.');
+        }
+
+        container.innerHTML = '<p>Vyber knihu k maturitě.</p>';
+
+        let booksContainer = document.getElementById('booksContainer');
+
+        if (!booksContainer) {
+            booksContainer = document.createElement('div');
+            booksContainer.id = 'booksContainer';
+            booksContainer.className = 'menu-grid';
+            container.after(booksContainer);
+        }
+
+        booksContainer.innerHTML = '';
+
+        books.forEach(book => {
+            const button = document.createElement('button');
+            button.className = 'menu-card';
+
+            button.innerHTML = `
+                <div class="menu-icon">Č</div>
+                <div>
+                    <h2>${escapeHTML(book.title)}</h2>
+                    <p>${escapeHTML(book.author || '')}</p>
+                </div>
+                <span class="arrow">›</span>
+            `;
+
+            button.addEventListener('click', () => {
+                openBook(book);
+            });
+
+            booksContainer.appendChild(button);
+        });
+    } catch (error) {
+        console.error('Načtení seznamu knih selhalo:', error);
+        container.innerHTML = `
+            <p>Nepodařilo se načíst seznam knih.</p>
+            <p>Zkontroluj soubor data/books.json.</p>
         `;
     }
 }
