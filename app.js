@@ -318,7 +318,45 @@ async function loadBooks() {
         `;
     }
 }
+async function openBook(book) {
+    const container = document.getElementById('songs');
+    const description = document.getElementById('periodDescription');
 
+    if (!container) return;
+
+    showScreen('period', book.title);
+
+    if (description) {
+        description.innerHTML = `
+            <p>${escapeHTML(book.author || '')}</p>
+        `;
+    }
+
+    container.innerHTML = '<p>Načítám skladbu...</p>';
+
+    try {
+        const response = await fetch(book.data);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const songData = await response.json();
+
+        container.innerHTML = '';
+
+        renderSong(container, songData, book.id);
+    } catch (error) {
+        console.error('Načtení skladby knihy selhalo:', error);
+
+        container.innerHTML = `
+            <div class="error">
+                <h3>Skladbu se nepodařilo načíst.</h3>
+                <p>Zkontroluj soubor ${escapeHTML(book.data)}.</p>
+            </div>
+        `;
+    }
+}
 
 // ==========================================
 // 9. VYKRESLENÍ OBDOBÍ
