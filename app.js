@@ -29,25 +29,61 @@ if ('serviceWorker' in navigator) {
 // 2. AKTUALIZACE APLIKACE
 // ==========================================
 
+
 const updateButton = document.getElementById('updateButton');
 
 if (updateButton) {
     updateButton.addEventListener('click', async () => {
         updateButton.disabled = true;
-        updateButton.textContent = 'Aktualizuji...';
+        updateButton.textContent = 'Kontroluji aktualizace...';
 
         try {
             const registration = await navigator.serviceWorker.getRegistration();
-            if (registration) {
-                await registration.update();
+
+            if (!registration) {
+                window.location.reload();
+                return;
             }
+
+            await registration.update();
+
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+
+            if (registration.installing) {
+                updateButton.textContent = 'Instaluji aktualizaci...';
+
+                await new Promise((resolve, reject) => {
+                    const worker = registration.installing;
+
+                    if (!worker) {
+                        resolve();
+                        return;
+                    }
+
+                    worker.addEventListener('statechange', () => {
+                        if (worker.state === 'installed' || worker.state === 'activated') {
+                            resolve();
+                        }
+
+                        if (worker.state === 'redundant') {
+                            reject(new Error('Aktualizace se nepodařila.'));
+                        }
+                    });
+                });
+            }
+
             window.location.reload();
         } catch (error) {
             console.error('Aktualizace selhala:', error);
-            window.location.reload();
+            updateButton.disabled = false;
+            updateButton.textContent = 'Zkusit aktualizovat znovu';
+            alert('Aktualizaci se nepodařilo dokončit. Zkus to znovu.');
         }
     });
 }
+
 
 
 // ==========================================
