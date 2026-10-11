@@ -1,0 +1,9 @@
+[
+  {
+    "id": "maly-princ",
+    "title": "Malý princ",
+    "author": "Antoine de Saint-Exupéry",
+    "audio": "./audio/maly-princ.mp3",
+    "data": "./data/books/maly-princ.json"
+  }
+]
