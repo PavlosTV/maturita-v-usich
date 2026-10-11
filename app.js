@@ -199,7 +199,7 @@ document.querySelectorAll('.menu-card[data-section]').forEach(button => {
         showScreen('cetba', 'Maturitní četba');
         loadBooks();
         }
-        }
+        
         if (section === 'ustni') {
             showScreen('ustni', 'Ústní zkouška');
         }
