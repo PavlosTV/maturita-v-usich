@@ -7,9 +7,15 @@
     "data": "./data/books/maly-princ.json"
   }
   {
-  "id": "bila-nemoc",
-  "title": "Bílá nemoc",
-  "author": "Karel Čapek",
-  "data": "./data/books/bila-nemoc.json"
+    "id": "bila-nemoc",
+    "title": "Bílá nemoc",
+    "author": "Karel Čapek",
+    "data": "./data/books/bila-nemoc.json"
+  }
+  {
+    "id": "promena",
+    "title": "Proměna",
+    "author": "Franz Kafka",
+    "data": "./data/books/promena.json"
   }
 ]
