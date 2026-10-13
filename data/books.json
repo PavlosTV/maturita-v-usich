@@ -6,4 +6,10 @@
     "audio": "./audio/maly-princ.mp3",
     "data": "./data/books/maly-princ.json"
   }
+  {
+  "id": "bila-nemoc",
+  "title": "Bílá nemoc",
+  "author": "Karel Čapek",
+  "data": "./data/books/bila-nemoc.json"
+}
 ]
