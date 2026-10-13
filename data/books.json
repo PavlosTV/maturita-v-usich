@@ -18,5 +18,11 @@
     "title": "Proměna",
     "author": "Franz Kafka",
     "data": "./data/books/promena.json"
-  }
+  },
+  {
+  "id": "petr-a-lucie",
+  "title": "Petr a Lucie",
+  "author": "Romain Rolland",
+  "data": "./data/books/petr-a-lucie.json"
+}
 ]
