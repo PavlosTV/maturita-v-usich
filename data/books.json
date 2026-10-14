@@ -24,5 +24,11 @@
   "title": "Petr a Lucie",
   "author": "Romain Rolland",
   "data": "./data/books/petr-a-lucie.json"
+},
+  {
+  "id": "lakomec",
+  "title": "Lakomec",
+  "author": "Molière",
+  "data": "./data/books/lakomec.json"
 }
 ]
